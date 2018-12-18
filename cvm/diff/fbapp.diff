@@ -1,0 +1,38 @@
+diff -Naur orig/midp/src/highlevelui/fb_application/reference/native/fbapp_export.c patched/midp/src/highlevelui/fb_application/reference/native/fbapp_export.c
+--- orig/midp/src/highlevelui/fb_application/reference/native/fbapp_export.c	2012-02-02 16:22:11.000000000 +0100
++++ patched/midp/src/highlevelui/fb_application/reference/native/fbapp_export.c	2012-02-02 16:42:36.232675820 +0100
+@@ -151,15 +151,16 @@
+     }
+ }
+ 
++int getScreenHeight();
++int getScreenWidth();
++
+ /** Return screen width */
+ int fbapp_get_screen_width(int hardwareId) {
+     (void)hardwareId;
+     if (reverse_orientation) {
+-        return (isFullScreen == 1) ?
+-            CHAM_FULLHEIGHT : CHAM_HEIGHT;
++        return getScreenHeight();
+     } else {
+-        return (isFullScreen == 1) ?
+-            CHAM_FULLWIDTH : CHAM_WIDTH;
++        return getScreenWidth();
+     }
+ }
+ 
+@@ -167,11 +168,9 @@
+ int fbapp_get_screen_height(int hardwareId) {
+     (void)hardwareId;
+     if (reverse_orientation) {
+-        return (isFullScreen == 1) ?
+-            CHAM_FULLWIDTH : CHAM_WIDTH;
++        return getScreenWidth();
+     } else {
+-        return (isFullScreen == 1) ?
+-            CHAM_FULLHEIGHT : CHAM_HEIGHT;
++        return getScreenHeight();
+     }
+ }
+ 

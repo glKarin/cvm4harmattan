@@ -1,0 +1,1129 @@
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/openlapi/LandmarkStore.java patched/openlapi-0.9.13/openlapi/src/com/openlapi/LandmarkStore.java
+--- orig/openlapi-0.9.13/openlapi/src/com/openlapi/LandmarkStore.java	2010-01-22 21:40:46.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/openlapi/LandmarkStore.java	2012-02-07 09:42:13.000000000 +0100
+@@ -27,12 +27,12 @@
+ import java.util.Hashtable;
+ import java.util.Vector;
+ 
+-import javax.microedition.rms.RecordEnumeration;
+-import javax.microedition.rms.RecordStore;
+-import javax.microedition.rms.RecordStoreException;
+-import javax.microedition.rms.RecordStoreFullException;
+-import javax.microedition.rms.RecordStoreNotFoundException;
+-import javax.microedition.rms.RecordStoreNotOpenException;
++import com.sun.midp.rms.RecordEnumeration;
++import com.sun.midp.rms.RecordStore;
++import com.sun.midp.rms.RecordStoreException;
++import com.sun.midp.rms.RecordStoreFullException;
++import com.sun.midp.rms.RecordStoreNotFoundException;
++import com.sun.midp.rms.RecordStoreNotOpenException;
+ 
+ 
+ /*
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProvider.java patched/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProvider.java
+--- orig/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProvider.java	2010-01-22 21:40:46.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProvider.java	2012-02-07 09:42:13.000000000 +0100
+@@ -198,37 +198,16 @@
+ 	 */
+ 	public static LocationProvider getInstance(Criteria criteria)
+ 		throws LocationException {
+-		String mode = null;
+-		try {
+-			mode = getMode();
+-		} catch (IOException e) {
+-			TTUtils.log(e.getMessage());
+-		}
+ 
+-		if (mode == null || "GPS".equals(mode)) {
+-			// GPS over Bluetooth
+-			return new LocationProviderBTGPS(criteria);
+-		} else if ("KML".equals(mode)) {
+-			// Google Earth file
+-			return new LocationProviderKML(criteria, "/OpenLAPI.kml");
+-		} else if ("LMS".equals(mode)) {
+-			// random entry from the LandmarkStore
+-			return new LocationProviderLMS(criteria, null);
+-		} else if ("NMEA".equals(mode)) {
+-			// random entry from the LandmarkStore
+-			return new LocationProviderNMEA(criteria, "/nmea.log");
+-		}
+-		try {
+-			// name not recognised, allow reflection to have a go
+-			// this allows people to create their own implementations
+-			// outside of OpenLAPI
+-			Class implClass = Class.forName(mode);
+-			return (LocationProvider) implClass.newInstance();
+-		} catch (Throwable ex) {
+-			throw new LocationException("No such LocationProvider: " + mode +
+-				" " + ex.getMessage());
++		if (provider == null) {
++			provider = new LocationProviderMaemo(criteria);
+ 		}
++
++		provider.startBackend(); // Restart daemon if necessary
++		return provider;
+ 	}
++	
++	private static LocationProviderMaemo provider = null;
+ 
+ 	/**
+ 	 * Returns the last known location that the implementation has. This is the best
+@@ -434,7 +413,8 @@
+ 	 * @param location
+ 	 */
+ 	protected static void setLastKnownLocation(Location location) {
+-		if (location == null || !location.isValid())
++		/// if (location == null || !location.isValid())
++		if (location == null)
+ 			return;
+ 
+ 		// only update if the given Location is actually newer! remember, some
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProviderMaemo.java patched/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProviderMaemo.java
+--- orig/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProviderMaemo.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProviderMaemo.java	2012-02-07 09:42:13.000000000 +0100
+@@ -0,0 +1,137 @@
++package com.openlapi;
++
++import java.io.*;
++import java.util.*;
++
++import java.lang.ClassNotFoundException;
++
++import javax.microedition.io.Connector;
++
++public class LocationProviderMaemo extends LocationProviderSimplified {
++
++	/// private static native String[] maemoLocationManager(String method[]);
++
++	class MaemoLocationDaemon implements Runnable {
++		private volatile boolean end = false;
++		private final long interval;
++
++		/**
++		 * @param interval
++		 *            in milliseconds
++		 */
++		MaemoLocationDaemon(long interval) {
++			this.interval = interval;
++
++			/// maemoLocationManager(new String[] { "maemo.location.LocationManager", "initGpsProvider" } );
++		}
++
++		public void end() {
++			end = true;
++			updateState(TEMPORARILY_UNAVAILABLE);
++
++			/// maemoLocationManager(new String[] { "maemo.location.LocationManager", "finishGpsProvider" } );
++		}
++
++		public void run() {
++			while (!end) {
++				updateLocation(getMaemoLocation());
++				try {
++					Thread.sleep(interval);
++				} catch (InterruptedException e) {
++				}
++			}
++		}
++
++		public String[] split(String splitStr, String delimiter) {
++			StringBuffer token = new StringBuffer();
++			Vector tokens = new Vector();
++			// split
++			char[] chars = splitStr.toCharArray();
++			for (int i=0; i < chars.length; i++) {
++				if (delimiter.indexOf(chars[i]) != -1) {
++					// we bumbed into a delimiter
++					if (token.length() > 0) {
++						tokens.addElement(token.toString());
++						token.setLength(0);
++					}
++				} else {
++					token.append(chars[i]);
++				}
++			}
++			// don't forget the "tail"...
++			if (token.length() > 0) {
++				tokens.addElement(token.toString());
++			}
++			// convert the vector into an array
++			String[] splitArray = new String[tokens.size()];
++			for (int i=0; i < splitArray.length; i++) {
++				splitArray[i] = (String)tokens.elementAt(i);
++			}
++			return splitArray;
++		}
++
++		private synchronized Location getMaemoLocation() {
++			long timestamp = System.currentTimeMillis();
++			boolean valid = false;
++			double latitude = 0.0;
++			double longitude = 0.0;
++			float altitude = 0.0f;
++			float speed = 0.0f;
++			float bearing = 0.0f;
++			float accuracy = 0.0f;
++
++			/*
++			/// String result[] = maemoLocationManager(new String[] { "maemo.location.LocationManager", "getLocation" } );
++			timestamp = Long.parseLong(result[0]);
++			valid = Boolean.valueOf(result[1]).booleanValue();
++			latitude = Double.parseDouble(result[2]);
++			longitude = Double.parseDouble(result[3]);
++			altitude = Float.parseFloat(result[4]);
++			speed = Float.parseFloat(result[5]);
++			bearing = Float.parseFloat(result[6]);
++			accuracy = Float.parseFloat(result[7]);
++			*/
++
++			System.gc();
++
++			Location location = new Location();
++			location.timestamp = timestamp;
++			location.valid = valid;
++			location.qualifiedCoordinates = new QualifiedCoordinates(latitude, longitude, altitude, accuracy, accuracy);
++			location.setSpeed(speed);
++			location.setCourse(bearing);
++			return location;
++		}
++	}
++
++	private static volatile MaemoLocationDaemon daemon = null;
++
++	/**
++	 * @param criteria
++	 * @param source
++	 * @throws LocationException
++	 */
++	LocationProviderMaemo(Criteria criteria)
++			throws LocationException {
++		startBackend();
++	}
++
++	protected void startBackend() throws LocationException {
++		if (daemon != null)
++			return;
++
++		/// System.out.println("LocationProviderMaemo: start backend");
++		long interval = 1000;
++		daemon = new MaemoLocationDaemon(interval);
++		new Thread(daemon).start();
++	}
++
++	protected void stopBackend() {
++		if (daemon == null)
++			return;
++
++		/// System.out.println("LocationProviderMaemo: stop backend");
++		daemon.end();
++		daemon = null;
++	}
++}
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProviderSimplified.java patched/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProviderSimplified.java
+--- orig/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProviderSimplified.java	2010-01-22 21:40:46.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/openlapi/LocationProviderSimplified.java	2012-02-07 09:42:13.000000000 +0100
+@@ -60,7 +60,8 @@
+ 		Location location = getLastKnownLocation();
+ 		long last = location.getTimestamp();
+ 		// returning a valid location is not required by the spec, but let's be nice...
+-		if ((last + 1000L * timeout) >= time && location.isValid())
++		/// if ((last + 1000L * timeout) >= time && location.isValid())
++		if ((last + 1000L * timeout) >= time)
+ 			return location;
+ 
+ 		try {
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/InvalidRecordIDException.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/InvalidRecordIDException.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/InvalidRecordIDException.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/InvalidRecordIDException.java	2011-03-04 09:55:34.000000000 +0100
+@@ -0,0 +1,59 @@
++/*
++ *   
++ *
++ * Portions Copyright  2000-2007 Sun Microsystems, Inc. All Rights
++ * Reserved.  Use is subject to license terms.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation.
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt).
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ *
++ * Copyright 2000 Motorola, Inc. All Rights Reserved.
++ * This notice does not imply publication.
++ */
++
++package com.sun.midp.rms; 
++
++/**
++* Thrown to indicate an operation could not be completed because the
++* record ID was invalid.
++*
++* @since MIDP 1.0
++*/
++
++public class InvalidRecordIDException 
++    extends RecordStoreException 
++{ 
++    /**
++     * Constructs a new <code>InvalidRecordIDException</code> with the
++     * specified detail message.
++     *
++     * @param message the detail message
++     */
++    public InvalidRecordIDException(String message) {
++	super(message);
++    }
++    
++    /** 
++     * Constructs a new <code>InvalidRecordIDException</code> with no detail 
++     * message. 
++     */
++    public InvalidRecordIDException() {
++    } 
++} 
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordComparator.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordComparator.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordComparator.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordComparator.java	2011-03-04 09:54:37.000000000 +0100
+@@ -0,0 +1,99 @@
++/*
++ *   
++ *
++ * Portions Copyright  2000-2007 Sun Microsystems, Inc. All Rights
++ * Reserved.  Use is subject to license terms.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation.
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt).
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ *
++ * Copyright 2000 Motorola, Inc. All Rights Reserved.
++ * This notice does not imply publication.
++ */
++
++package com.sun.midp.rms; 
++
++/**
++ * An interface defining a comparator which compares two records (in an
++ * implementation-defined manner) to see if they match or what their
++ * relative sort order is. The application implements this interface
++ * to compare two candidate records. The return value must indicate
++ * the ordering of the two records. The compare method is called by
++ * RecordEnumeration to sort and return records in an application
++ * specified order. For example:
++ * <pre>
++ * RecordComparator c = new AddressRecordComparator();
++ * if (c.compare(recordStore.getRecord(rec1), recordStore.getRecord(rec2))
++ *	 == RecordComparator.PRECEDES)
++ * return rec1;
++ * </pre>
++ *
++ * @since MIDP 1.0
++ */
++
++public interface RecordComparator
++{
++    /**
++     * EQUIVALENT means that in terms of search or sort order, the
++     * two records are the same. This does not necessarily mean that
++     * the two records are identical.
++     * <P>The value of EQUIVALENT is 0.</P>
++     */
++    public static final int EQUIVALENT = 0;
++
++    /**
++     * FOLLOWS means that the left (first parameter) record <em>follows</em>
++     * the right (second parameter) record in terms of search or
++     * sort order.
++     * <P>The value of FOLLOWS is 1.</P>
++     */
++    public static final int FOLLOWS = 1;
++
++    /**
++     * PRECEDES means that the left (first parameter) record <em>precedes</em>
++     * the right (second parameter) record in terms of search or
++     * sort order.
++     * <P>The value of PRECEDES is -1.</P>
++     */
++    public static final int PRECEDES = -1;
++
++    /**
++     * Returns <code>RecordComparator.PRECEDES</code> if rec1
++     * precedes rec2 in sort order, or <code>RecordComparator.FOLLOWS</code>
++     * if rec1 follows rec2 in sort order, or
++     * <code>RecordComparator.EQUIVALENT</code> if rec1 and rec2
++     * are equivalent in terms of sort order.
++     *
++     * @param rec1 the first record to use for comparison. Within this
++     *          method, the application must treat this parameter as
++     *          read-only.
++     * @param rec2 the second record to use for comparison. Within
++     *          this method, the application must treat this parameter
++     *          as read-only.
++     * @return <code>RecordComparator.PRECEDES</code> if rec1 precedes
++     *          rec2 in sort order, or
++     *          <code>RecordComparator.FOLLOWS</code> if rec1 follows
++     *          rec2 in sort order, or
++     *          <code>RecordComparator.EQUIVALENT</code> if rec1 and
++     *          rec2 are equivalent in terms of sort order
++     */
++    public abstract int compare(byte[] rec1, byte[] rec2);
++
++}
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordEnumeration.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordEnumeration.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordEnumeration.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordEnumeration.java	2011-03-04 09:54:40.000000000 +0100
+@@ -0,0 +1,272 @@
++/*
++ *   
++ *
++ * Portions Copyright  2000-2007 Sun Microsystems, Inc. All Rights
++ * Reserved.  Use is subject to license terms.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation.
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt).
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ *
++ * Copyright 2000 Motorola, Inc. All Rights Reserved.
++ * This notice does not imply publication.
++ */
++
++package com.sun.midp.rms; 
++
++/**
++ * An interface representing a bidirectional record store Record
++ * enumerator. The RecordEnumeration logically maintains a sequence of
++ * the recordId's of the records in a record store. The enumerator
++ * will iterate over all (or a subset, if an optional record filter
++ * has been supplied) of the records in an order determined by an
++ * optional record comparator.
++ *
++ * <p>By using an optional <code>RecordFilter</code>, a subset of the
++ * records can be chosen that match the supplied filter. This can be
++ * used for providing search capabilities.</p>
++ *
++ * <p>By using an optional <code>RecordComparator</code>, the
++ * enumerator can index through the records in an order determined by
++ * the comparator. This can be used for providing sorting
++ * capabilities.</p>
++ *
++ * <p>If, while indexing through the enumeration, some records are
++ * deleted from the record store, the recordId's returned by the
++ * enumeration may no longer represent valid records. To avoid this
++ * problem, the RecordEnumeration can optionally become a listener of
++ * the RecordStore and react to record additions and deletions by
++ * recreating its internal index. Use special care when using this
++ * option however, in that every record addition, change and deletion
++ * will cause the index to be rebuilt, which may have serious
++ * performance impacts.</p>
++ *
++ * <p>If the RecordStore used by this RecordEnumeration is closed,
++ * this RecordEnumeration becomes invalid and all subsequent
++ * operations performed on it may give invalid results or throw a
++ * RecordStoreNotOpenException, even if the same RecordStore is later
++ * opened again. In addition, calls to <code>hasNextElement()</code>
++ * and <code>hasPreviousElement()</code> will return false.</p>
++ *
++ * <p>The first call to <code>nextRecord()</code> returns the record
++ * data from the first record in the sequence. Subsequent calls to
++ * <code>nextRecord()</code> return the next consecutive record's
++ * data. To return the record data from the previous consecutive from
++ * any given point in the enumeration, call
++ * <code>previousRecord()</code>. On the other hand, if after
++ * creation, the first call is to <code>previousRecord()</code>, the
++ * record data of the last element of the enumeration will be
++ * returned. Each subsequent call to <code>previousRecord()</code>
++ * will step backwards through the sequence until the beginning is
++ * reached.</p>
++ *
++ * <p>Final note, to do record store searches, create a
++ * RecordEnumeration with no RecordComparator, and an appropriate
++ * RecordFilter with the desired search criterion.</p>
++ *
++ * @since MIDP 1.0
++ */
++
++public interface RecordEnumeration
++{
++    /**
++     * Returns the number of records available in this enumeration's
++     * set. That is, the number of records that have matched the
++     * filter criterion. Note that this forces the RecordEnumeration
++     * to fully build the enumeration by applying the filter to all
++     * records, which may take a non-trivial amount
++     * of time if there are a lot of records in the record store.
++     *
++     * @return the number of records available in this enumeration's
++     *          set. That is, the number of records that have matched
++     *          the filter criterion.
++     */
++    public int numRecords();
++
++    /**
++     * Returns a copy of the <em>next</em> record in this enumeration,
++     * where <em>next</em> is defined by the comparator and/or filter
++     * supplied in the constructor of this enumerator. The byte array
++     * returned is a copy of the record. Any changes made to this array
++     * will NOT be reflected in the record store. After calling
++     * this method, the enumeration is advanced to the next available
++     * record.
++     *
++     * @exception InvalidRecordIDException when no more records are
++     *          available. Subsequent calls to this method will
++     *          continue to throw this exception until
++     *          <code>reset()</code> has been called to reset the
++     *          enumeration.
++     * @exception RecordStoreNotOpenException if the record store is
++     *          not open
++     * @exception RecordStoreException if a general record store
++     *          exception occurs
++     *
++     * @return the next record in this enumeration
++     */
++    public byte[] nextRecord()
++	throws InvalidRecordIDException, RecordStoreNotOpenException,
++	RecordStoreException;
++
++    /**
++     * Returns the recordId of the <em>next</em> record in this enumeration,
++     * where <em>next</em> is defined by the comparator and/or filter
++     * supplied in the constructor of this enumerator. After calling
++     * this method, the enumeration is advanced to the next available
++     * record.
++     *
++     * @exception InvalidRecordIDException when no more records are
++     *          available. Subsequent calls to this method will
++     *          continue to throw this exception until
++     *          <code>reset()</code> has been called to reset the
++     *          enumeration.
++     *
++     * @return the recordId of the next record in this enumeration
++     */
++    public int nextRecordId()
++	throws InvalidRecordIDException;
++
++    /**
++     * Returns a copy of the <em>previous</em> record in this enumeration,
++     * where <em>previous</em> is defined by the comparator and/or filter
++     * supplied in the constructor of this enumerator. The byte array
++     * returned is a copy of the record. Any changes made to this array
++     * will NOT be reflected in the record store. After calling
++     * this method, the enumeration is advanced to the next (previous)
++     * available record.
++     *
++     * @exception InvalidRecordIDException when no more records are
++     *          available. Subsequent calls to this method will
++     *          continue to throw this exception until
++     *          <code>reset()</code> has been called to reset the
++     *          enumeration.
++     * @exception RecordStoreNotOpenException if the record store is
++     *          not open
++     * @exception RecordStoreException if a general record store
++     *          exception occurs.
++     *
++     * @return the previous record in this enumeration
++     */
++    public byte[] previousRecord()
++	throws InvalidRecordIDException, RecordStoreNotOpenException,
++	RecordStoreException;
++
++    /**
++     * Returns the recordId of the <em>previous</em> record in this
++     * enumeration, where <em>previous</em> is defined by the
++     * comparator and/or filter supplied in the constructor of this
++     * enumerator. After calling this method, the enumeration is
++     * advanced to the next (previous) available record.
++     *
++     * @exception InvalidRecordIDException when no more records are
++     *          available. Subsequent calls to this method will
++     *          continue to throw this exception until
++     *          <code>reset()</code> has been called to reset the
++     *          enumeration.
++     *
++     * @return the recordId of the previous record in this enumeration
++     */
++    public int previousRecordId()
++	throws InvalidRecordIDException;
++
++    /**
++     * Returns true if more elements exist in the <em>next</em> direction.
++     *
++     * @return true if more elements exist in the <em>next</em>
++     *         direction
++     */
++    public boolean hasNextElement();
++
++    /**
++     * Returns true if more elements exist in the <em>previous</em> direction.
++     *
++     * @return true if more elements exist in the <em>previous</em>
++     *         direction
++     */
++    public boolean hasPreviousElement();
++
++    /**
++     * Returns the enumeration index to the same state as right
++     * after the enumeration was created.
++     */
++    public void reset();
++
++    /**
++     * Request that the enumeration be updated to reflect the current
++     * record set. Useful for when a MIDlet
++     * makes a number of changes to the record store, and then wants an
++     * existing RecordEnumeration to enumerate the new changes.
++     *
++     * @see #keepUpdated
++     */
++    public void rebuild();
++
++    /**
++     * Used to set whether the enumeration will be keep its internal
++     * index up to date with the record store record
++     * additions/deletions/changes. Note that this should
++     * be used carefully due to the potential performance problems
++     * associated with maintaining the enumeration with every change.
++     *
++     * @param keepUpdated if true, the enumerator will keep its
++     *          enumeration current with any changes in the records of
++     *          the record store. Use with caution as there are
++     *          possible performance consequences. Calling
++     *          <code>keepUpdated(true)</code> has the same effect as
++     *          calling <code>RecordEnumeration.rebuild</code>: the
++     *          enumeration will be updated to reflect the current
++     *          record set.  If false the enumeration will not be kept
++     *          current and may return recordIds for records that have
++     *          been deleted or miss records that are added later. It
++     *          may also return records out of order that have been
++     *          modified after the enumeration was built. Note that
++     *          any changes to records in the record store are
++     *          accurately reflected when the record is later
++     *          retrieved, either directly or through the
++     *          enumeration. The thing that is risked by setting this
++     *          parameter false is the filtering and sorting order of
++     *          the enumeration when records are modified, added, or
++     *          deleted.
++     *
++     * @see #rebuild
++     */
++    public void keepUpdated(boolean keepUpdated);
++
++    /**
++     * Returns true if the enumeration keeps its enumeration
++     * current with any changes in the records.
++     *
++     * @return true if the enumeration keeps its enumeration
++     *          current with any changes in the records
++     */
++    public boolean isKeptUpdated();
++
++    /**
++     * Frees internal resources used by this RecordEnumeration.
++     * MIDlets should call this method when they are done using a
++     * RecordEnumeration. If a MIDlet tries to use a RecordEnumeration
++     * after this method has been called, it will throw a
++     * <code>IllegalStateException</code>. Note that this method is
++     * used for manually aiding in the minimization of immediate
++     * resource requirements when this enumeration is no longer
++     * needed.
++     */
++    public void destroy();
++
++}
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordFilter.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordFilter.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordFilter.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordFilter.java	2011-03-04 09:54:48.000000000 +0100
+@@ -0,0 +1,63 @@
++/*
++ *   
++ *
++ * Portions Copyright  2000-2007 Sun Microsystems, Inc. All Rights
++ * Reserved.  Use is subject to license terms.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation.
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt).
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ *
++ * Copyright 2000 Motorola, Inc. All Rights Reserved.
++ * This notice does not imply publication.
++ */
++
++package com.sun.midp.rms; 
++
++/**
++ * An interface defining a filter which examines a record to see if it
++ * matches (based on an application-defined criteria). The
++ * application implements the match() method to select records to
++ * be returned by the RecordEnumeration. Returns true if the candidate
++ * record is selected by the RecordFilter. This interface
++ * is used in the record store for searching or subsetting records.
++ * For example:
++ * <pre>
++ * RecordFilter f = new DateRecordFilter(); // class implements RecordFilter
++ * if (f.matches(recordStore.getRecord(theRecordID)) == true)
++ *   DoSomethingUseful(theRecordID);
++ * </pre>
++ *
++ * @since MIDP 1.0
++ */
++
++public interface RecordFilter
++{
++    /**
++     * Returns true if the candidate matches the implemented criterion.
++     *
++     * @param candidate the record to consider. Within this method,
++     *          the application must treat this parameter as
++     *          read-only.
++     *
++     * @return true if the candidate matches the implemented criterion
++     */
++    public abstract boolean matches(byte[] candidate);
++
++}
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordListener.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordListener.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordListener.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordListener.java	2011-03-04 09:54:51.000000000 +0100
+@@ -0,0 +1,71 @@
++/*
++ *   
++ *
++ * Portions Copyright  2000-2007 Sun Microsystems, Inc. All Rights
++ * Reserved.  Use is subject to license terms.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation.
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt).
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ *
++ * Copyright 2000 Motorola, Inc. All Rights Reserved.
++ * This notice does not imply publication.
++ */
++
++package com.sun.midp.rms; 
++
++/**
++* A listener interface for receiving Record Changed/Added/Deleted
++* events from a record store.
++* @see RecordStore#addRecordListener
++*
++* @since MIDP 1.0
++*/
++
++public interface RecordListener
++{
++    /**
++    * Called when a record has been added to a record store.
++    *
++    * @param recordStore the RecordStore in which the record is stored
++    * @param recordId the recordId of the record that has been added
++    */
++    public abstract void recordAdded(RecordStore recordStore, int recordId);
++
++    /**
++    * Called after a record in a record store has been changed. If the
++    * implementation of this method retrieves the record, it will
++    * receive the changed version.
++    *
++    * @param recordStore the RecordStore in which the record is stored
++    * @param recordId the recordId of the record that has been changed
++    */
++    public abstract void recordChanged(RecordStore recordStore, int recordId);
++
++    /**
++    * Called after a record has been deleted from a record store. If the
++    * implementation of this method tries to retrieve the record
++    * from the record store, an InvalidRecordIDException will be thrown.
++    *
++    * @param recordStore the RecordStore in which the record was stored
++    * @param recordId the recordId of the record that has been deleted
++    */
++    public abstract void recordDeleted(RecordStore recordStore, int recordId);
++
++}
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreException.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreException.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreException.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreException.java	2011-03-04 10:07:55.000000000 +0100
+@@ -0,0 +1,63 @@
++/*
++ *   
++ *
++ * Portions Copyright  2000-2007 Sun Microsystems, Inc. All Rights
++ * Reserved.  Use is subject to license terms.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation.
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt).
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ *
++ * Copyright 2000 Motorola, Inc. All Rights Reserved.
++ * This notice does not imply publication.
++ */
++
++package com.sun.midp.rms; 
++
++/**
++* Thrown to indicate a general exception occurred in a record store operation.
++*
++* @since MIDP 1.0
++*/
++
++public class RecordStoreException
++    extends java.lang.Exception
++{
++    /**
++     * Constructs a new <code>RecordStoreException</code> with the
++     * specified detail message.
++     *
++     * @param message the detail message
++     */
++    public RecordStoreException(String message) {
++	super(message);
++    } 
++    
++    /** 
++     * Constructs a new <code>RecordStoreException</code> with no detail 
++     * message. 
++     */ 
++    public RecordStoreException() {
++    } 
++    
++    // instantiate javax.microedition.rms.Tunnel
++    static {
++    	/// new Tunnel();
++    }
++} 
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreFullException.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreFullException.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreFullException.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreFullException.java	2011-03-04 09:55:42.000000000 +0100
+@@ -0,0 +1,59 @@
++/*
++ *   
++ *
++ * Portions Copyright  2000-2007 Sun Microsystems, Inc. All Rights
++ * Reserved.  Use is subject to license terms.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation.
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt).
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ *
++ * Copyright 2000 Motorola, Inc. All Rights Reserved.
++ * This notice does not imply publication.
++ */
++
++package com.sun.midp.rms; 
++
++/**
++* Thrown to indicate an operation could not be completed because the
++* record store system storage is full.
++*
++* @since MIDP 1.0
++*/
++
++public class RecordStoreFullException
++    extends RecordStoreException
++{
++    /**
++     * Constructs a new <code>RecordStoreFullException</code> with the
++     * specified detail message.
++     *
++     * @param message the detail message
++     */
++    public RecordStoreFullException(String message) {
++	super(message);
++    } 
++    
++    /** 
++     * Constructs a new <code>RecordStoreFullException</code> with no detail 
++     * message. 
++     */
++    public RecordStoreFullException() {
++    } 
++} 
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStore.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStore.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStore.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStore.java	2011-03-04 09:57:17.000000000 +0100
+@@ -0,0 +1,52 @@
++package com.sun.midp.rms;
++
++public abstract class RecordStore {
++
++	public static final int AUTHMODE_PRIVATE = 0;
++	public static final int AUTHMODE_ANY = 1;
++
++	protected RecordStore() {
++	}
++
++	public abstract int addRecord(byte[] data, int offset, int count) throws RecordStoreNotOpenException, RecordStoreException, RecordStoreFullException;
++	public abstract void addRecordListener(RecordListener listener);
++	public abstract void closeRecordStore() throws RecordStoreNotOpenException, RecordStoreException;
++	public abstract void deleteRecord(int recordId) throws RecordStoreNotOpenException, InvalidRecordIDException, RecordStoreException;
++	public abstract long getLastModified() throws RecordStoreNotOpenException;
++	public abstract String getName() throws RecordStoreNotOpenException;
++	public abstract int getNextRecordID() throws RecordStoreNotOpenException, RecordStoreException;
++	public abstract int getNumRecords() throws RecordStoreNotOpenException;
++	public abstract byte[] getRecord(int recordId) throws RecordStoreNotOpenException, InvalidRecordIDException, RecordStoreException;
++	public abstract int getRecord(int recordId, byte[] buffer, int offset) throws RecordStoreNotOpenException, InvalidRecordIDException, RecordStoreException, ArrayIndexOutOfBoundsException;
++	public abstract int getRecordSize(int recordId) throws RecordStoreNotOpenException, InvalidRecordIDException, RecordStoreException;
++	public abstract int getSize() throws RecordStoreNotOpenException;
++	public abstract int getSizeAvailable() throws RecordStoreNotOpenException;
++	public abstract int getVersion() throws RecordStoreNotOpenException;
++	public abstract void removeRecordListener(RecordListener listener);
++	public abstract void setRecord(int recordId, byte[] newData, int offset, int count) throws RecordStoreNotOpenException, InvalidRecordIDException, RecordStoreException, RecordStoreFullException;
++	public abstract void setMode(int authmode, boolean writable) throws RecordStoreException;
++
++	public static void deleteRecordStore(String recordStoreName) throws RecordStoreException, RecordStoreNotFoundException {
++		throw new RecordStoreException("Record store not supported");
++	}
++
++	public RecordEnumeration enumerateRecords(RecordFilter filter, RecordComparator comparator, boolean keepUpdated) throws RecordStoreNotOpenException {
++		throw new RecordStoreNotOpenException("Record store not open");
++	}
++
++	public static String[] listRecordStores() {
++		return null;
++	}
++
++	public static RecordStore openRecordStore(String recordStoreName, boolean createIfNecessary) throws RecordStoreException, RecordStoreFullException, RecordStoreNotFoundException {
++		throw new RecordStoreException("Record store not supported");
++	}
++
++	public static RecordStore openRecordStore(String recordStoreName, boolean createIfNecessary, int authmode, boolean writable) throws RecordStoreException, RecordStoreFullException, RecordStoreNotFoundException {
++		throw new RecordStoreException("Record store not supported");
++	}
++
++	public static RecordStore openRecordStore(String recordStoreName, String vendorName, String suiteName) throws RecordStoreException, RecordStoreNotFoundException {
++		throw new RecordStoreException("Record store not supported");
++	}
++}
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreNotFoundException.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreNotFoundException.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreNotFoundException.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreNotFoundException.java	2011-03-04 09:55:45.000000000 +0100
+@@ -0,0 +1,59 @@
++/*
++ *   
++ *
++ * Portions Copyright  2000-2007 Sun Microsystems, Inc. All Rights
++ * Reserved.  Use is subject to license terms.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation.
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt).
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ *
++ * Copyright 2000 Motorola, Inc. All Rights Reserved.
++ * This notice does not imply publication.
++ */
++
++package com.sun.midp.rms; 
++
++/**
++ * Thrown to indicate an operation could not be completed because the
++ * record store could not be found.
++ *
++ * @since MIDP 1.0
++ */
++
++public class RecordStoreNotFoundException
++    extends RecordStoreException
++{
++    /**
++     * Constructs a new <code>RecordStoreNotFoundException</code> with the
++     * specified detail message.
++     *
++     * @param message the detail message
++     */
++    public RecordStoreNotFoundException(String message) {
++	super(message);
++    } 
++    
++    /** 
++     * Constructs a new <code>RecordStoreNotFoundException</code> 
++     * with no detail message. 
++     */ 
++    public RecordStoreNotFoundException() {
++    } 
++}
+diff -Naur orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreNotOpenException.java patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreNotOpenException.java
+--- orig/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreNotOpenException.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/openlapi-0.9.13/openlapi/src/com/sun/midp/rms/RecordStoreNotOpenException.java	2011-03-04 09:55:55.000000000 +0100
+@@ -0,0 +1,58 @@
++/*
++ *   
++ *
++ * Portions Copyright  2000-2007 Sun Microsystems, Inc. All Rights
++ * Reserved.  Use is subject to license terms.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation.
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt).
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ *
++ * Copyright 2000 Motorola, Inc. All Rights Reserved.
++ * This notice does not imply publication.
++ */
++
++package com.sun.midp.rms; 
++
++/**
++* Thrown to indicate that an operation was attempted on a closed record store.
++*
++* @since MIDP 1.0
++*/
++
++public class RecordStoreNotOpenException
++    extends RecordStoreException
++{
++    /**
++     * Constructs a new <code>RecordStoreNotOpenException</code> with the
++     * specified detail message.
++     *
++     * @param message the detail message
++     */
++    public RecordStoreNotOpenException(String message) {
++	super(message);
++    } 
++    
++    /** 
++     * Constructs a new <code>RecordStoreNotOpenException</code> with no detail 
++     * message. 
++     */ 
++    public RecordStoreNotOpenException() {
++    } 
++}

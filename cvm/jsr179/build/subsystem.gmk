@@ -1,0 +1,162 @@
+#
+# Copyright  1990-2009 Sun Microsystems, Inc. All Rights Reserved.
+# DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version
+# 2 only, as published by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License version 2 for more details (a copy is
+# included at /legal/license.txt).
+# 
+# You should have received a copy of the GNU General Public License
+# version 2 along with this work; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+# 02110-1301 USA
+# 
+# Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+# Clara, CA 95054 or visit www.sun.com if you need additional
+# information or have any questions.
+#
+######################################################################
+#
+# Module's Component Configuration file
+#
+# Remember: It is up to the module itself to impose rules of
+# how to compile the options. All the global Makefile needs
+# is the final def. of Java and native file lists and some
+# other def. (like VPATH)
+#
+######################################################################
+
+# Adds to global SUBSYSTEMS list
+#
+SUBSYSTEMS += jsr179
+
+JPP_DEFS += -DENABLE_CDC
+
+# Abstractions component is used
+USE_ABSTRACTIONS=true
+
+# Javadoc source path
+JSR_179_SOURCEPATH = \
+    $(JSR_179_DIR)/src/classes \
+
+JSR_179_PACKAGES = \
+    com.openlapi \
+    thinkthank.j2me \
+    javax.microedition.location
+
+JSR_179_LIB_NAME        = jsr179
+JSR_179_BUILD_DIR       = $(JSROP_BUILD_DIR)/$(JSR_179_LIB_NAME)
+
+
+# Java files for the ( jsr179 ) module
+#
+MODULE_JSR_179_JAVA_FILES = \
+	$(JSR_179_DIR)/src/classes/thinktank/j2me/TTUtils.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/LocationDaemon.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/LocationProviderMaemo.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/Criteria.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/OpenLAPICommon.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/LocationException.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/LandmarkException.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/LocationBackendListener.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/NMEADaemon.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/AddressInfo.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/Coordinates.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/CategorisedLandmark.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/LandmarkStore.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/QualifiedCoordinates.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/Orientation.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/Location.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/LocationListener.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/ProximityListener.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/LocationProviderSimplified.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/Landmark.java \
+	$(JSR_179_DIR)/src/classes/com/openlapi/LocationProvider.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/Criteria.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/LocationException.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/LandmarkException.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/AddressInfo.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/Coordinates.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/LandmarkStore.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/QualifiedCoordinates.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/Orientation.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/Location.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/LocationListener.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/ProximityListener.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/Landmark.java \
+	$(JSR_179_DIR)/src/classes/javax/microedition/location/LocationProvider.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/InvalidRecordIDException.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/RecordStoreException.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/RecordStoreNotFoundException.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/RecordStoreNotOpenException.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/RecordStoreFullException.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/RecordComparator.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/RecordEnumeration.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/RecordFilter.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/RecordListener.java \
+	$(JSR_179_DIR)/src/classes/com/sun/midp/rms/RecordStore.java \
+
+#
+# Native
+#
+
+vpath % $(JSR_179_DIR)/src/native
+SUBSYSTEM_JSR_179_NATIVE_FILES += \
+	location_provider.c
+
+JSR_179_NATIVE_LIB    = $(JSROP_LIB_DIR)/$(LIB_PREFIX)$(JSR_179_LIB_NAME)$(LIB_POSTFIX)
+JSR_179_NATIVE_OBJS   = $(patsubst %.c,$(JSROP_OBJ_DIR)/%.o,$(SUBSYSTEM_JSR_179_NATIVE_FILES))
+
+JSROP_NATIVE_OBJS    += $(JSR_179_NATIVE_OBJS)
+JSROP_CNI_CLASSES    += $(SUBSYSTEM_JSR_179_CNI_CLASSES)
+JSROP_NATIVE_LIBS    += $(JSR_179_NATIVE_LIB)
+JSROP_INCLUDE_DIRS   += $(SUBSYSTEM_JSR_179_INCLUDE_DIRS)
+
+
+$(JSR_179_NATIVE_LIB): $(JSR_179_NATIVE_OBJS) $(ABSTRACTIONS_NATIVE_LIBRARY)
+	@echo "Linking $@"
+	$(AT)$(call makeSharedLibrary, $(JSR_179_NATIVE_OBJS))
+
+# Determines what option we have made and set it
+# to some variable that global makefile recognize
+#
+SUBSYSTEM_JSR_179_JAVA_FILES   = \
+    $(MODULE_JSR_179_JAVA_FILES)
+
+# Internal paths for jsr 179 module
+#
+INTERNAL_JSR_179_CONFIG_DIR= $(JSR_179_DIR)/src/share/config
+
+# Include JSR_179 system properties in Configuration
+JSR_179_PROPERTY_FILES = \
+    $(INTERNAL_JSR_179_CONFIG_DIR)/common/properties_jsr179.xml
+
+SUBSYSTEM_CONFIGURATION_INPUT_FILES += \
+    $(JSR_179_PROPERTY_FILES)
+
+# Specify romizer configuration file for the jsr
+# and path where the file is located
+#
+ROMGEN_INCLUDE_PATHS += $(JSR_179_DIR)/src/share/config
+ROMGEN_CFG_FILES     += jsr179_rom.cfg
+
+JSR_179_JAR             = $(JSROP_JAR_DIR)/$(JSR_179_LIB_NAME).jar
+JSR_179_INIT_PACKAGE    = $(JSR_INIT_PACKAGE).jsr179
+
+JPP_DEFS             += -DENABLE_JSR_179
+
+$(JSR_179_JAR): $(SUBSYSTEM_JSR_179_JAVA_FILES)
+	$(call compileJSRClasses,179)
+
+# Append JSR 179 source bundle creation to target
+source_bundle:: jsr_179_source_bundle
+
+# Create JSR 179 source in subdir 'jsr179/'
+JSR_179_SOURCE_OUTPUT_DIR=$(SOURCE_OUTPUT_DIR)/jsr179
+

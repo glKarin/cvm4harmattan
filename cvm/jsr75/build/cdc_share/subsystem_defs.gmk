@@ -1,0 +1,201 @@
+#
+#   
+#
+# Copyright  1990-2007 Sun Microsystems, Inc. All Rights Reserved.
+# DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version
+# 2 only, as published by the Free Software Foundation. 
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License version 2 for more details (a copy is
+# included at /legal/license.txt). 
+# 
+# You should have received a copy of the GNU General Public License
+# version 2 along with this work; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+# 02110-1301 USA 
+# 
+# Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+# Clara, CA 95054 or visit www.sun.com if you need additional
+# information or have any questions. 
+######################################################################
+#
+# Module's Component Configuration file
+#
+######################################################################
+
+# Add to global SUBSYSTEMS list
+#
+SUBSYSTEMS += jsr_75
+
+# Abstractions component is used
+USE_ABSTRACTIONS=true
+
+JSR_75_LIB_NAME        = jsr75
+JSR_75_BUILD_DIR       = $(JSROP_BUILD_DIR)/$(JSR_75_LIB_NAME)
+JSR_75_GENERATED_DIR   = $(JSR_75_BUILD_DIR)/generated
+JSR_75_JAR             = $(JSROP_JAR_DIR)/$(JSR_75_LIB_NAME).jar
+JSR_75_INIT_PACKAGE    = $(JSR_INIT_PACKAGE).jsr75
+JSR_75_INITIALIZER     = $(JSR_75_GENERATED_DIR)/classes/$(subst .,/,$(JSR_75_INIT_PACKAGE))/$(JSR_INIT_CLASS).java
+
+JPP_DEFS             += -DENABLE_CDC -DENABLE_JSR_75
+
+JSR_INITIALIZER_LIST += $(JSR_75_INIT_PACKAGE).$(JSR_INIT_CLASS)
+
+
+SUBSYSTEM_JSR_75_JAVA_FILES += \
+    $(JSR_75_INITIALIZER)
+
+# Javadoc source path
+SUBSYSTEM_JSR75_SOURCEPATH += $(JSR_75_DIR)/src/share/classes
+
+SUBSYSTEM_JSR75_PACKAGES += \
+   javax.microedition.io.file \
+   javax.microedition.pim
+
+MIDP_JAVADOC_SOURCEPATH += $(SUBSYSTEM_JSR75_SOURCEPATH)
+MIDP_JAVADOC_PACKAGES +=  $(SUBSYSTEM_JSR75_PACKAGES)
+
+MIDP_JAVADOC_ALL += \
+	-group "JSR75 FC/PIM" \
+	$(shell echo $(SUBSYSTEM_JSR75_PACKAGES) | tr ' ' $(PATHSEP))
+
+vpath % $(JSR_75_DIR)/src/cdc_share/native
+
+SUBSYSTEM_JSR_75_NATIVE_FILES += \
+	jsr75_common.c
+
+SUBSYSTEM_JSR_75_INCLUDE_DIRS += \
+	$(JSR_75_DIR)/src/cdc_share/native
+
+JSR_75_NATIVE_LIB    = $(JSROP_LIB_DIR)/$(LIB_PREFIX)$(JSR_75_LIB_NAME)$(LIB_POSTFIX)
+JSR_75_NATIVE_OBJS   = $(patsubst %.c,$(JSROP_OBJ_DIR)/%.o,$(SUBSYSTEM_JSR_75_NATIVE_FILES))
+
+JSROP_NATIVE_OBJS    += $(JSR_75_NATIVE_OBJS)
+JSROP_NATIVE_LIBS    += $(JSR_75_NATIVE_LIB)
+JSROP_INCLUDE_DIRS   += $(SUBSYSTEM_JSR_75_INCLUDE_DIRS)
+
+$(JSR_75_NATIVE_LIB): $(JSR_75_NATIVE_OBJS)
+	@echo "Linking $@"
+	$(AT)$(call makeSharedLibrary, $(JSR_75_NATIVE_OBJS))
+
+
+# Java files for the ( jsr_75 ) module
+#
+INTERNAL_JSR_75_CONFIG_DIR = $(JSR_75_DIR)/src/cdc_share/config
+
+JSR_75_PROPERTY_FILE = $(INTERNAL_JSR_75_CONFIG_DIR)/properties_jsr75.xml
+JSR_75_CONSTANT_FILE = $(INTERNAL_JSR_75_CONFIG_DIR)/constants_jsr75.xml
+
+# Include JSR_75 system properties in Configuration
+SUBSYSTEM_CONFIGURATION_INPUT_FILES += \
+	$(JSR_75_PROPERTY_FILE) \
+	$(JSR_75_CONSTANT_FILE) \
+
+$(JSR_75_GENERATED_DIR)/classes/com/sun/j2me/pim/AbstractPIMItem.java: \
+  $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/AbstractPIMItem.jpp
+	@$(call runjpp,$^,$@)
+
+$(JSR_75_GENERATED_DIR)/classes/com/sun/j2me/pim/AbstractPIMList.java: \
+  $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/AbstractPIMList.jpp
+	@$(call runjpp,$^,$@)
+
+SUBSYSTEM_JSR_75_JAVA_FC_SHARED_FILES += \
+    $(JSR_75_DIR)/src/share/classes/com/sun/cdc/io/j2me/file/RootCache.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/io/file/ConnectionClosedException.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/io/file/FileConnection.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/io/file/FileSystemRegistry.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/io/file/FileSystemListener.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/io/file/IllegalModeException.java
+
+SUBSYSTEM_JSR_75_JAVA_PIM_SHARED_FILES += \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/jsr75/StringUtil.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/ContactImpl.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/PIMFormat.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/ToDo.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/MarkableInputStream.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/LineReader.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/Event.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/KeySortUtility.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/VCardSupport.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/Base64Encoding.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/VToDoSupport.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/VCard21Format.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/FormatSupport.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/VCardFormat.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/VCard30Format.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/VEventSupport.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/VCalendar10Format.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/Extensions.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/QuotedPrintableEncoding.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/formats/EndMatcher.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/EmptyPIMField.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/PIMImpl.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/EventImpl.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/PIMBridge.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/Contact.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/ContactListImpl.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/ToDoImpl.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/PIMHandler.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/ScalarPIMField.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/PIMItem.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/PIMDatabase.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/PIMField.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/UnsupportedPIMFormatException.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/ToDoListImpl.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/EventListImpl.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/PIMFieldDescriptor.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/SupportedPIMFields.java \
+    $(JSR_75_DIR)/src/share/classes/com/sun/j2me/pim/VectorPIMField.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/EventList.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/ToDoList.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/ToDo.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/UnsupportedFieldException.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/PIMException.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/PIM.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/Event.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/PIMList.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/Contact.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/FieldEmptyException.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/FieldFullException.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/RepeatRule.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/ContactList.java \
+    $(JSR_75_DIR)/src/share/classes/javax/microedition/pim/PIMItem.java
+
+SUBSYSTEM_JSR_75_JAVA_FC_CDC_FILES += \
+    $(JSR_75_DIR)/src/cdc_share/classes/javax/microedition/io/file/FileSystemEventHandler.java \
+    $(JSR_75_DIR)/src/cdc_share/classes/com/sun/cdc/io/j2me/file/Protocol.java
+
+SUBSYSTEM_JSR_75_JAVA_PIM_GENERATED_FILES += \
+    $(JSR_75_GENERATED_DIR)/classes/com/sun/j2me/pim/AbstractPIMItem.java \
+    $(JSR_75_GENERATED_DIR)/classes/com/sun/j2me/pim/AbstractPIMList.java
+
+SUBSYSTEM_JSR_75_JAVA_CDC_FILES += \
+    $(CDC_DIR)/src/share/classes/com/sun/cdc/io/j2me/file/ProtocolBase.java \
+    $(CDC_DIR)/src/share/classes/com/sun/cdc/io/j2me/file/ProtocolNative.java
+
+# All of them together to provide to main makefile
+SUBSYSTEM_JSR_75_JAVA_FILES += \
+    $(SUBSYSTEM_JSR_75_JAVA_FC_SHARED_FILES) \
+    $(SUBSYSTEM_JSR_75_JAVA_FC_CDC_FILES) \
+    $(SUBSYSTEM_JSR_75_JAVA_PIM_SHARED_FILES) \
+    $(SUBSYSTEM_JSR_75_JAVA_PIM_GENERATED_FILES) \
+    $(SUBSYSTEM_JSR_75_JAVA_CDC_FILES)
+
+# Create JSR 75 source in subdir 'jsr75/'
+JSR_75_SOURCE_OUTPUT_DIR=$(SOURCE_OUTPUT_DIR)/jsr75
+
+# Include jsr 75 common properties in Configuration
+#
+JSR_75_PROPERTY_FILES += \
+    $(JSR_75_DIR)/src/config/properties_jsr75.xml
+
+# Specify romizer configuration file for the jsr
+# and path where the file is located
+#
+ROMGEN_INCLUDE_PATHS += $(JSR_75_DIR)/src/config
+ROMGEN_CFG_FILES     += jsr75_rom.config

@@ -1,0 +1,11 @@
+diff -Naur orig/cdc/src/share/javavm/classes/java/lang/Thread.java patched/cdc/src/share/javavm/classes/java/lang/Thread.java
+--- orig/cdc/src/share/javavm/classes/java/lang/Thread.java	2011-11-05 11:44:01.000000000 +0100
++++ patched/cdc/src/share/javavm/classes/java/lang/Thread.java	2011-11-05 11:46:14.000000000 +0100
+@@ -466,6 +466,7 @@
+ 	}
+ 	Thread attachedThread = new Thread(group, name, priority, eetop);
+ 	attachedThread.daemon = isDaemon;
++	attachedThread.alive = true;
+ 	ThreadRegistry.add(attachedThread);
+ 	return attachedThread;
+     }

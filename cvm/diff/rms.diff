@@ -1,0 +1,38 @@
+diff -Naur orig/midp/src/configuration/configuration_xml/linux_fb/constants.xml patched/midp/src/configuration/configuration_xml/linux_fb/constants.xml
+--- orig/midp/src/configuration/configuration_xml/linux_fb/constants.xml	2011-05-09 15:09:07.000000000 +0200
++++ patched/midp/src/configuration/configuration_xml/linux_fb/constants.xml	2011-05-09 19:03:37.000000000 +0200
+@@ -163,7 +163,7 @@
+ <constant_class Package="com.sun.midp.rms" Name="RMSConfig" Scope="public" Comment="/** Constant values in RMS configuration */">
+   <constant Type="int"
+             Name="STORAGE_SUITE_LIMIT"
+-            Value="200000"
++            Value="16777216"
+             Comment="Per suite resource limit for storage"/>
+   <constant Type="int"
+             Name="RMS_CACHE_LIMIT"
+diff -Naur orig/midp/src/configuration/configuration_xml/linux_fb/properties.xml patched/midp/src/configuration/configuration_xml/linux_fb/properties.xml
+--- orig/midp/src/configuration/configuration_xml/linux_fb/properties.xml	2011-05-09 18:50:16.000000000 +0200
++++ patched/midp/src/configuration/configuration_xml/linux_fb/properties.xml	2011-05-09 18:51:17.000000000 +0200
+@@ -49,7 +49,7 @@
+ 		Comment="The datagram port number of a SMS emulator."/>
+ 
+   <property Key="system.jam_space"
+-		Value="1000000"
++		Value="8192000"
+ 		Scope="internal"
+ 		Comment="Amount of space to reserve for JAM storage."/>
+ 
+diff -Naur orig/midp/src/rms/rms_api/reference/classes/com/sun/midp/rms/RecordStoreImpl.java patched/midp/src/rms/rms_api/reference/classes/com/sun/midp/rms/RecordStoreImpl.java
+--- orig/midp/src/rms/rms_api/reference/classes/com/sun/midp/rms/RecordStoreImpl.java	2011-05-09 15:09:07.000000000 +0200
++++ patched/midp/src/rms/rms_api/reference/classes/com/sun/midp/rms/RecordStoreImpl.java	2011-05-09 18:59:52.000000000 +0200
+@@ -361,6 +361,10 @@
+                          BLOCK_HEADER_SIZE - DB_HEADER_SIZE;
+ 
+         int rv = (fileSpace < limitSpace) ? fileSpace : limitSpace;
++
++        // Ignore fileSpace
++        rv = limitSpace;
++
+         return (rv < 0) ? 0 : rv;
+     }
+ 

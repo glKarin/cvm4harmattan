@@ -1,0 +1,186 @@
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DateEditor.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DateEditor.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DateEditor.java	2011-03-09 19:18:49.000000000 +0100
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DateEditor.java	2012-01-26 14:02:19.000000000 +0100
+@@ -1,4 +1,12 @@
+ /*
++ * NOTICE: Portions Copyright (c) 2007-2009 Davy Preuveneers.
++ * This file has last been modified by Davy Preuveneers on 2010-02-23. The
++ * changes are licensed under the terms of the GNU General Public
++ * License version 2. This notice was added to meet the conditions of
++ * Section 3.a of the GNU General Public License version 2.
++ */
++
++/*
+  *  
+  *
+  * Copyright  1990-2007 Sun Microsystems, Inc. All Rights Reserved.
+@@ -88,7 +96,7 @@
+                 break;
+             case DateField.DATE_TIME:
+                 focusOn = MONTH_POPUP;
+-                timeComponentsOffset = 98;
++                timeComponentsOffset = 196;
+                 populateDateComponents();
+                 populateTimeComponents();
+                 break;
+@@ -102,31 +110,31 @@
+         // relative coordinate of the uppper left corner and with invalid
+         // width, height values dependent on skin images
+         month_bounds = new int[] {
+-            (mode == DateField.DATE)? 10: 4,
+-            5, 0, 0
++            (mode == DateField.DATE)? 20: 8,
++            10, 0, 0
+         };
+         year_bounds = new int[] {
+-            month_bounds[X] + 45,
++            month_bounds[X] + 90,
+             month_bounds[Y],
+             0, 0
+         };
+         hours_bounds = new int[] {
+-            timeComponentsOffset + ((mode == DateField.TIME)? 17: 0),
+-            ((mode == DateField.TIME)? 10: 5),
++            timeComponentsOffset + ((mode == DateField.TIME)? 34: 0),
++            ((mode == DateField.TIME)? 20: 10),
+             0, 0
+         };
+         minutes_bounds = new int[] {
+-            hours_bounds[X] + 34,
++            hours_bounds[X] + 68,
+             hours_bounds[Y],
+             0, 0
+         };
+         calendar_bounds = new int[] {
+-            (mode == DateField.DATE)? 10: 4,
+-            29, 0, 0
++            (mode == DateField.DATE)? 20: 8,
++            58, 0, 0
+         };
+         ampm_bounds = new int[] {
+-            timeComponentsOffset + ((mode == DateField.TIME)? 15: 0),
+-            29, 0, 0 };
++            timeComponentsOffset + ((mode == DateField.TIME)? 30: 0),
++            58, 0, 0 };
+         
+         setCommands(commands);
+         setCommandListener(this);
+@@ -260,7 +268,7 @@
+             itemIndexWhenPressed = itemIndexAtPointerPosition(x,y);
+             switch (itemIndexWhenPressed) {
+             case AM_PM:
+-                amHilighted = ( x - ampm_bounds[X] < 35);
++                amHilighted = ( x - ampm_bounds[X] < 70);
+                 break;
+             case CALENDAR:
+                 pressedDate = getDateAtPointerPosition(x, y);
+@@ -304,7 +312,7 @@
+             if (itemIndexWhenPressed == itemIndexWhenReleased) {
+                 if (itemIndexWhenPressed > 0) {
+                     if ( (itemIndexWhenPressed == AM_PM &&
+-                          amHilighted == (x - ampm_bounds[X] < 35)) ||
++                          amHilighted == (x - ampm_bounds[X] < 70)) ||
+                          (itemIndexWhenPressed == CALENDAR &&
+                           pressedDate == getDateAtPointerPosition(x, y) &&
+                           pressedDate > 0) ||
+@@ -343,7 +351,7 @@
+         int transX = x - calendar_bounds[X];
+         int transY = y - calendar_bounds[Y];
+         int o = DateEditorSkin.IMAGE_CAL_BG.getWidth() / 7;
+-        int rowH = 11;
++        int rowH = 22;
+         //variable o, rowH, h is same as in paintCaalendar()
+         int h = DateEditorSkin.IMAGE_DATES.getHeight() / 31;
+ 
+@@ -853,7 +861,7 @@
+ 	
+ 	int o = Resource.getFirstDayOfWeek();
+ 
+-	int xBg = 5;
++	int xBg = 10;
+ 	int x = (o - 1) * w;
+ 
+         for (int i = 0; i < 7; i++) {
+@@ -891,16 +899,16 @@
+         if (DateEditorSkin.IMAGE_DATES == null) {
+             return;
+         }
+-        g.translate(2, 0);
++        g.translate(4, 0);
+ 
+         int o = DateEditorSkin.IMAGE_CAL_BG.getWidth() / 7;
+-        int rowH = 11;
++        int rowH = 22;
+         int h = DateEditorSkin.IMAGE_DATES.getHeight() / 31;
+         int w = DateEditorSkin.IMAGE_DATES.getWidth();
+ 
+         // draw calendar
+-        int x = 5 + ((dayOffset - 1) * o);
+-        int y = h + 4;
++        int x = 10 + ((dayOffset - 1) * o);
++        int y = h + 8;
+ 
+         if (hilightedDate > lastDay) {
+             hilightedDate = lastDay;
+@@ -917,7 +925,7 @@
+                     (focusOn == CALENDAR) ?
+                         DateEditorSkin.COLOR_TRAVERSE_IND:
+                         0);
+-                g.drawRect(x - 6, y - 1, w, h + 1);
++                g.drawRect(x - 12, y - 2, w, h + 2);
+             }
+ 
+             g.drawRegion(DateEditorSkin.IMAGE_DATES,
+@@ -930,12 +938,12 @@
+             x += o;
+             if (x > lastCol) {
+                 calendarRightLimit = x - o;
+-                x = 5;
++                x = 10;
+                 y += rowH;
+             }
+         }
+         calendarBottomLimit = y;
+-        g.translate(-2, 0);
++        g.translate(-4, 0);
+ 
+         calendar_bounds[W]= DateEditorSkin.IMAGE_CAL_BG.getWidth();
+         //add rowH as the date may be written under the calendar bg.
+@@ -951,7 +959,7 @@
+         int clockStartX, clockStartY;
+ 
+         if (!lf.CLOCK_USES_AM_PM) {
+-            clockStartY = 9;
++            clockStartY = 18;
+         } else {
+             // paint AM
+             if (DateEditorSkin.IMAGE_RADIO != null) {
+@@ -978,11 +986,11 @@
+                                  (DateEditorSkin.IMAGE_RADIO[0].getHeight()/2),
+                                  Graphics.VCENTER | Graphics.LEFT);
+                 }
+-                ampm_bounds[W] = 35 *2;
++                ampm_bounds[W] = 70 *2;
+                 ampm_bounds[H] = DateEditorSkin.IMAGE_RADIO[0].getHeight();
+             }
+ 
+-            g.translate(35, 0);
++            g.translate(70, 0);
+             // paint PM
+             if (DateEditorSkin.IMAGE_RADIO != null) {
+                 g.drawImage((amSelected) ?
+@@ -1009,11 +1017,11 @@
+                                  Graphics.VCENTER | Graphics.LEFT);
+                 }
+             }
+-            g.translate(-35, 0);
+-            clockStartY = 22;
++            g.translate(-70, 0);
++            clockStartY = 44;
+         }
+ 
+-        clockStartX = (mode == DateField.TIME) ? 10 : 6;
++        clockStartX = (mode == DateField.TIME) ? 20 : 12;
+         g.translate(clockStartX, clockStartY);
+         if (DateEditorSkin.IMAGE_CLOCK_BG != null) {
+             g.drawImage(DateEditorSkin.IMAGE_CLOCK_BG, 0, 0,

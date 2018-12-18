@@ -1,0 +1,25 @@
+--- abstractions/build/cldc_application/module.gmk	2012-01-26 14:02:19.000000000 +0100
++++ abstractions/build/cldc_application/module.gmk	2011-03-09 19:14:28.000000000 +0100
+@@ -22,14 +22,6 @@
+ # information or have any questions. 
+ #
+ 
+-# 
+-# NOTICE: Portions Copyright (c) 2007-2010 Davy Preuveneers.
+-# This file has last been modified by Davy Preuveneers on 2010-02-23. The
+-# changes are licensed under the terms of the GNU General Public
+-# License version 2. This notice was added to meet the conditions of
+-# Section 3.a of the GNU General Public License version 2.
+-# 
+-
+ # abstractions main directory
+ JSROP_ABSTRACTS_DIR=$(ABSTRACTIONS_DIR)
+ 
+@@ -39,6 +31,7 @@
+ 
+ # names of native source files (like 'file.c')
+ ABSTRACTIONS_NATIVES += \
++	kni_utils.c \
+ 	jsrop_suitestore.c
+ 
+ # extra libraries needed (like '-lpthread' or '-lm')

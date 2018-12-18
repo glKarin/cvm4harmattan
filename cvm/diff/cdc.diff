@@ -1,0 +1,12 @@
+diff -Naur orig/cdc/src/share/classes/com/sun/cdc/io/InternalConnectorImpl.java patched/cdc/src/share/classes/com/sun/cdc/io/InternalConnectorImpl.java
+--- orig/cdc/src/share/classes/com/sun/cdc/io/InternalConnectorImpl.java	2011-03-09 22:01:50.000000000 +0100
++++ patched/cdc/src/share/classes/com/sun/cdc/io/InternalConnectorImpl.java	2011-03-09 22:03:50.000000000 +0100
+@@ -161,7 +161,7 @@
+              * Use the platform and protocol names to look up
+              * a class to implement the connection
+              */
+-            String className = getClassRoot() + "." + "j2me"+ "." + protocol +
++            String className = "com.sun.cdc.io.j2me." + protocol +
+                ".Protocol";
+             Class clazz = Class.forName(className, true,
+                                         getProtocolClassLoader());

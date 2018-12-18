@@ -1,0 +1,7 @@
+com.sun.midp.i18n.ResourceConstants 
+com.sun.midp.l10n.LocalizedStringsBase 
+com.sun.midp.configurator.Constants 
+com.sun.midp.rms.RMSConfig 
+com.sun.midp.log.LogChannels 
+com.sun.midp.chameleon.skins.SkinPropertiesIDs 
+com.sun.midp.configurator.AlertTypeConstants 

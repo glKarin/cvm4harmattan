@@ -1,0 +1,415 @@
+diff -Naur orig/abstractions/build/cdc_share/module.gmk patched/abstractions/build/cdc_share/module.gmk
+--- orig/abstractions/build/cdc_share/module.gmk	2011-03-09 19:14:28.000000000 +0100
++++ patched/abstractions/build/cdc_share/module.gmk	2012-01-26 14:02:19.000000000 +0100
+@@ -22,6 +22,14 @@
+ # information or have any questions. 
+ #
+ 
++# 
++# NOTICE: Portions Copyright (c) 2007-2010 Davy Preuveneers.
++# This file has last been modified by Davy Preuveneers on 2010-02-23. The
++# changes are licensed under the terms of the GNU General Public
++# License version 2. This notice was added to meet the conditions of
++# Section 3.a of the GNU General Public License version 2.
++# 
++
+ JSR_CONFIGURATION_INPUT_FILES += \
+     $(ABSTRACTIONS_DIR)/src/share/config/i18n_constants_abstractions.xml \
+     $(ABSTRACTIONS_DIR)/src/share/config/l10n/en-US_abstractions.xml
+@@ -41,11 +49,14 @@
+ ABSTRACTIONS_NATIVES += \
+     internal_props.c \
+ 	exceptions.c \
+-	kni_utils.c \
+ 	push_utils.c
+ 
+ # classes
+ ABSTRACTIONS_CLASSES += \
++    $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/main/Configuration.java \
++    $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/app/AppModel.java \
++    $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/app/AppIsolate.java \
++    $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/app/AppPackage.java \
+     $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/security/TrustedClass.java \
+     $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/security/Token.java \
+     $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/security/SecurityTokenInitializer.java \
+@@ -136,12 +147,6 @@
+ endif
+ 
+ ABSTRACTIONS_WRAPPER_CLASSES += \
+-    -package com.sun.j2me.proxy.lcdui \
+-        -i javax.microedition.lcdui.CustomItem \
+-        javax.microedition.lcdui.Display \
+-        javax.microedition.lcdui.Graphics \
+-        -i javax.microedition.lcdui.Canvas \
+-        com.sun.midp.lcdui.DisplayIdPolicy \
+     -package com.sun.j2me.proxy.security \
+         com.sun.midp.security.SecurityToken \
+         com.sun.midp.security.SecurityInitializer \
+diff -Naur orig/abstractions/build/cldc_application/module.gmk patched/abstractions/build/cldc_application/module.gmk
+--- orig/abstractions/build/cldc_application/module.gmk	2011-03-09 19:14:28.000000000 +0100
++++ patched/abstractions/build/cldc_application/module.gmk	2012-01-26 14:02:19.000000000 +0100
+@@ -22,6 +22,14 @@
+ # information or have any questions. 
+ #
+ 
++# 
++# NOTICE: Portions Copyright (c) 2007-2010 Davy Preuveneers.
++# This file has last been modified by Davy Preuveneers on 2010-02-23. The
++# changes are licensed under the terms of the GNU General Public
++# License version 2. This notice was added to meet the conditions of
++# Section 3.a of the GNU General Public License version 2.
++# 
++
+ # abstractions main directory
+ JSROP_ABSTRACTS_DIR=$(ABSTRACTIONS_DIR)
+ 
+@@ -31,7 +39,6 @@
+ 
+ # names of native source files (like 'file.c')
+ ABSTRACTIONS_NATIVES += \
+-	kni_utils.c \
+ 	jsrop_suitestore.c
+ 
+ # extra libraries needed (like '-lpthread' or '-lm')
+diff -Naur orig/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppIsolate.java patched/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppIsolate.java
+--- orig/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppIsolate.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppIsolate.java	2012-01-26 14:02:19.000000000 +0100
+@@ -0,0 +1,43 @@
++/*
++ * Copyright  1990-2006 Sun Microsystems, Inc. All Rights Reserved.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation. 
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt). 
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA 
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ */
++
++/*
++ * NOTICE: Portions Copyright (c) 2007-2010 Davy Preuveneers.
++ * This file has last been modified by Davy Preuveneers on 2010-02-23. The
++ * changes are licensed under the terms of the GNU General Public
++ * License version 2. This notice was added to meet the conditions of
++ * Section 3.a of the GNU General Public License version 2.
++ */
++
++package com.sun.j2me.app;
++
++public class AppIsolate {
++
++    /** 
++     * get Isolate ID
++     */
++    public static int getIsolateId() {
++          return 0;
++    }
++}
+diff -Naur orig/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppModel.java patched/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppModel.java
+--- orig/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppModel.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppModel.java	2012-01-26 14:02:19.000000000 +0100
+@@ -0,0 +1,50 @@
++/*
++ * Copyright  1990-2006 Sun Microsystems, Inc. All Rights Reserved.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation. 
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt). 
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA 
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ */
++
++/*
++ * NOTICE: Portions Copyright (c) 2007-2010 Davy Preuveneers.
++ * This file has last been modified by Davy Preuveneers on 2010-02-23. The
++ * changes are licensed under the terms of the GNU General Public
++ * License version 2. This notice was added to meet the conditions of
++ * Section 3.a of the GNU General Public License version 2.
++ */
++
++package com.sun.j2me.app;
++
++/**
++ * Abstraction for application model
++ */
++public class AppModel{
++
++    private AppModel() {
++    }
++
++    public final static int MIDLET = 0;
++    public final static int XLET = 1;
++    public final static int UNKNOWN_MODEL = 2;
++
++    public static int getAppModel() {
++        return MIDLET;
++    }
++}
+diff -Naur orig/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppPackage.java patched/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppPackage.java
+--- orig/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppPackage.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/abstractions/src/cdc_share/classes/com/sun/j2me/app/AppPackage.java	2012-01-26 14:02:19.000000000 +0100
+@@ -0,0 +1,131 @@
++/*
++ * Copyright  1990-2006 Sun Microsystems, Inc. All Rights Reserved.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation. 
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt). 
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA 
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ */
++
++/*
++ * NOTICE: Portions Copyright (c) 2007-2010 Davy Preuveneers.
++ * This file has last been modified by Davy Preuveneers on 2010-02-23. The
++ * changes are licensed under the terms of the GNU General Public
++ * License version 2. This notice was added to meet the conditions of
++ * Section 3.a of the GNU General Public License version 2.
++ */
++
++package com.sun.j2me.app;
++
++import com.sun.j2me.security.Permission;
++import sun.misc.CVM;
++import java.io.InputStream;
++import sun.misc.MIDPConfig;
++
++/**
++ * Abstraction for application package
++ */
++public class AppPackage {
++
++    /** Static instance. Only one package can be run in a isolate */
++    private static AppPackage instance = new AppPackage();
++
++    /** Guard from 'new' operator */
++    private AppPackage() {
++    }
++
++    public static AppPackage getInstance() {
++        return instance;
++    }
++
++    public int getId() {
++        return 0;
++    }
++
++    /** Unused ID */
++    public static final int UNUSED_APP_ID = -1;
++
++    /**
++     * Returns permission status for the specified permission
++     *
++     * @param p permission to check
++     * @return 1 if allowed; 0 if denied; -1 if status is unknown
++     */
++    public int checkPermission(Permission p) {
++        /*
++         * IMPL_NOTE: The corresponding method in MIDletSuite used to check
++         * for permissions silently, i.e. without throwing SecurityException
++         * or asking user if he allows to proceed.
++         * This functionality should be added to AccessController; until then,
++         * it is acceptable to return "unknown", so that security-sensitive
++         * code will call checkForPermission() anyway.
++         */
++        return -1;
++    }
++
++    /**
++     * Checks for specified permission status. Throws an exception
++     * if permission is not allowed. May be blocked to ask user
++     *
++     * @param p a permission to check
++     * @exception SecurityException if permission is not allowed
++     * @exception InterruptedException if another thread interrupts a calling
++     *  thread while asking user
++     */
++    public void checkForPermission(Permission p) throws InterruptedException {
++        if (CVM.isMIDPContext()) {
++            com.sun.j2me.proxy.security.AccessController.
++                checkPermission(p.getName(), p.getResource(), p.getExtraValue());
++        } else {
++            p.checkCDCPermission();
++        }
++    }
++
++    /**
++     * Throws an exception if a status for the permission is not allowed
++     *
++     * @param p a permission to check
++     * @exception SecurityException if a status for the permission is not allowed
++     */
++    public void checkIfPermissionAllowed(Permission p) {
++        if (checkPermission(p) != 1) {
++            throw new SecurityException();
++        }
++    }
++
++    /**
++     * Gets the name of CA that authorized this suite.
++     *
++     * @return name of a CA or null if the suite was not signed
++     */
++    public String getCA() {
++        return null;
++    }
++
++    /**
++     * Finds a resource with a given name.  This method returns null if no
++     * resource with this name is found.  
++     *
++     * @param name  name of the desired resource
++     * @return      a <code>java.io.InputStream</code> object.
++     * @throws NullPointerException if <code>name</code> is <code>null</code>.
++     */
++    public InputStream getResourceAsStream(String name) {
++        return getClass().getResourceAsStream(name);    
++    }
++}
+diff -Naur orig/abstractions/src/cdc_share/classes/com/sun/j2me/main/Configuration.java patched/abstractions/src/cdc_share/classes/com/sun/j2me/main/Configuration.java
+--- orig/abstractions/src/cdc_share/classes/com/sun/j2me/main/Configuration.java	1970-01-01 01:00:00.000000000 +0100
++++ patched/abstractions/src/cdc_share/classes/com/sun/j2me/main/Configuration.java	2012-01-26 14:02:19.000000000 +0100
+@@ -0,0 +1,102 @@
++/*
++ * Copyright  1990-2006 Sun Microsystems, Inc. All Rights Reserved.
++ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
++ * 
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License version
++ * 2 only, as published by the Free Software Foundation. 
++ * 
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++ * General Public License version 2 for more details (a copy is
++ * included at /legal/license.txt). 
++ * 
++ * You should have received a copy of the GNU General Public License
++ * version 2 along with this work; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++ * 02110-1301 USA 
++ * 
++ * Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
++ * Clara, CA 95054 or visit www.sun.com if you need additional
++ * information or have any questions.
++ */
++
++/*
++ * NOTICE: Portions Copyright (c) 2007-2010 Davy Preuveneers.
++ * This file has last been modified by Davy Preuveneers on 2010-02-23. The
++ * changes are licensed under the terms of the GNU General Public
++ * License version 2. This notice was added to meet the conditions of
++ * Section 3.a of the GNU General Public License version 2.
++ */
++
++package com.sun.j2me.main;
++
++import java.util.Properties;
++import java.util.Hashtable;
++
++/**
++ * Intermediate class for getting internal properties
++ */
++public class Configuration {
++
++    /** List of all internal properties. */
++    private static Properties props = new Properties();
++
++    /** Don't let anyone instantiate this class. */
++    private Configuration() {
++    }
++
++    /**
++     * Returns internal property value by key.
++     *
++     * @param key property key.
++     * @return property value.
++     */
++    public static String getProperty(String key) {
++        return props.getProperty(key);
++    }
++
++    /**
++     * Sets internal property value by key.
++     *
++     * @param key property key.
++     * @param value property value.
++     */
++    public static void setProperty(String key, String value) {
++        props.setProperty(key, value);
++    }
++
++    /**
++     * Gets the implementation property indicated by the specified key or
++     * returns the specified default value as an int.
++     *
++     * @param      key   the name of the implementation property.
++     * @param      def   the default value for the property if not
++     *                  specified in the configuration files or command
++     *                  line over rides.
++     *
++     * @return     the int value of the implementation property,
++     *             or <code>def</code> if there is no property with that key or
++     *             the config value is not an int.
++     *
++     * @exception  NullPointerException if <code>key</code> is
++     *             <code>null</code>.
++     * @exception  IllegalArgumentException if <code>key</code> is empty.
++     */
++    public static int getIntProperty(String key, int def) {
++        String prop = getProperty(key);
++        if (prop == null) {
++            return def;
++        }
++
++        try {
++            int temp = Integer.parseInt(prop);
++            return temp;
++        } catch (NumberFormatException nfe) {
++            // keep the default
++        }
++
++        return def;
++    }
++}

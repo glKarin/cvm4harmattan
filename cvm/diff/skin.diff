@@ -1,0 +1,3167 @@
+diff -Naur orig/midp/src/configuration/configuration_xml/linux_fb/constants.xml patched/midp/src/configuration/configuration_xml/linux_fb/constants.xml
+--- orig/midp/src/configuration/configuration_xml/linux_fb/constants.xml	2011-03-09 19:19:01.000000000 +0100
++++ patched/midp/src/configuration/configuration_xml/linux_fb/constants.xml	2012-01-26 14:02:21.000000000 +0100
+@@ -47,19 +47,19 @@
+             Comment="When false, Chameleon will not even attempt to load romized images for the UI."/>
+   <constant Type="int"
+             Name="CHAM_WIDTH"
+-            Value="176"
++            Value="480"
+             Comment="(Chameleon Only) display width"/>
+   <constant Type="int"
+             Name="CHAM_FULLWIDTH"
+-            Value="176"
++            Value="480"
+             Comment="(Chameleon Only) full display width"/>
+   <constant Type="int"
+             Name="CHAM_HEIGHT"
+-            Value="210"
++            Value="720"
+             Comment="(Chameleon Only) display height"/>
+   <constant Type="int"
+             Name="CHAM_FULLHEIGHT"
+-            Value="210"
++            Value="720"
+             Comment="(Chameleon Only) full display height"/>
+   <constant Type="boolean"
+             Name="TRAVERSAL2D"
+@@ -71,19 +71,19 @@
+             Comment="The maximum number of events in the event queue"/>
+   <constant Type="int"
+             Name="FULLWIDTH"
+-            Value="176"
++            Value="480"
+             Comment="(Fixed) full display width"/>
+   <constant Type="int"
+             Name="FULLHEIGHT"
+-            Value="210" 
++            Value="720" 
+             Comment="(Fixed) full display height"/>
+   <constant Type="int"
+             Name="NORMALWIDTH"
+-            Value="176" 
++            Value="480" 
+             Comment="(Fixed) normal width"/>
+   <constant Type="int"
+             Name="NORMALHEIGHT"
+-            Value="210" 
++            Value="720" 
+             Comment="(Fixed) normal height"/>
+   <constant Type="int"
+             Name="VERT_SCROLLBAR_WIDTH"
+diff -Naur orig/midp/src/configuration/configuration_xml/linux_fb/keyboard_skin.xml patched/midp/src/configuration/configuration_xml/linux_fb/keyboard_skin.xml
+--- orig/midp/src/configuration/configuration_xml/linux_fb/keyboard_skin.xml	2011-03-09 19:19:01.000000000 +0100
++++ patched/midp/src/configuration/configuration_xml/linux_fb/keyboard_skin.xml	2012-01-26 14:02:21.000000000 +0100
+@@ -36,200 +36,200 @@
+             <button
+                 KeyValue="0"
+                 Key="q"
+-                X="5"
+-                Y="10"
++                X="10"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="w"
+-                X="27"
+-                Y="10"
++                X="54"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="e"
+-                X="49"
+-                Y="10"
++                X="98"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="r"
+-                X="71"
+-                Y="10"
++                X="142"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="t"
+-                X="93"
+-                Y="10"
++                X="186"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="y"
+-                X="115"
+-                Y="10"
++                X="230"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="u"
+-                X="137"
+-                Y="10"
++                X="274"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key="i"
+-                X="159"
+-                Y="10"
++                X="318"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="8"
+                 Key="o"
+-                X="181"
+-                Y="10"
++                X="362"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key="p"
+-                X="203"
+-                Y="10"
++                X="406"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+         </line>
+         <line Num="1">
+             <button
+                 KeyValue="0"
+                 Key="a"
+-                X="15"
+-                Y="40"
++                X="30"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="s"
+-                X="37"
+-                Y="40"
++                X="74"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="d"
+-                X="59"
+-                Y="40"
++                X="118"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="f"
+-                X="81"
+-                Y="40"
++                X="162"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="g"
+-                X="103"
+-                Y="40"
++                X="206"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="h"
+-                X="125"
+-                Y="40"
++                X="250"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="j"
+-                X="147"
+-                Y="40"
++                X="294"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key="k"
+-                X="169"
+-                Y="40"
++                X="338"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="8"
+                 Key="l"
+-                X="191"
+-                Y="40"
++                X="382"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+         </line>
+         <line Num="2">
+             <button
+                 KeyValue="0"
+                 Key=" "
+-                X="5"
+-                Y="70"
++                X="10"
++                Y="140"
+                 KeyImageType="CAPS_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="z"
+-                X="37"
+-                Y="70"
++                X="74"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="x"
+-                X="59"
+-                Y="70"
++                X="118"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="c"
+-                X="81"
+-                Y="70"
++                X="162"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="v"
+-                X="103"
+-                Y="70"
++                X="206"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="b"
+-                X="125"
+-                Y="70"
++                X="250"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="n"
+-                X="147"
+-                Y="70"
++                X="294"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key="m"
+-                X="169"
+-                Y="70"
++                X="338"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key=" "
+-                X="203"
+-                Y="70"
++                X="406"
++                Y="140"
+                 KeyImageType="BACKSPACE_KEY"/>
+         </line>
+         <line Num="3">
+             <button
+                 KeyValue="0"
+                 Key=" "
+-                X="71"
+-                Y="100"
++                X="142"
++                Y="200"
+                 KeyImageType="NUMERIC_MODE_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key=" "
+-                X="95"
+-                Y="100"
++                X="190"
++                Y="200"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key=" "
+-                X="143"
+-                Y="100"
++                X="286"
++                Y="200"
+                 KeyImageType="SYMBOL_MODE_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key=" "
+-                X="189"
+-                Y="100"
++                X="378"
++                Y="200"
+                 KeyImageType="ENTER_KEY"/>
+         </line>
+     </keyboard>
+@@ -238,200 +238,200 @@
+             <button
+                 KeyValue="0"
+                 Key="Q"
+-                X="5"
+-                Y="10"
++                X="10"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="W"
+-                X="27"
+-                Y="10"
++                X="54"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="E"
+-                X="49"
+-                Y="10"
++                X="98"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="R"
+-                X="71"
+-                Y="10"
++                X="142"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="T"
+-                X="93"
+-                Y="10"
++                X="186"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="Y"
+-                X="115"
+-                Y="10"
++                X="230"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="U"
+-                X="137"
+-                Y="10"
++                X="274"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key="I"
+-                X="159"
+-                Y="10"
++                X="318"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="8"
+                 Key="O"
+-                X="181"
+-                Y="10"
++                X="362"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key="P"
+-                X="203"
+-                Y="10"
++                X="406"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+         </line>
+         <line Num="1">
+             <button
+                 KeyValue="0"
+                 Key="A"
+-                X="15"
+-                Y="40"
++                X="30"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="S"
+-                X="37"
+-                Y="40"
++                X="74"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="D"
+-                X="59"
+-                Y="40"
++                X="118"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="F"
+-                X="81"
+-                Y="40"
++                X="162"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="G"
+-                X="103"
+-                Y="40"
++                X="206"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="H"
+-                X="125"
+-                Y="40"
++                X="250"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="J"
+-                X="147"
+-                Y="40"
++                X="294"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key="K"
+-                X="169"
+-                Y="40"
++                X="338"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="8"
+                 Key="L"
+-                X="191"
+-                Y="40"
++                X="382"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+         </line>
+         <line Num="2">
+             <button
+                 KeyValue="0"
+                 Key=" "
+-                X="5"
+-                Y="70"
++                X="10"
++                Y="140"
+                 KeyImageType="CAPS_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="Z"
+-                X="37"
+-                Y="70"
++                X="74"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="X"
+-                X="59"
+-                Y="70"
++                X="118"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="C"
+-                X="81"
+-                Y="70"
++                X="162"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="V"
+-                X="103"
+-                Y="70"
++                X="206"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="B"
+-                X="125"
+-                Y="70"
++                X="250"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="N"
+-                X="147"
+-                Y="70"
++                X="294"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key="M"
+-                X="169"
+-                Y="70"
++                X="338"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key=" "
+-                X="203"
+-                Y="70"
++                X="406"
++                Y="140"
+                 KeyImageType="BACKSPACE_KEY"/>
+         </line>
+         <line Num="3">
+             <button
+                 KeyValue="0"
+                 Key=" "
+-                X="71"
+-                Y="100"
++                X="142"
++                Y="200"
+                 KeyImageType="NUMERIC_MODE_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key=" "
+-                X="95"
+-                Y="100"
++                X="190"
++                Y="200"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key=" "
+-                X="143"
+-                Y="100"
++                X="286"
++                Y="200"
+                 KeyImageType="SYMBOL_MODE_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key=" "
+-                X="189"
+-                Y="100"
++                X="378"
++                Y="200"
+                 KeyImageType="ENTER_KEY"/>
+         </line>
+     </keyboard>
+@@ -440,206 +440,206 @@
+             <button
+                 KeyValue="0"
+                 Key="1"
+-                X="5"
+-                Y="10"
++                X="10"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="2"
+-                X="27"
+-                Y="10"
++                X="54"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="3"
+-                X="49"
+-                Y="10"
++                X="98"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="4"
+-                X="71"
+-                Y="10"
++                X="142"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="5"
+-                X="93"
+-                Y="10"
++                X="186"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="6"
+-                X="115"
+-                Y="10"
++                X="230"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="7"
+-                X="137"
+-                Y="10"
++                X="274"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key="8"
+-                X="159"
+-                Y="10"
++                X="318"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="8"
+                 Key="9"
+-                X="181"
+-                Y="10"
++                X="362"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key="0"
+-                X="203"
+-                Y="10"
++                X="406"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+         </line>
+         <line Num="1">
+             <button
+                 KeyValue="0"
+                 Key="+"
+-                X="5"
+-                Y="40"
++                X="10"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="-"
+-                X="27"
+-                Y="40"
++                X="54"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="*"
+-                X="49"
+-                Y="40"
++                X="98"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="/"
+-                X="71"
+-                Y="40"
++                X="142"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="="
+-                X="93"
+-                Y="40"
++                X="186"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="."
+-                X="115"
+-                Y="40"
++                X="230"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key=","
+-                X="137"
+-                Y="40"
++                X="274"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key=";"
+-                X="159"
+-                Y="40"
++                X="318"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="8"
+                 Key="\u005C\u005c"
+-                X="181"
+-                Y="40"
++                X="362"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key="\u0022"
+-                X="203"
+-                Y="40"
++                X="406"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+         </line>        
+         <line Num="2">
+             <button
+                 KeyValue="0"
+                 Key=" "
+-                X="5"
+-                Y="70"
++                X="10"
++                Y="140"
+                 KeyImageType="CAPS_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="~"
+-                X="37"
+-                Y="70"
++                X="74"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="["
+-                X="59"
+-                Y="70"
++                X="118"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="]"
+-                X="81"
+-                Y="70"
++                X="162"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="|"
+-                X="103"
+-                Y="70"
++                X="206"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="_"
+-                X="125"
+-                Y="70"
++                X="250"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="("
+-                X="147"
+-                Y="70"
++                X="294"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key=")"
+-                X="169"
+-                Y="70"
++                X="338"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key=" "
+-                X="203"
+-                Y="70"
++                X="406"
++                Y="140"
+                 KeyImageType="BACKSPACE_KEY"/>
+         </line>
+         <line Num="3">
+             <button
+                 KeyValue="0"
+                 Key=" "
+-                X="71"
+-                Y="100"
++                X="142"
++                Y="200"
+                 KeyImageType="ALPHA_MODE_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key=" "
+-                X="95"
+-                Y="100"
++                X="190"
++                Y="200"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key=" "
+-                X="143"
+-                Y="100"
++                X="286"
++                Y="200"
+                 KeyImageType="SYMBOL_MODE_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key=" "
+-                X="189"
+-                Y="100"
++                X="378"
++                Y="200"
+                 KeyImageType="ENTER_KEY"/>
+         </line>
+     </keyboard>
+@@ -648,206 +648,206 @@
+             <button
+                 KeyValue="0"
+                 Key="!"
+-                X="5"
+-                Y="10"
++                X="10"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="@"
+-                X="27"
+-                Y="10"
++                X="54"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="#"
+-                X="49"
+-                Y="10"
++                X="98"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="$"
+-                X="71"
+-                Y="10"
++                X="142"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="%"
+-                X="93"
+-                Y="10"
++                X="186"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="^"
+-                X="115"
+-                Y="10"
++                X="230"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="\u0026"
+-                X="137"
+-                Y="10"
++                X="274"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key="*"
+-                X="159"
+-                Y="10"
++                X="318"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="8"
+                 Key="("
+-                X="181"
+-                Y="10"
++                X="362"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key=")"
+-                X="203"
+-                Y="10"
++                X="406"
++                Y="20"
+                 KeyImageType="GENERAL_KEY"/>
+         </line>
+         <line Num="1">
+             <button
+                 KeyValue="0"
+                 Key="+"
+-                X="5"
+-                Y="40"
++                X="10"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="-"
+-                X="27"
+-                Y="40"
++                X="54"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="*"
+-                X="49"
+-                Y="40"
++                X="98"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key="/"
+-                X="71"
+-                Y="40"
++                X="142"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key="="
+-                X="93"
+-                Y="40"
++                X="186"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key="."
+-                X="115"
+-                Y="40"
++                X="230"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key=","
+-                X="137"
+-                Y="40"
++                X="274"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key=";"
+-                X="159"
+-                Y="40"
++                X="318"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="8"
+                 Key="\u005c\u005c"
+-                X="181"
+-                Y="40"
++                X="362"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key="\u00a3"
+-                X="203"
+-                Y="40"
++                X="406"
++                Y="80"
+                 KeyImageType="GENERAL_KEY"/>
+         </line>
+         <line Num="2">
+             <button
+                 KeyValue="0"
+                 Key=" "
+-                X="5"
+-                Y="70"
++                X="10"
++                Y="140"
+                 KeyImageType="CAPS_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key="~"
+-                X="37"
+-                Y="70"
++                X="74"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key="_"
+-                X="59"
+-                Y="70"
++                X="118"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="3"
+                 Key=":"
+-                X="81"
+-                Y="70"
++                X="162"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="4"
+                 Key=" "
+-                X="103"
+-                Y="70"
++                X="206"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="5"
+                 Key=">"
+-                X="125"
+-                Y="70"
++                X="250"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="6"
+                 Key="{"
+-                X="147"
+-                Y="70"
++                X="294"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="7"
+                 Key="}"
+-                X="169"
+-                Y="70"
++                X="338"
++                Y="140"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key=" "
+-                X="203"
+-                Y="70"
++                X="406"
++                Y="140"
+                 KeyImageType="BACKSPACE_KEY"/>
+         </line>
+         <line Num="3">
+             <button
+                 KeyValue="0"
+                 Key=" "
+-                X="71"
+-                Y="100"
++                X="142"
++                Y="200"
+                 KeyImageType="ALPHA_MODE_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key=" "
+-                X="95"
+-                Y="100"
++                X="190"
++                Y="200"
+                 KeyImageType="GENERAL_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key=" "
+-                X="143"
+-                Y="100"
++                X="286"
++                Y="200"
+                 KeyImageType="SYMBOL_MODE_KEY"/>
+             <button
+                 KeyValue="9"
+                 Key=" "
+-                X="189"
+-                Y="100"
++                X="378"
++                Y="200"
+                 KeyImageType="ENTER_KEY"/>
+         </line>
+     </keyboard>
+@@ -856,26 +856,26 @@
+             <button
+                 KeyValue="0"
+                 Key=" "
+-                X="40"
+-                Y="50"
++                X="80"
++                Y="100"
+                 KeyImageType="LEFT_ARROW_KEY"/>
+             <button
+                 KeyValue="1"
+                 Key=" "
+-                X="140"
+-                Y="50"
++                X="280"
++                Y="100"
+                 KeyImageType="RIGHT_ARROW_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key=" "
+-                X="90"
+-                Y="10"
++                X="180"
++                Y="20"
+                 KeyImageType="UP_ARROW_KEY"/>
+             <button
+                 KeyValue="2"
+                 Key=" "
+-                X="90"
+-                Y="80"
++                X="180"
++                Y="160"
+                 KeyImageType="DOWN_ARROW_KEY"/>
+         </line>
+     </keyboard>
+diff -Naur orig/midp/src/configuration/configuration_xml/linux_fb/skin_optional.xml patched/midp/src/configuration/configuration_xml/linux_fb/skin_optional.xml
+--- orig/midp/src/configuration/configuration_xml/linux_fb/skin_optional.xml	2011-03-09 19:19:01.000000000 +0100
++++ patched/midp/src/configuration/configuration_xml/linux_fb/skin_optional.xml	2012-01-26 14:02:21.000000000 +0100
+@@ -36,15 +36,15 @@
+ 
+   <integer
+         Key="SCREEN_PAD_FORM_ITEMS"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="SCREEN_PAD_LABEL_VERT"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="SCREEN_PAD_LABEL_HORIZ"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="SCREEN_COLOR_BG"
+@@ -84,7 +84,7 @@
+ 
+   <integer
+         Key="SCREEN_SCROLL_AMOUNT"
+-      Value="15"/>
++      Value="30"/>
+       
+   <font
+         Key="SCREEN_FONT_LABEL"
+@@ -143,7 +143,7 @@
+ 
+   <integer
+         Key="SCROLL_WIDTH"
+-      Value="13"/>
++      Value="26"/>
+ 
+   <integer
+         Key="SCROLL_COLOR_BG"
+@@ -219,7 +219,7 @@
+ 
+   <integer
+         Key="SOFTBTN_HEIGHT"
+-      Value="18"/>
++      Value="36"/>
+ 
+   <integer
+         Key="SOFTBTN_NUM_BUTTONS"
+@@ -297,7 +297,7 @@
+ 
+   <integer
+         Key="TICKER_HEIGHT"
+-      Value="17"/>
++      Value="34"/>
+ 
+   <integer
+         Key="TICKER_ALIGN"
+@@ -379,11 +379,11 @@
+ 
+   <integer
+         Key="PTI_HEIGHT"
+-      Value="17"/>
++      Value="34"/>
+   
+   <integer
+         Key="PTI_MARGIN"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="PTI_COLOR_BG"
+@@ -427,11 +427,11 @@
+ 
+   <integer
+         Key="TITLE_HEIGHT"
+-      Value="20"/>
++      Value="40"/>
+ 
+   <integer
+         Key="TITLE_MARGIN"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <integer
+         Key="TITLE_TEXT_ALIGN_X"
+@@ -469,7 +469,7 @@
+ 
+   <integer
+         Key="ALERT_HEIGHT"
+-      Value="125"/>
++      Value="250"/>
+ 
+   <integer
+         Key="ALERT_ALIGN_X"
+@@ -481,7 +481,7 @@
+ 
+   <integer
+         Key="ALERT_MARGIN_H"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <integer
+         Key="ALERT_MARGIN_V"
+@@ -493,11 +493,11 @@
+ 
+   <integer
+         Key="ALERT_TITLE_HEIGHT"
+-      Value="32"/>
++      Value="64"/>
+ 
+   <integer
+         Key="ALERT_TITLE_MARGIN"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <string
+         Key="ALERT_TEXT_TITLE_INFO"
+@@ -525,11 +525,11 @@
+ 
+   <integer
+         Key="ALERT_PAD_VERT"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="ALERT_SCROLL_AMOUNT"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="ALERT_TIMEOUT"
+@@ -588,11 +588,11 @@
+ 
+   <integer
+         Key="BUSYCRSR_WIDTH"
+-      Value="40"/>
++      Value="80"/>
+ 
+   <integer
+         Key="BUSYCRSR_HEIGHT"
+-      Value="40"/>
++      Value="80"/>
+ 
+   <integer
+         Key="BUSYCRSR_NUM_FRAMES"
+@@ -623,31 +623,31 @@
+ 
+   <integer
+         Key="CHOICE_WIDTH_IMAGE"
+-      Value="16"/>
++      Value="32"/>
+ 
+   <integer
+         Key="CHOICE_HEIGHT_IMAGE"
+-      Value="16"/>
++      Value="32"/>
+ 
+   <integer
+         Key="CHOICE_WIDTH_SCROLL"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="CHOICE_WIDTH_THUMB"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="CHOICE_HEIGHT_THUMB"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="CHOICE_PAD_H"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="CHOICE_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="CHOICE_COLOR_FG"
+@@ -718,23 +718,23 @@
+ 
+   <integer
+         Key="DATEEDITOR_HEIGHT"
+-      Value="110"/>
++      Value="220"/>
+ 
+   <integer
+         Key="DATEEDITOR_HEIGHT_POPUPS"
+-      Value="73"/>
++      Value="146"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_D"
+-      Value="111"/>
++      Value="222"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_T"
+-      Value="99"/>
++      Value="198"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_DT"
+-      Value="167"/>
++      Value="334"/>
+ 
+   <integer
+         Key="DATEEDITOR_COLOR_BG"
+@@ -795,7 +795,6 @@
+       Value="dateeditor.image_days"
+     Romized="false"/>
+ 
+-
+   <image
+         Key="DATEEDITOR_IMAGE_TIME_BG"
+       Value="dateeditor.image_time_bg"
+@@ -819,15 +818,15 @@
+ 
+   <integer
+         Key="DATEFIELD_PAD_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="DATEFIELD_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="DATEFIELD_BTN_BRDR_W"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <font
+         Key="DATEFIELD_FONT"
+@@ -890,15 +889,15 @@
+ 
+   <integer
+         Key="GAUGE_WIDTH"
+-      Value="137"/>
++      Value="274"/>
+ 
+   <integer
+         Key="GAUGE_HEIGHT"
+-      Value="27"/>
++      Value="54"/>
+ 
+   <integer
+         Key="GAUGE_METER_X"
+-      Value="24"/>
++      Value="48"/>
+ 
+   <integer
+         Key="GAUGE_METER_Y"
+@@ -906,7 +905,7 @@
+ 
+   <integer
+         Key="GAUGE_INC_BTN_X"
+-      Value="114"/>
++      Value="228"/>
+ 
+   <integer
+         Key="GAUGE_INC_BTN_Y"
+@@ -922,15 +921,15 @@
+ 
+   <integer
+         Key="GAUGE_VALUE_X"
+-      Value="88"/>
++      Value="176"/>
+ 
+   <integer
+         Key="GAUGE_VALUE_Y"
+-      Value="8"/>
++      Value="16"/>
+ 
+   <integer
+         Key="GAUGE_VALUE_WIDTH"
+-      Value="24"/>
++      Value="48"/>
+ 
+   <image
+         Key="GAUGE_IMAGE_BG"
+@@ -980,23 +979,23 @@
+ 
+   <integer
+         Key="IMAGEITEM_PAD_LNK_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_LNK_V"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_BTN_H"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_BTN_V"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="IMAGEITEM_BTN_BORDER_W"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <image
+         Key="IMAGEITEM_IMAGE_LNK_H"
+@@ -1014,13 +1013,18 @@
+      Pieces="9"
+     Romized="false"/>
+ 
++  <image
++        Key="KEYBOARD_KEY"
++      Value="keyboard.key"
++    Romized="false"/>
++
+   <integer
+         Key="MENU_WIDTH"
+-      Value="144"/>
++      Value="288"/>
+ 
+   <integer
+         Key="MENU_HEIGHT"
+-      Value="159"/>
++      Value="318"/>
+ 
+   <integer
+         Key="MENU_ALIGN_X"
+@@ -1032,15 +1036,15 @@
+ 
+   <integer
+         Key="MENU_TITLE_X"
+-      Value="80"/>
++      Value="160"/>
+ 
+   <integer
+         Key="MENU_TITLE_Y"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="MENU_TITLE_MAXWIDTH"
+-      Value="100"/>
++      Value="200"/>
+ 
+   <integer
+         Key="MENU_TITLE_ALIGN"
+@@ -1052,19 +1056,19 @@
+ 
+   <integer
+         Key="MENU_ITEM_HEIGHT"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="MENU_ITEM_TOPOFFSET"
+-      Value="21"/>
++      Value="42"/>
+ 
+   <integer
+         Key="MENU_ITEM_INDEX_ANCHOR_X"
+-      Value="8"/>
++      Value="16"/>
+ 
+   <integer
+         Key="MENU_ITEM_ANCHOR_X"
+-      Value="18"/>
++      Value="36"/>
+ 
+   <integer
+         Key="MENU_COLOR_BG"
+@@ -1138,15 +1142,15 @@
+ 
+   <integer
+         Key="PBAR_WIDTH"
+-      Value="168"/>
++      Value="336"/>
+ 
+   <integer
+         Key="PBAR_HEIGHT"
+-      Value="22"/>
++      Value="44"/>
+ 
+   <integer
+         Key="PBAR_METER_X"
+-      Value="36"/>
++      Value="72"/>
+ 
+   <integer
+         Key="PBAR_METER_Y"
+@@ -1158,11 +1162,11 @@
+ 
+   <integer
+         Key="PBAR_VALUE_Y"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="PBAR_VALUE_WIDTH"
+-      Value="32"/>
++      Value="64"/>
+ 
+   <image
+         Key="PBAR_IMAGE_BG"
+@@ -1254,19 +1258,19 @@
+ 
+   <integer
+         Key="TEXTFIELD_PAD_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="TEXTFIELD_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="TEXTFIELD_BOX_MARGIN"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="TEXTFIELD_WIDTH_CARET"
+-      Value="1"/>
++      Value="2"/>
+ 
+   <integer
+         Key="TEXTFIELD_SCRL_RATE"
+@@ -1322,11 +1326,11 @@
+ 
+   <integer
+         Key="UPDATEBAR_WIDTH"
+-      Value="150"/>
++      Value="300"/>
+ 
+   <integer
+         Key="UPDATEBAR_HEIGHT"
+-      Value="25"/>
++      Value="50"/>
+ 
+   <integer
+         Key="UPDATEBAR_NUM_FRAMES"
+@@ -1361,11 +1365,11 @@
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_MAX_WIDTH"
+-      Value="85,85"/>
++      Value="170,170"/>
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_ANCHOR_X"
+-      Value="5,-5"/>
++      Value="10,-10"/>
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_ANCHOR_Y"
+diff -Naur orig/midp/src/configuration/configuration_xml/linux_fb/skin.xml patched/midp/src/configuration/configuration_xml/linux_fb/skin.xml
+--- orig/midp/src/configuration/configuration_xml/linux_fb/skin.xml	2011-03-09 19:19:01.000000000 +0100
++++ patched/midp/src/configuration/configuration_xml/linux_fb/skin.xml	2012-01-26 14:02:21.000000000 +0100
+@@ -40,15 +40,15 @@
+ 
+   <integer
+         Key="SCREEN_PAD_FORM_ITEMS"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="SCREEN_PAD_LABEL_VERT"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="SCREEN_PAD_LABEL_HORIZ"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="SCREEN_COLOR_BG"
+@@ -85,11 +85,11 @@
+   <integer
+         Key="SCREEN_BORDER_STYLE"
+       Value="Graphics.SOLID"/>
+-
++  
+   <integer
+         Key="SCREEN_SCROLL_AMOUNT"
+-      Value="15"/>
+-      
++      Value="30"/>
++
+   <font
+         Key="SCREEN_FONT_LABEL"
+       Value="FontResources.PROP_P_M"/>
+@@ -147,7 +147,7 @@
+ 
+   <integer
+         Key="SCROLL_WIDTH"
+-      Value="13"/>
++      Value="26"/>
+ 
+   <integer
+         Key="SCROLL_COLOR_BG"
+@@ -223,7 +223,7 @@
+ 
+   <integer
+         Key="SOFTBTN_HEIGHT"
+-      Value="18"/>
++      Value="36"/>
+ 
+   <integer
+         Key="SOFTBTN_NUM_BUTTONS"
+@@ -285,23 +285,23 @@
+         Key="SOFTBTN_IMAGE_BG"
+       Value="softbtn.image_bg"
+      Pieces="3"
+-    Romized="true"/>
++    Romized="false"/>
+ 
+   <composite_image
+         Key="SOFTBTN_IMAGE_MU_BG"
+       Value="softbtn.image_mu_bg"
+      Pieces="3"
+-    Romized="true"/>
++    Romized="false"/>
+ 
+   <composite_image
+         Key="SOFTBTN_IMAGE_AU_BG"
+       Value="softbtn.image_au_bg"
+      Pieces="3"
+-    Romized="true"/>
++    Romized="false"/>
+ 
+   <integer
+         Key="TICKER_HEIGHT"
+-      Value="17"/>
++      Value="34"/>
+ 
+   <integer
+         Key="TICKER_ALIGN"
+@@ -383,11 +383,11 @@
+ 
+   <integer
+         Key="PTI_HEIGHT"
+-      Value="17"/>
+-  
++      Value="34"/>
++
+   <integer
+         Key="PTI_MARGIN"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="PTI_COLOR_BG"
+@@ -427,15 +427,15 @@
+   <image
+         Key="PTI_RIGHT_ARROW"
+       Value="pti.right_arrow"
+-    Romized="false"/>
+-
++    Romized="false"/>    
++    
+   <integer
+         Key="TITLE_HEIGHT"
+-      Value="20"/>
++      Value="40"/>
+ 
+   <integer
+         Key="TITLE_MARGIN"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <integer
+         Key="TITLE_TEXT_ALIGN_X"
+@@ -473,11 +473,11 @@
+ 
+   <integer
+         Key="ALERT_HEIGHT"
+-      Value="125"/>
++      Value="250"/>
+ 
+   <integer
+         Key="ALERT_ALIGN_X"
+-        Value="Graphics.LEFT"/>
++        Value="Graphics.HCENTER"/>
+ 
+   <integer
+         Key="ALERT_ALIGN_Y"
+@@ -485,7 +485,7 @@
+ 
+   <integer
+         Key="ALERT_MARGIN_H"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <integer
+         Key="ALERT_MARGIN_V"
+@@ -497,11 +497,11 @@
+ 
+   <integer
+         Key="ALERT_TITLE_HEIGHT"
+-      Value="32"/>
++      Value="64"/>
+ 
+   <integer
+         Key="ALERT_TITLE_MARGIN"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <string
+         Key="ALERT_TEXT_TITLE_INFO"
+@@ -529,11 +529,11 @@
+ 
+   <integer
+         Key="ALERT_PAD_VERT"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="ALERT_SCROLL_AMOUNT"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="ALERT_TIMEOUT"
+@@ -592,11 +592,11 @@
+ 
+   <integer
+         Key="BUSYCRSR_WIDTH"
+-      Value="40"/>
++      Value="80"/>
+ 
+   <integer
+         Key="BUSYCRSR_HEIGHT"
+-      Value="40"/>
++      Value="80"/>
+ 
+   <integer
+         Key="BUSYCRSR_NUM_FRAMES"
+@@ -627,31 +627,31 @@
+ 
+   <integer
+         Key="CHOICE_WIDTH_IMAGE"
+-      Value="16"/>
++      Value="32"/>
+ 
+   <integer
+         Key="CHOICE_HEIGHT_IMAGE"
+-      Value="16"/>
++      Value="32"/>
+ 
+   <integer
+         Key="CHOICE_WIDTH_SCROLL"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="CHOICE_WIDTH_THUMB"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="CHOICE_HEIGHT_THUMB"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="CHOICE_PAD_H"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="CHOICE_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="CHOICE_COLOR_FG"
+@@ -722,23 +722,23 @@
+ 
+   <integer
+         Key="DATEEDITOR_HEIGHT"
+-      Value="110"/>
++      Value="220"/>
+ 
+   <integer
+         Key="DATEEDITOR_HEIGHT_POPUPS"
+-      Value="73"/>
++      Value="146"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_D"
+-      Value="111"/>
++      Value="222"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_T"
+-      Value="99"/>
++      Value="198"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_DT"
+-      Value="167"/>
++      Value="334"/>
+ 
+   <integer
+         Key="DATEEDITOR_COLOR_BG"
+@@ -822,15 +822,15 @@
+ 
+   <integer
+         Key="DATEFIELD_PAD_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="DATEFIELD_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="DATEFIELD_BTN_BRDR_W"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <font
+         Key="DATEFIELD_FONT"
+@@ -893,15 +893,15 @@
+ 
+   <integer
+         Key="GAUGE_WIDTH"
+-      Value="137"/>
++      Value="274"/>
+ 
+   <integer
+         Key="GAUGE_HEIGHT"
+-      Value="27"/>
++      Value="54"/>
+ 
+   <integer
+         Key="GAUGE_METER_X"
+-      Value="24"/>
++      Value="48"/>
+ 
+   <integer
+         Key="GAUGE_METER_Y"
+@@ -909,7 +909,7 @@
+ 
+   <integer
+         Key="GAUGE_INC_BTN_X"
+-      Value="114"/>
++      Value="228"/>
+ 
+   <integer
+         Key="GAUGE_INC_BTN_Y"
+@@ -925,15 +925,15 @@
+ 
+   <integer
+         Key="GAUGE_VALUE_X"
+-      Value="88"/>
++      Value="176"/>
+ 
+   <integer
+         Key="GAUGE_VALUE_Y"
+-      Value="6"/>
++      Value="12"/>
+ 
+   <integer
+         Key="GAUGE_VALUE_WIDTH"
+-      Value="24"/>
++      Value="48"/>
+ 
+   <image
+         Key="GAUGE_IMAGE_BG"
+@@ -983,23 +983,23 @@
+ 
+   <integer
+         Key="IMAGEITEM_PAD_LNK_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_LNK_V"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_BTN_H"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_BTN_V"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="IMAGEITEM_BTN_BORDER_W"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <image
+         Key="IMAGEITEM_IMAGE_LNK_H"
+@@ -1019,7 +1019,7 @@
+   
+   <integer
+         Key="KEYBOARD_HEIGHT"
+-      Value="125"/>
++      Value="250"/>
+ 
+    <integer
+         Key="KEYBOARD_COEFFICIENT"
+@@ -1130,11 +1130,11 @@
+ 
+   <integer
+         Key="MENU_WIDTH"
+-      Value="144"/>
++      Value="288"/>
+ 
+   <integer
+         Key="MENU_HEIGHT"
+-      Value="159"/>
++      Value="318"/>
+ 
+   <integer
+         Key="MENU_ALIGN_X"
+@@ -1146,15 +1146,15 @@
+ 
+   <integer
+         Key="MENU_TITLE_X"
+-      Value="80"/>
++      Value="160"/>
+ 
+   <integer
+         Key="MENU_TITLE_Y"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="MENU_TITLE_MAXWIDTH"
+-      Value="100"/>
++      Value="300"/>
+ 
+   <integer
+         Key="MENU_TITLE_ALIGN"
+@@ -1166,19 +1166,19 @@
+ 
+   <integer
+         Key="MENU_ITEM_HEIGHT"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="MENU_ITEM_TOPOFFSET"
+-      Value="21"/>
++      Value="42"/>
+ 
+   <integer
+         Key="MENU_ITEM_INDEX_ANCHOR_X"
+-      Value="8"/>
++      Value="16"/>
+ 
+   <integer
+         Key="MENU_ITEM_ANCHOR_X"
+-      Value="18"/>
++      Value="36"/>
+ 
+   <integer
+         Key="MENU_COLOR_BG"
+@@ -1252,15 +1252,15 @@
+ 
+   <integer
+         Key="PBAR_WIDTH"
+-      Value="168"/>
++      Value="336"/>
+ 
+   <integer
+         Key="PBAR_HEIGHT"
+-      Value="22"/>
++      Value="44"/>
+ 
+   <integer
+         Key="PBAR_METER_X"
+-      Value="36"/>
++      Value="72"/>
+ 
+   <integer
+         Key="PBAR_METER_Y"
+@@ -1268,15 +1268,15 @@
+ 
+   <integer
+         Key="PBAR_VALUE_X"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="PBAR_VALUE_Y"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="PBAR_VALUE_WIDTH"
+-      Value="32"/>
++      Value="64"/>
+ 
+   <image
+         Key="PBAR_IMAGE_BG"
+@@ -1368,19 +1368,19 @@
+ 
+   <integer
+         Key="TEXTFIELD_PAD_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="TEXTFIELD_PAD_V"
+-      Value="2"/>
++      Value="10"/>
+ 
+   <integer
+         Key="TEXTFIELD_BOX_MARGIN"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="TEXTFIELD_WIDTH_CARET"
+-      Value="1"/>
++      Value="2"/>
+ 
+   <integer
+         Key="TEXTFIELD_SCRL_RATE"
+@@ -1436,11 +1436,11 @@
+ 
+   <integer
+         Key="UPDATEBAR_WIDTH"
+-      Value="150"/>
++      Value="300"/>
+ 
+   <integer
+         Key="UPDATEBAR_HEIGHT"
+-      Value="25"/>
++      Value="50"/>
+ 
+   <integer
+         Key="UPDATEBAR_NUM_FRAMES"
+@@ -1475,15 +1475,15 @@
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_MAX_WIDTH"
+-      Value="85,85"/>
++      Value="170,170"/>
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_ANCHOR_X"
+-      Value="5,-5"/>
++      Value="10,-10"/>
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_ANCHOR_Y"
+-      Value="2,2"/>
++      Value="4,4"/>
+    <image
+          Key="DATEEDITOR_IMAGE_MON_HE_BG"
+        Value="dateeditor.image_mon_he_bg"
+diff -Naur orig/midp/src/configuration/configuration_xml/linux_qte/constants.xml patched/midp/src/configuration/configuration_xml/linux_qte/constants.xml
+--- orig/midp/src/configuration/configuration_xml/linux_qte/constants.xml	2011-03-09 19:19:01.000000000 +0100
++++ patched/midp/src/configuration/configuration_xml/linux_qte/constants.xml	2012-01-26 14:02:21.000000000 +0100
+@@ -49,20 +49,20 @@
+             Comment="When false, Chameleon will not even attempt to load romized images for the UI."/>
+   <constant Type="int"
+             Name="CHAM_WIDTH"
+-            Value="176"
++            Value="480"
+             Comment="(Chameleon Only) display width"/>
+   <constant Type="int"
++            Name="CHAM_FULLWIDTH"
++            Value="480"
++            Comment="(Chameleon Only) full display width"/>
++  <constant Type="int"
+             Name="CHAM_HEIGHT"
+-            Value="192"
++            Value="720"
+             Comment="(Chameleon Only) display height"/>
+   <constant Type="int"
+             Name="CHAM_FULLHEIGHT"
+-            Value="210"
++            Value="720"
+             Comment="(Chameleon Only) full display height"/>
+-  <constant Type="int"
+-            Name="CHAM_FULLWIDTH"
+-            Value="176"
+-            Comment="(Chameleon Only) full display width"/>
+   <constant Type="boolean"
+             Name="TRAVERSAL2D"
+             Value="true"
+@@ -73,25 +73,21 @@
+             Comment="The maximum number of events in the event queue"/>
+   <constant Type="int"
+             Name="FULLWIDTH"
+-            Value="176"
++            Value="480"
+             Comment="(Fixed) full display width"/>
+   <constant Type="int"
+             Name="FULLHEIGHT"
+-            Value="166" 
++            Value="720" 
+             Comment="(Fixed) full display height"/>
+   <constant Type="int"
+             Name="NORMALWIDTH"
+-            Value="176" 
++            Value="480" 
+             Comment="(Fixed) normal width"/>
+   <constant Type="int"
+             Name="NORMALHEIGHT"
+-            Value="149" 
++            Value="720" 
+             Comment="(Fixed) normal height"/>
+   <constant Type="int"
+-            Name="MENUBAR_HEIGHT"
+-            Value="24" 
+-            Comment="the height of the platform widget menu bar"/>
+-  <constant Type="int"
+             Name="VERT_SCROLLBAR_WIDTH"
+             Value="16" 
+             Comment="the width of the vertical scrollbar"/>
+diff -Naur orig/midp/src/configuration/configuration_xml/linux_qte/skin_optional.xml patched/midp/src/configuration/configuration_xml/linux_qte/skin_optional.xml
+--- orig/midp/src/configuration/configuration_xml/linux_qte/skin_optional.xml	2011-03-09 19:19:01.000000000 +0100
++++ patched/midp/src/configuration/configuration_xml/linux_qte/skin_optional.xml	2012-01-26 14:02:21.000000000 +0100
+@@ -36,15 +36,15 @@
+ 
+   <integer
+         Key="SCREEN_PAD_FORM_ITEMS"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="SCREEN_PAD_LABEL_VERT"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="SCREEN_PAD_LABEL_HORIZ"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="SCREEN_COLOR_BG"
+@@ -84,7 +84,7 @@
+ 
+   <integer
+         Key="SCREEN_SCROLL_AMOUNT"
+-      Value="15"/>
++      Value="30"/>
+       
+   <font
+         Key="SCREEN_FONT_LABEL"
+@@ -143,7 +143,7 @@
+ 
+   <integer
+         Key="SCROLL_WIDTH"
+-      Value="13"/>
++      Value="26"/>
+ 
+   <integer
+         Key="SCROLL_COLOR_BG"
+@@ -219,7 +219,7 @@
+ 
+   <integer
+         Key="SOFTBTN_HEIGHT"
+-      Value="18"/>
++      Value="36"/>
+ 
+   <integer
+         Key="SOFTBTN_NUM_BUTTONS"
+@@ -297,7 +297,7 @@
+ 
+   <integer
+         Key="TICKER_HEIGHT"
+-      Value="17"/>
++      Value="34"/>
+ 
+   <integer
+         Key="TICKER_ALIGN"
+@@ -379,11 +379,11 @@
+ 
+   <integer
+         Key="PTI_HEIGHT"
+-      Value="17"/>
++      Value="34"/>
+   
+   <integer
+         Key="PTI_MARGIN"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="PTI_COLOR_BG"
+@@ -427,11 +427,11 @@
+ 
+   <integer
+         Key="TITLE_HEIGHT"
+-      Value="20"/>
++      Value="40"/>
+ 
+   <integer
+         Key="TITLE_MARGIN"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <integer
+         Key="TITLE_TEXT_ALIGN_X"
+@@ -469,7 +469,7 @@
+ 
+   <integer
+         Key="ALERT_HEIGHT"
+-      Value="125"/>
++      Value="250"/>
+ 
+   <integer
+         Key="ALERT_ALIGN_X"
+@@ -481,7 +481,7 @@
+ 
+   <integer
+         Key="ALERT_MARGIN_H"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <integer
+         Key="ALERT_MARGIN_V"
+@@ -493,11 +493,11 @@
+ 
+   <integer
+         Key="ALERT_TITLE_HEIGHT"
+-      Value="32"/>
++      Value="64"/>
+ 
+   <integer
+         Key="ALERT_TITLE_MARGIN"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <string
+         Key="ALERT_TEXT_TITLE_INFO"
+@@ -525,11 +525,11 @@
+ 
+   <integer
+         Key="ALERT_PAD_VERT"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="ALERT_SCROLL_AMOUNT"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="ALERT_TIMEOUT"
+@@ -588,11 +588,11 @@
+ 
+   <integer
+         Key="BUSYCRSR_WIDTH"
+-      Value="40"/>
++      Value="80"/>
+ 
+   <integer
+         Key="BUSYCRSR_HEIGHT"
+-      Value="40"/>
++      Value="80"/>
+ 
+   <integer
+         Key="BUSYCRSR_NUM_FRAMES"
+@@ -623,31 +623,31 @@
+ 
+   <integer
+         Key="CHOICE_WIDTH_IMAGE"
+-      Value="16"/>
++      Value="32"/>
+ 
+   <integer
+         Key="CHOICE_HEIGHT_IMAGE"
+-      Value="16"/>
++      Value="32"/>
+ 
+   <integer
+         Key="CHOICE_WIDTH_SCROLL"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="CHOICE_WIDTH_THUMB"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="CHOICE_HEIGHT_THUMB"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="CHOICE_PAD_H"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="CHOICE_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="CHOICE_COLOR_FG"
+@@ -718,23 +718,23 @@
+ 
+   <integer
+         Key="DATEEDITOR_HEIGHT"
+-      Value="110"/>
++      Value="220"/>
+ 
+   <integer
+         Key="DATEEDITOR_HEIGHT_POPUPS"
+-      Value="73"/>
++      Value="146"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_D"
+-      Value="111"/>
++      Value="222"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_T"
+-      Value="99"/>
++      Value="198"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_DT"
+-      Value="167"/>
++      Value="334"/>
+ 
+   <integer
+         Key="DATEEDITOR_COLOR_BG"
+@@ -818,15 +818,15 @@
+ 
+   <integer
+         Key="DATEFIELD_PAD_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="DATEFIELD_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="DATEFIELD_BTN_BRDR_W"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <font
+         Key="DATEFIELD_FONT"
+@@ -889,15 +889,15 @@
+ 
+   <integer
+         Key="GAUGE_WIDTH"
+-      Value="137"/>
++      Value="274"/>
+ 
+   <integer
+         Key="GAUGE_HEIGHT"
+-      Value="27"/>
++      Value="54"/>
+ 
+   <integer
+         Key="GAUGE_METER_X"
+-      Value="24"/>
++      Value="48"/>
+ 
+   <integer
+         Key="GAUGE_METER_Y"
+@@ -905,7 +905,7 @@
+ 
+   <integer
+         Key="GAUGE_INC_BTN_X"
+-      Value="114"/>
++      Value="228"/>
+ 
+   <integer
+         Key="GAUGE_INC_BTN_Y"
+@@ -921,15 +921,15 @@
+ 
+   <integer
+         Key="GAUGE_VALUE_X"
+-      Value="88"/>
++      Value="176"/>
+ 
+   <integer
+         Key="GAUGE_VALUE_Y"
+-      Value="8"/>
++      Value="16"/>
+ 
+   <integer
+         Key="GAUGE_VALUE_WIDTH"
+-      Value="24"/>
++      Value="48"/>
+ 
+   <image
+         Key="GAUGE_IMAGE_BG"
+@@ -979,23 +979,23 @@
+ 
+   <integer
+         Key="IMAGEITEM_PAD_LNK_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_LNK_V"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_BTN_H"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_BTN_V"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="IMAGEITEM_BTN_BORDER_W"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <image
+         Key="IMAGEITEM_IMAGE_LNK_H"
+@@ -1013,13 +1013,18 @@
+      Pieces="9"
+     Romized="false"/>
+ 
++  <image
++        Key="KEYBOARD_KEY"
++      Value="keyboard.key"
++    Romized="false"/>
++
+   <integer
+         Key="MENU_WIDTH"
+-      Value="144"/>
++      Value="288"/>
+ 
+   <integer
+         Key="MENU_HEIGHT"
+-      Value="159"/>
++      Value="318"/>
+ 
+   <integer
+         Key="MENU_ALIGN_X"
+@@ -1031,15 +1036,15 @@
+ 
+   <integer
+         Key="MENU_TITLE_X"
+-      Value="80"/>
++      Value="160"/>
+ 
+   <integer
+         Key="MENU_TITLE_Y"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="MENU_TITLE_MAXWIDTH"
+-      Value="100"/>
++      Value="200"/>
+ 
+   <integer
+         Key="MENU_TITLE_ALIGN"
+@@ -1051,19 +1056,19 @@
+ 
+   <integer
+         Key="MENU_ITEM_HEIGHT"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="MENU_ITEM_TOPOFFSET"
+-      Value="21"/>
++      Value="42"/>
+ 
+   <integer
+         Key="MENU_ITEM_INDEX_ANCHOR_X"
+-      Value="8"/>
++      Value="16"/>
+ 
+   <integer
+         Key="MENU_ITEM_ANCHOR_X"
+-      Value="18"/>
++      Value="36"/>
+ 
+   <integer
+         Key="MENU_COLOR_BG"
+@@ -1137,15 +1142,15 @@
+ 
+   <integer
+         Key="PBAR_WIDTH"
+-      Value="168"/>
++      Value="336"/>
+ 
+   <integer
+         Key="PBAR_HEIGHT"
+-      Value="22"/>
++      Value="44"/>
+ 
+   <integer
+         Key="PBAR_METER_X"
+-      Value="36"/>
++      Value="72"/>
+ 
+   <integer
+         Key="PBAR_METER_Y"
+@@ -1157,11 +1162,11 @@
+ 
+   <integer
+         Key="PBAR_VALUE_Y"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="PBAR_VALUE_WIDTH"
+-      Value="32"/>
++      Value="64"/>
+ 
+   <image
+         Key="PBAR_IMAGE_BG"
+@@ -1253,19 +1258,19 @@
+ 
+   <integer
+         Key="TEXTFIELD_PAD_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="TEXTFIELD_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="TEXTFIELD_BOX_MARGIN"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="TEXTFIELD_WIDTH_CARET"
+-      Value="1"/>
++      Value="2"/>
+ 
+   <integer
+         Key="TEXTFIELD_SCRL_RATE"
+@@ -1321,11 +1326,11 @@
+ 
+   <integer
+         Key="UPDATEBAR_WIDTH"
+-      Value="150"/>
++      Value="300"/>
+ 
+   <integer
+         Key="UPDATEBAR_HEIGHT"
+-      Value="25"/>
++      Value="50"/>
+ 
+   <integer
+         Key="UPDATEBAR_NUM_FRAMES"
+@@ -1360,15 +1365,15 @@
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_MAX_WIDTH"
+-      Value="85,85"/>
++      Value="170,170"/>
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_ANCHOR_X"
+-      Value="5,-5"/>
++      Value="10,-10"/>
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_ANCHOR_Y"
+-      Value="1,1"/>
++      Value="2,2"/>
+ 
+ </skin_properties>
+ </skin>
+diff -Naur orig/midp/src/configuration/configuration_xml/linux_qte/skin.xml patched/midp/src/configuration/configuration_xml/linux_qte/skin.xml
+--- orig/midp/src/configuration/configuration_xml/linux_qte/skin.xml	2011-03-09 19:19:01.000000000 +0100
++++ patched/midp/src/configuration/configuration_xml/linux_qte/skin.xml	2012-01-26 14:02:21.000000000 +0100
+@@ -42,15 +42,15 @@
+ 
+   <integer
+         Key="SCREEN_PAD_FORM_ITEMS"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="SCREEN_PAD_LABEL_VERT"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="SCREEN_PAD_LABEL_HORIZ"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="SCREEN_COLOR_BG"
+@@ -90,7 +90,7 @@
+ 
+   <integer
+         Key="SCREEN_SCROLL_AMOUNT"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <font
+         Key="SCREEN_FONT_LABEL"
+@@ -149,7 +149,7 @@
+ 
+   <integer
+         Key="SCROLL_WIDTH"
+-      Value="13"/>
++      Value="26"/>
+ 
+   <integer
+         Key="SCROLL_COLOR_BG"
+@@ -225,7 +225,7 @@
+ 
+   <integer
+         Key="SOFTBTN_HEIGHT"
+-      Value="18"/>
++      Value="36"/>
+ 
+   <integer
+         Key="SOFTBTN_NUM_BUTTONS"
+@@ -287,24 +287,23 @@
+         Key="SOFTBTN_IMAGE_BG"
+       Value="softbtn.image_bg"
+      Pieces="3"
+-    Romized="true"/>
++    Romized="false"/>
+ 
+   <composite_image
+         Key="SOFTBTN_IMAGE_MU_BG"
+       Value="softbtn.image_mu_bg"
+      Pieces="3"
+-    Romized="true"/>
++    Romized="false"/>
+ 
+   <composite_image
+         Key="SOFTBTN_IMAGE_AU_BG"
+       Value="softbtn.image_au_bg"
+      Pieces="3"
+-    Romized="true"/>
+-
++    Romized="false"/>
+ 
+   <integer
+         Key="TICKER_HEIGHT"
+-      Value="17"/>
++      Value="34"/>
+ 
+   <integer
+         Key="TICKER_ALIGN"
+@@ -386,11 +385,11 @@
+ 
+   <integer
+         Key="PTI_HEIGHT"
+-      Value="17"/>
++      Value="34"/>
+ 
+   <integer
+         Key="PTI_MARGIN"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="PTI_COLOR_BG"
+@@ -414,7 +413,7 @@
+ 
+   <font
+         Key="PTI_FONT"
+-      Value="FontResources.SYS_P_M"/>
++      Value="FontResources.SYS_B_S"/>
+ 
+   <composite_image
+         Key="PTI_IMAGE_BG"
+@@ -430,15 +429,15 @@
+   <image
+         Key="PTI_RIGHT_ARROW"
+       Value="pti.right_arrow"
+-    Romized="false"/>
+-
++    Romized="false"/>    
++    
+   <integer
+         Key="TITLE_HEIGHT"
+-      Value="20"/>
++      Value="40"/>
+ 
+   <integer
+         Key="TITLE_MARGIN"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <integer
+         Key="TITLE_TEXT_ALIGN_X"
+@@ -476,7 +475,7 @@
+ 
+   <integer
+         Key="ALERT_HEIGHT"
+-      Value="125"/>
++      Value="250"/>
+ 
+   <integer
+         Key="ALERT_ALIGN_X"
+@@ -488,7 +487,7 @@
+ 
+   <integer
+         Key="ALERT_MARGIN_H"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <integer
+         Key="ALERT_MARGIN_V"
+@@ -500,11 +499,11 @@
+ 
+   <integer
+         Key="ALERT_TITLE_HEIGHT"
+-      Value="32"/>
++      Value="64"/>
+ 
+   <integer
+         Key="ALERT_TITLE_MARGIN"
+-      Value="5"/>
++      Value="10"/>
+ 
+   <string
+         Key="ALERT_TEXT_TITLE_INFO"
+@@ -532,11 +531,11 @@
+ 
+   <integer
+         Key="ALERT_PAD_VERT"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="ALERT_SCROLL_AMOUNT"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="ALERT_TIMEOUT"
+@@ -595,11 +594,11 @@
+ 
+   <integer
+         Key="BUSYCRSR_WIDTH"
+-      Value="40"/>
++      Value="80"/>
+ 
+   <integer
+         Key="BUSYCRSR_HEIGHT"
+-      Value="40"/>
++      Value="80"/>
+ 
+   <integer
+         Key="BUSYCRSR_NUM_FRAMES"
+@@ -630,31 +629,31 @@
+ 
+   <integer
+         Key="CHOICE_WIDTH_IMAGE"
+-      Value="16"/>
++      Value="32"/>
+ 
+   <integer
+         Key="CHOICE_HEIGHT_IMAGE"
+-      Value="16"/>
++      Value="32"/>
+ 
+   <integer
+         Key="CHOICE_WIDTH_SCROLL"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="CHOICE_WIDTH_THUMB"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="CHOICE_HEIGHT_THUMB"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="CHOICE_PAD_H"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="CHOICE_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="CHOICE_COLOR_FG"
+@@ -725,23 +724,23 @@
+ 
+   <integer
+         Key="DATEEDITOR_HEIGHT"
+-      Value="110"/>
++      Value="220"/>
+ 
+   <integer
+         Key="DATEEDITOR_HEIGHT_POPUPS"
+-      Value="73"/>
++      Value="146"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_D"
+-      Value="111"/>
++      Value="222"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_T"
+-      Value="99"/>
++      Value="198"/>
+ 
+   <integer
+         Key="DATEEDITOR_WIDTH_DT"
+-      Value="167"/>
++      Value="334"/>
+ 
+   <integer
+         Key="DATEEDITOR_COLOR_BG"
+@@ -825,15 +824,15 @@
+ 
+   <integer
+         Key="DATEFIELD_PAD_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="DATEFIELD_PAD_V"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="DATEFIELD_BTN_BRDR_W"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <font
+         Key="DATEFIELD_FONT"
+@@ -896,15 +895,15 @@
+ 
+   <integer
+         Key="GAUGE_WIDTH"
+-      Value="137"/>
++      Value="274"/>
+ 
+   <integer
+         Key="GAUGE_HEIGHT"
+-      Value="27"/>
++      Value="54"/>
+ 
+   <integer
+         Key="GAUGE_METER_X"
+-      Value="24"/>
++      Value="48"/>
+ 
+   <integer
+         Key="GAUGE_METER_Y"
+@@ -912,7 +911,7 @@
+ 
+   <integer
+         Key="GAUGE_INC_BTN_X"
+-      Value="114"/>
++      Value="228"/>
+ 
+   <integer
+         Key="GAUGE_INC_BTN_Y"
+@@ -928,15 +927,15 @@
+ 
+   <integer
+         Key="GAUGE_VALUE_X"
+-      Value="88"/>
++      Value="176"/>
+ 
+   <integer
+         Key="GAUGE_VALUE_Y"
+-      Value="6"/>
++      Value="12"/>
+ 
+   <integer
+         Key="GAUGE_VALUE_WIDTH"
+-      Value="24"/>
++      Value="48"/>
+ 
+   <image
+         Key="GAUGE_IMAGE_BG"
+@@ -986,23 +985,23 @@
+ 
+   <integer
+         Key="IMAGEITEM_PAD_LNK_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_LNK_V"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_BTN_H"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="IMAGEITEM_PAD_BTN_V"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="IMAGEITEM_BTN_BORDER_W"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <image
+         Key="IMAGEITEM_IMAGE_LNK_H"
+@@ -1022,7 +1021,7 @@
+ 
+   <integer
+         Key="KEYBOARD_HEIGHT"
+-      Value="125"/>  
++      Value="250"/>  
+ 
+   <integer
+         Key="KEYBOARD_COEFFICIENT"
+@@ -1133,11 +1132,11 @@
+ 
+   <integer
+         Key="MENU_WIDTH"
+-      Value="144"/>
++      Value="288"/>
+ 
+   <integer
+         Key="MENU_HEIGHT"
+-      Value="159"/>
++      Value="318"/>
+ 
+   <integer
+         Key="MENU_ALIGN_X"
+@@ -1149,15 +1148,15 @@
+ 
+   <integer
+         Key="MENU_TITLE_X"
+-      Value="80"/>
++      Value="160"/>
+ 
+   <integer
+         Key="MENU_TITLE_Y"
+-      Value="2"/>
++      Value="4"/>
+ 
+   <integer
+         Key="MENU_TITLE_MAXWIDTH"
+-      Value="100"/>
++      Value="300"/>
+ 
+   <integer
+         Key="MENU_TITLE_ALIGN"
+@@ -1169,19 +1168,19 @@
+ 
+   <integer
+         Key="MENU_ITEM_HEIGHT"
+-      Value="15"/>
++      Value="30"/>
+ 
+   <integer
+         Key="MENU_ITEM_TOPOFFSET"
+-      Value="21"/>
++      Value="42"/>
+ 
+   <integer
+         Key="MENU_ITEM_INDEX_ANCHOR_X"
+-      Value="8"/>
++      Value="16"/>
+ 
+   <integer
+         Key="MENU_ITEM_ANCHOR_X"
+-      Value="18"/>
++      Value="36"/>
+ 
+   <integer
+         Key="MENU_COLOR_BG"
+@@ -1255,15 +1254,15 @@
+ 
+   <integer
+         Key="PBAR_WIDTH"
+-      Value="168"/>
++      Value="336"/>
+ 
+   <integer
+         Key="PBAR_HEIGHT"
+-      Value="22"/>
++      Value="44"/>
+ 
+   <integer
+         Key="PBAR_METER_X"
+-      Value="36"/>
++      Value="72"/>
+ 
+   <integer
+         Key="PBAR_METER_Y"
+@@ -1271,15 +1270,15 @@
+ 
+   <integer
+         Key="PBAR_VALUE_X"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="PBAR_VALUE_Y"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="PBAR_VALUE_WIDTH"
+-      Value="32"/>
++      Value="64"/>
+ 
+   <image
+         Key="PBAR_IMAGE_BG"
+@@ -1371,19 +1370,19 @@
+ 
+   <integer
+         Key="TEXTFIELD_PAD_H"
+-      Value="3"/>
++      Value="6"/>
+ 
+   <integer
+         Key="TEXTFIELD_PAD_V"
+-      Value="2"/>
++      Value="10"/>
+ 
+   <integer
+         Key="TEXTFIELD_BOX_MARGIN"
+-      Value="4"/>
++      Value="8"/>
+ 
+   <integer
+         Key="TEXTFIELD_WIDTH_CARET"
+-      Value="1"/>
++      Value="2"/>
+ 
+   <integer
+         Key="TEXTFIELD_SCRL_RATE"
+@@ -1439,11 +1438,11 @@
+ 
+   <integer
+         Key="UPDATEBAR_WIDTH"
+-      Value="150"/>
++      Value="300"/>
+ 
+   <integer
+         Key="UPDATEBAR_HEIGHT"
+-      Value="25"/>
++      Value="50"/>
+ 
+   <integer
+         Key="UPDATEBAR_NUM_FRAMES"
+@@ -1478,15 +1477,15 @@
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_MAX_WIDTH"
+-      Value="85,85"/>
++      Value="170,170"/>
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_ANCHOR_X"
+-      Value="5,-5"/>
++      Value="10,-10"/>
+ 
+   <integer_seq
+         Key="SOFTBTN_BUTTON_ANCHOR_Y"
+-      Value="1,1"/>
++      Value="4,4"/>
+   <image
+          Key="DATEEDITOR_IMAGE_MON_HE_BG"
+        Value="dateeditor.image_mon_he_bg"

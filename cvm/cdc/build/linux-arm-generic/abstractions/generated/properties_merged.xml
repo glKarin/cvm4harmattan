@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><configuration>
+<properties>
+<!-- Internal properties (visible via Configuration.getProperty() -->
+    <property Key="sun.storage.path0" Value="." Scope="internal" Comment="Path to internal storage"/>
+</properties>
+</configuration>

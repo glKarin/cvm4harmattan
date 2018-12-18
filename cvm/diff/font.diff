@@ -1,0 +1,16 @@
+diff -Naur orig/midp/src/lowlevelui/putpixel_port/stubs/include/font_constants.h patched/midp/src/lowlevelui/putpixel_port/stubs/include/font_constants.h
+--- orig/midp/src/lowlevelui/putpixel_port/stubs/include/font_constants.h	2011-02-10 12:09:45.000000000 +0100
++++ patched/midp/src/lowlevelui/putpixel_port/stubs/include/font_constants.h	2011-03-25 15:14:49.000000000 +0100
+@@ -25,9 +25,9 @@
+ #ifndef _FONT_CONSTANTS_H_
+ #define _FONT_CONSTANTS_H_
+ 
+-#define OEM_FONT_SIZE_SMALL   9
+-#define OEM_FONT_SIZE_MEDIUM  13
+-#define OEM_FONT_SIZE_LARGE   17
++#define OEM_FONT_SIZE_SMALL   18      // 24
++#define OEM_FONT_SIZE_MEDIUM  26      // 32
++#define OEM_FONT_SIZE_LARGE   32      // 38
+ 
+ #endif /* _FONT_CONSTANTS_H_ */
+ 

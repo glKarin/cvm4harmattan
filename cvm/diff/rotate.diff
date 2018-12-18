@@ -1,0 +1,14 @@
+diff -Naur orig/midp/src/highlevelui/lcdui/reference/classes/javax/microedition/lcdui/Display.jpp patched/midp/src/highlevelui/lcdui/reference/classes/javax/microedition/lcdui/Display.jpp
+--- orig/midp/src/highlevelui/lcdui/reference/classes/javax/microedition/lcdui/Display.jpp	2011-05-18 07:38:42.000000000 +0200
++++ patched/midp/src/highlevelui/lcdui/reference/classes/javax/microedition/lcdui/Display.jpp	2011-05-18 08:05:26.000000000 +0200
+@@ -3678,8 +3678,8 @@
+                     
+             synchronized (LCDUILock) {
+                 // #ifndef ENABLE_GCI
+-                wantRotation = Display.this.displayDevice.reverseOrientation();
+-                isRotatedKnown = true;
++                /// wantRotation = Display.this.displayDevice.reverseOrientation();
++                /// isRotatedKnown = true;
+                 Display.this.width = Display.this.displayDevice.getWidth(); 
+                 Display.this.height = Display.this.displayDevice.getHeight();
+                 if (Display.this.displayDevice.isPrimaryDisplay()) {

@@ -1,0 +1,59 @@
+#
+#
+#
+# Copyright  1990-2006 Sun Microsystems, Inc. All Rights Reserved.
+# DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License version
+# 2 only, as published by the Free Software Foundation. 
+# 
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License version 2 for more details (a copy is
+# included at /legal/license.txt). 
+# 
+# You should have received a copy of the GNU General Public License
+# version 2 along with this work; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+# 02110-1301 USA 
+# 
+# Please contact Sun Microsystems, Inc., 4150 Network Circle, Santa
+# Clara, CA 95054 or visit www.sun.com if you need additional
+# information or have any questions. 
+######################################################################
+#
+# Module's Component Configuration file
+#
+######################################################################
+
+# Append JSR 75 source bundle creation to target
+source_bundle:: jsr_75_source_bundle
+
+# Copy and filter JSR 75 source in JSR_75_SOURCE_OUTPUT_DIR
+jsr_75_source_bundle:: $(JSR_75_DIR)
+	@echo " ... JSR 75 source bundle" $(LOG)
+	$(AT)$(call source_bundle_filter,$(JSR_75_DIR),$(JSR_75_SOURCE_OUTPUT_DIR), src)
+	$(AT)mkdir -p $(JSR_75_SOURCE_OUTPUT_DIR)/build
+	$(AT)cp -f $(JSR_75_DIR)/build/subsystem_rules.gmk $(JSR_75_SOURCE_OUTPUT_DIR)/build/subsystem_rules.gmk
+	$(AT)cp -f $(JSR_75_DIR)/build/subsystem_defs.gmk $(JSR_75_SOURCE_OUTPUT_DIR)/build/subsystem_defs.gmk
+
+$(JSR_75_JAR): $(JPP_CLASS_FILES) $(JSR_75_CONSTANT_CLASSES_LST) $(SUBSYSTEM_JSR_75_JAVA_FILES)
+	$(call compileJSROP,jsr75,$(JSR_75_BUILD_DIR)/classes,\
+        $(SUBSYSTEM_JSR_75_JAVA_FILES) $(JSR_75_CONSTANT_CLASS_JAVA_FILES),\
+        $(JSR_75_DEPS))
+	$(call makeJSROPJar,$(JSR_75_JAR),$(JSR_75_BUILD_DIR)/classes)
+
+$(JSR_75_EXTRA_JAR): $(JSR_75_JAR)
+	$(call makeJSRExtraJar,75)
+
+$(JSR_75_INITIALIZER): $(CONFIGURATOR_JAR_FILE)
+	$(AT)$(call generateJSRInitializer,$(JSR_75_PROPERTY_FILE),$(JSR_75_GENERATED_DIR),$(JSR_75_INIT_PACKAGE),$@,)
+
+$(JSR_75_CONSTANT_CLASSES_LST): $(CONFIGURATOR_JAR_FILE) $(JSR_75_CONSTANT_FILE)
+	$(AT)$(call generateConstantClasses,$(JSR_75_GENERATED_DIR),$(JSR_75_CONSTANT_FILE))
+
+# Copy and filter JSR 75 source in JSR_75_SOURCE_OUTPUT_DIR
+jsr_75_source_bundle:: $(JSR_75_DIR)
+	$(AT)$(call source_bundle_filter,$(JSR_75_DIR),$(JSR_75_SOURCE_OUTPUT_DIR), build/cdc_share)

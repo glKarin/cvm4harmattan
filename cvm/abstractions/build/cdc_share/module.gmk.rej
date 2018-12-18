@@ -1,0 +1,46 @@
+--- abstractions/build/cdc_share/module.gmk	2012-01-26 14:02:19.000000000 +0100
++++ abstractions/build/cdc_share/module.gmk	2011-03-09 19:14:28.000000000 +0100
+@@ -22,14 +22,6 @@
+ # information or have any questions. 
+ #
+ 
+-# 
+-# NOTICE: Portions Copyright (c) 2007-2010 Davy Preuveneers.
+-# This file has last been modified by Davy Preuveneers on 2010-02-23. The
+-# changes are licensed under the terms of the GNU General Public
+-# License version 2. This notice was added to meet the conditions of
+-# Section 3.a of the GNU General Public License version 2.
+-# 
+-
+ JSR_CONFIGURATION_INPUT_FILES += \
+     $(ABSTRACTIONS_DIR)/src/share/config/i18n_constants_abstractions.xml \
+     $(ABSTRACTIONS_DIR)/src/share/config/l10n/en-US_abstractions.xml
+@@ -49,14 +41,11 @@
+ ABSTRACTIONS_NATIVES += \
+     internal_props.c \
+ 	exceptions.c \
++	kni_utils.c \
+ 	push_utils.c
+ 
+ # classes
+ ABSTRACTIONS_CLASSES += \
+-    $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/main/Configuration.java \
+-    $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/app/AppModel.java \
+-    $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/app/AppIsolate.java \
+-    $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/app/AppPackage.java \
+     $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/security/TrustedClass.java \
+     $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/security/Token.java \
+     $(ABSTRACTIONS_CDC_JAVASRCDIRS)/com/sun/j2me/security/SecurityTokenInitializer.java \
+@@ -147,6 +136,12 @@
+ endif
+ 
+ ABSTRACTIONS_WRAPPER_CLASSES += \
++    -package com.sun.j2me.proxy.lcdui \
++        -i javax.microedition.lcdui.CustomItem \
++        javax.microedition.lcdui.Display \
++        javax.microedition.lcdui.Graphics \
++        -i javax.microedition.lcdui.Canvas \
++        com.sun.midp.lcdui.DisplayIdPolicy \
+     -package com.sun.j2me.proxy.security \
+         com.sun.midp.security.SecurityToken \
+         com.sun.midp.security.SecurityInitializer \
