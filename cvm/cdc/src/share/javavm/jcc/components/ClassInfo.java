@@ -1016,6 +1016,7 @@ class ClassInfo
 		    ok = false;
 		}
 	    } else {
+			System.out.println("______" + cinfo.className + " : " + cinfo.superClass.name.string);
 		ClassInfo superClassInfo =
                     cinfo.loader.lookupClass(cinfo.superClass.name.string);
 		if ( superClassInfo == null ){

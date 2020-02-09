@@ -529,7 +529,10 @@ public final class Manager {
         // TODO
         debug("getSupportedContentTypes(" + protocol + ")");
         // return new String[] { "audio/x-wav", "audio/basic", "audio/mpeg",  "audio/midi", "audio/x-tone-seq", "video/mpeg" };
-        return new String[] { "audio/x-wav", "audio/mpeg", "audio/x-tone-seq" };
+        //k return new String[] { "audio/x-wav", "audio/mpeg", "audio/x-tone-seq" };
+        return new String[] { "audio/x-wav", "audio/mpeg", "audio/x-tone-seq"
+			, "audio/midi",
+		}; //k
     }
 
     /**

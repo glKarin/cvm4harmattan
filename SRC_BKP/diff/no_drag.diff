@@ -1,0 +1,1317 @@
+diff -Naur orig/midp/src/highlevelui/lcdlf/classes/javax/microedition/lcdui/DisplayableLF.java patched/midp/src/highlevelui/lcdlf/classes/javax/microedition/lcdui/DisplayableLF.java
+--- orig/midp/src/highlevelui/lcdlf/classes/javax/microedition/lcdui/DisplayableLF.java	2009-10-08 13:26:50.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/classes/javax/microedition/lcdui/DisplayableLF.java	2009-10-08 22:11:49.000000000 +0200
+@@ -241,22 +241,6 @@
+      */
+     void uCallScrollContent(int scrollType, int thumbPosition);
+ 
+-    /**
+-     * Checks whether it is allowed to start content dragging from
+-     * this point
+-     * @param x the x coordinate of the point to check
+-     * @param y the y coordinate of the point to check
+-     */
+-    boolean uIsDraggable(int x, int y);
+-
+-    /**
+-     * This method notifies displayable to drag its content
+-     *
+-     * @param deltaY
+-     * @return desired drag amount to become stable
+-     */
+-    int uCallDragContent(int deltaY);
+-
+     boolean uSetRotatedStatus (boolean newStatus);
+ 
+     /**
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/ChamDisplayTunnel.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/ChamDisplayTunnel.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/ChamDisplayTunnel.java	2009-10-08 13:26:48.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/ChamDisplayTunnel.java	2009-10-08 22:11:49.000000000 +0200
+@@ -105,23 +105,6 @@
+     public void callScrollContent(int scrollType, int thumbPosition);
+ 
+     /**
+-     * Checks whether it is allowed to start content dragging from
+-     * this point
+-     * @param x the x coordinate of the point to check
+-     * @param y the y coordinate of the point to check
+-     */
+-    public boolean callIsDraggable(int x, int y);
+-
+-    /**
+-     * This method is used by Chameleon to invoke
+-     * Displayable.uCallDragContent() method.
+-     *
+-     * @param deltaY 
+-     * @return desired drag amount to become stable
+-     */
+-    public int callDragContent(int deltaY);
+-
+-    /**
+      * Updates the scroll indicator.
+      */
+     public void updateScrollIndicator();
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/CWindow.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/CWindow.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/CWindow.java	2009-10-08 13:26:48.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/CWindow.java	2009-10-08 22:11:49.000000000 +0200
+@@ -27,8 +27,6 @@
+ package com.sun.midp.chameleon;
+ 
+ import com.sun.midp.chameleon.layers.BackgroundLayer;
+-import com.sun.midp.lcdui.EventConstants;
+-
+ import javax.microedition.lcdui.*;
+ 
+ /**
+@@ -77,9 +75,6 @@
+     /** Layers replication to not keep the lock on painting */
+     protected CLayer[] dirtyLayers = new CLayer[dirtyMaxCount];
+ 
+-    /** Layer currently accepting pen events */
+-    protected CLayer layerUnderPen;
+-
+     /**
+      * Background layer of this window, should be the bottom most layer
+      * of the window, can be invisible for transparent windows. 
+@@ -266,17 +261,12 @@
+     public boolean pointerInput(int type, int x, int y) {
+         CLayer layer;
+         synchronized (layers) {
+-            CLayer newLayerUnderPen = null;
+             for (CLayerElement le = layers.getTop();
+                     le != null; le = le.getLower()) {
+                 layer = le.getLayer();
+                 if (layer.visible && layer.supportsInput &&
+                     layer.handlePoint(x, y))
+                 {
+-                    // remeber topmost layer under pen
+-                    if (newLayerUnderPen == null) {
+-                        newLayerUnderPen = layer;
+-                    }
+                     // If the layer is visible, supports input, and
+                     // contains the point of the pointer press, we translate
+                     // the point into the layer's coordinate space and
+@@ -284,20 +274,10 @@
+                     if (layer.pointerInput(type, x - layer.bounds[X],
+                                            y - layer.bounds[Y]))
+                     {
+-                        if (layerUnderPen != null && newLayerUnderPen != layerUnderPen) {
+-                            layerUnderPen.pointerInput(EventConstants.GONE, -1, -1);
+-                        }
+-                        layerUnderPen = newLayerUnderPen;
+                         return true;
+                     }
+                 }
+             }
+-
+-            if (layerUnderPen != null && newLayerUnderPen != layerUnderPen) {
+-                layerUnderPen.pointerInput(EventConstants.GONE, -1, -1);
+-            }
+-            layerUnderPen = newLayerUnderPen;
+-
+         } // sync
+         return false;
+     }
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/BodyLayer.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/BodyLayer.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/BodyLayer.java	2009-10-08 13:26:45.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/BodyLayer.java	2009-10-08 22:16:15.000000000 +0200
+@@ -39,7 +39,7 @@
+  * contains the current Displayable contents, such as a Form or Canvas.
+  */
+ public class BodyLayer extends CLayer
+-    implements ScrollListener, GestureAnimatorListener {
++    implements ScrollListener {
+ 
+     /**
+      * The scroll indicator layer to notify of scroll settings
+@@ -51,22 +51,6 @@
+     ChamDisplayTunnel tunnel;
+ 
+     /**
+-     *  Y coordinate of pointer during pointer drag event.
+-     */
+-    private int pointerY = Integer.MAX_VALUE;
+-    
+-    /**
+-     *  Desired drag amount needed to return content
+-     *  to the stable position.
+-     */
+-    private int stableY = 0;
+-
+-    /**
+-     * Last delta of pointer y coordinate during drag operation.
+-     */
+-    private int pointerDeltaY = 0;
+-
+-    /**
+      * Create a new BodyLayer.
+      *
+      * @param tunnel BodyLayer needs a "tunnel" class to cross the package
+@@ -94,7 +78,7 @@
+         super(bgImage, bgColor);
+         this.tunnel = tunnel;
+         this.visible = false;
+-        setSupportsInput(true);
++
+         setScrollInd(ScrollIndLayer.getInstance(ScrollIndSkin.MODE));
+     }
+     
+@@ -115,7 +99,6 @@
+         super(bgImage, bgColor);
+         this.tunnel = tunnel;
+         this.visible = false;
+-        setSupportsInput(true);
+         setScrollInd(ScrollIndLayer.getInstance(ScrollIndSkin.MODE));
+     }
+ 
+@@ -377,68 +360,5 @@
+             scrollInd.setBounds();             
+         }
+     }
+-
+-    /**
+-     * Handle input from a pen tap.
+-     *
+-     * Parameters describe the type of pen event and the x,y location in the
+-     * layer at which the event occurred.
+-     *
+-     * Important: the x,y location of the pen tap will already be translated
+-     * into the coordinate space of the layer.
+-     *
+-     * @param type the type of pen event
+-     * @param x the x coordinate of the event
+-     * @param y the y coordinate of the event
+-     * @return
+-     */
+-    public boolean pointerInput(int type, int x, int y) {
+-        if (tunnel != null) {
+-            switch (type) {
+-                case EventConstants.PRESSED:
+-                    if (tunnel.callIsDraggable(x, y)) {
+-                        pointerY = y;
+-                    } else {
+-                        pointerY = Integer.MAX_VALUE;                        
+-                    }
+-                    break;
+-                case EventConstants.DRAGGED:
+-                    if (pointerY != Integer.MAX_VALUE) {
+-                        pointerDeltaY = pointerY - y;
+-                        stableY = tunnel.callDragContent(pointerDeltaY);
+-                        pointerY = y;
+-                    }
+-                    break;
+-                case EventConstants.FLICKERED:
+-                    if (pointerY != Integer.MAX_VALUE && pointerDeltaY != 0) {
+-                        GestureAnimator.flick(this, pointerDeltaY);
+-                        stableY = 0;
+-                    }
+-                    break;
+-                case EventConstants.RELEASED:
+-                case EventConstants.GONE:
+-                    if (stableY != 0) {
+-                        // IMPL_NOTE: should return 0
+-                        GestureAnimator.dragToStablePosition(this, stableY);
+-                        stableY = 0;
+-                    }
+-                    pointerY = Integer.MAX_VALUE;
+-                    break;
+-            }
+-        }
+-        // pass event to other consumers
+-        return false;
+-    }
+-
+-    /**
+-     * Drag displayable content
+-     * @param deltaY
+-     * @return desired drag amount to become stable
+-     */
+-    public int dragContent(int deltaY) {
+-        return tunnel.callDragContent(deltaY);
+-    }
+-
+-
+ }
+ 
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/MenuLayer.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/MenuLayer.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/MenuLayer.java	2009-10-08 13:26:45.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/MenuLayer.java	2009-10-08 22:11:49.000000000 +0200
+@@ -53,19 +53,8 @@
+      * than can fit on the menu.
+      */
+     protected int scrollIndex;
+-
+-    /**
+-     * Amount of pixels left from previous content dragging
+-     */
+-    protected int leftToDrag = 0;
+     
+-    /**
+-     *  Desired drag amount needed to return content
+-     *  to the stable position.
+-     */
+-    protected int stableY = 0;
+-
+-    /**
++    /** 
+      * The SoftButtonLayer maintains the overall set of
+      * commands and their associated listeners.
+      */
+@@ -140,9 +129,6 @@
+      */
+     public void updateScrollIndicator() {
+     	if (scrollInd != null) {
+-            if (stableY != 0) {
+-                return;
+-            }
+             if (menuCmds.length > MenuSkin.MAX_ITEMS) {
+                 scrollInd.setVerticalScroll(
+                   (scrollIndex * 100) / (menuCmds.length - MenuSkin.MAX_ITEMS),
+@@ -187,10 +173,8 @@
+      * @param y the y coordinate of the event
+      */
+     public boolean pointerInput(int type, int x, int y) {
+-        super.pointerInput(type, x, y);
+         switch (type) {
+         case EventConstants.PRESSED:
+-            leftToDrag = 0;
+             itemIndexWhenPressed =  itemIndexAtPointerPosition(x, y);
+ 
+             if (itemIndexWhenPressed != PRESS_OUT_OF_BOUNDS && itemIndexWhenPressed >= 0) {
+@@ -201,7 +185,6 @@
+             }
+             break;
+         case EventConstants.RELEASED:
+-            leftToDrag = 0;
+             int itemIndexWhenReleased = itemIndexAtPointerPosition(x, y);
+ 
+             // dismiss the menu layer if the user pressed outside the menu
+@@ -441,16 +424,16 @@
+         
+         if (menuCmds != null) {
+                        
+-            int y = MenuSkin.ITEM_TOPOFFSET +
+-                    (scrollIndex < 0 ? -scrollIndex * MenuSkin.ITEM_HEIGHT : 0);
++            int y = MenuSkin.ITEM_TOPOFFSET;
+             int x = 0;
+             Image arrow = null;
+-
+-            for (int cmdIndex = scrollIndex < 0 ? 0 : scrollIndex;
++            
++            for (int cmdIndex = scrollIndex; 
+                 (cmdIndex < menuCmds.length) 
+                     && (cmdIndex - scrollIndex < MenuSkin.MAX_ITEMS);
+                 cmdIndex++)
+             {
++                
+                 if (menuCmds[cmdIndex] instanceof SubMenuCommand) {
+                     arrow = MenuSkin.IMAGE_SUBMENU_ARROW;
+                     if (cmdIndex == selI && !cascadeMenuUp) {
+@@ -523,18 +506,18 @@
+                     arrow = null;
+                 }
+                 if (ScreenSkin.RL_DIRECTION) {
+-                    itemOffset = bounds[W] - MenuSkin.ITEM_ANCHOR_X - x;
+-                } else {
+-                    itemOffset = MenuSkin.ITEM_ANCHOR_X + x;
+-                }
++                         itemOffset = bounds[W] - MenuSkin.ITEM_ANCHOR_X - x;                                                     
++                     } else {
++                         itemOffset = MenuSkin.ITEM_ANCHOR_X;
++                     }
+                 g.drawString(menuCmds[cmdIndex].getLabel(),
+-                         itemOffset,
+-                         y, Graphics.TOP | ScreenSkin.TEXT_ORIENT);
+-
++                             itemOffset,
++                             y, Graphics.TOP | ScreenSkin.TEXT_ORIENT);
++                            
+                 x = 0;
+                 y += MenuSkin.ITEM_HEIGHT;                 
+             }
+-        }
++        }       
+     }
+ 
+     /**
+@@ -610,7 +593,6 @@
+                            "MenuLayer.scrollContent scrollType=" + scrollType + 
+                            " thumbPosition=" + thumbPosition); 
+         }
+-        leftToDrag = 0;
+         // keep old scrollIndex
+         int oldScrollIndex = scrollIndex;
+         
+@@ -654,52 +636,6 @@
+     }
+ 
+     /**
+-     * Drag the contents to the specified amount of pixels.
+-     * @param deltaY
+-     * @return desired drag amount to become stable
+-     */
+-    public int dragContent(int deltaY) {
+-        leftToDrag += deltaY;
+-        int itemCnt = leftToDrag / MenuSkin.ITEM_HEIGHT;
+-        if (itemCnt == 0) {
+-            return stableY - leftToDrag;
+-        }
+-
+-        scrollIndex += itemCnt;
+-        if (deltaY > 0) {
+-            if (selI < scrollIndex) {
+-                selI = scrollIndex;
+-                if (selI >= menuCmds.length) {
+-                    selI = menuCmds.length - 1;
+-                }
+-            }
+-        } else if (deltaY < 0) {
+-            if (selI >= scrollIndex + MenuSkin.MAX_ITEMS) {
+-                selI = scrollIndex + MenuSkin.MAX_ITEMS - 1;
+-                if (selI < 0) {
+-                    selI = 0;
+-                }
+-            }
+-        }
+-        updateScrollIndicator();
+-        requestRepaint();
+-        leftToDrag %= MenuSkin.ITEM_HEIGHT;
+-        if (scrollIndex < 0) {
+-            stableY = -scrollIndex * MenuSkin.ITEM_HEIGHT;
+-        } else if (scrollIndex > menuCmds.length - MenuSkin.MAX_ITEMS
+-                && menuCmds.length > MenuSkin.MAX_ITEMS) {
+-            stableY = (menuCmds.length - MenuSkin.MAX_ITEMS - scrollIndex)
+-                    * MenuSkin.ITEM_HEIGHT;
+-        } else if (scrollIndex > 0
+-                && menuCmds.length <= MenuSkin.MAX_ITEMS) {
+-            stableY = -scrollIndex * MenuSkin.ITEM_HEIGHT;
+-        } else {
+-            stableY = 0;
+-        }
+-        return stableY - leftToDrag;
+-    }
+-
+-    /**
+      * Update bounds of layer depend on visability of scroll indicator layer
+      */
+     public void updateBoundsByScrollInd() {
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/ScrollablePopupLayer.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/ScrollablePopupLayer.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/ScrollablePopupLayer.java	2009-10-08 13:26:45.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/com/sun/midp/chameleon/layers/ScrollablePopupLayer.java	2009-10-08 22:11:49.000000000 +0200
+@@ -30,7 +30,6 @@
+ import com.sun.midp.chameleon.skins.ScrollIndSkin;
+ import com.sun.midp.chameleon.skins.ScreenSkin;
+ import com.sun.midp.chameleon.skins.resources.ScrollIndResourcesConstants;
+-import com.sun.midp.lcdui.EventConstants;
+ 
+ import javax.microedition.lcdui.*;
+ 
+@@ -51,29 +50,13 @@
+  * PopupLayer and MIDPWindow can allow non visible popup layers.
+  */
+ public class ScrollablePopupLayer extends PopupLayer
+-    implements ScrollListener, GestureAnimatorListener {
++    implements ScrollListener {
+ 
+     /**
+      * The scroll indicator layer to notify of scroll settings
+      * in case not all content can fit on the menu.
+      */
+     protected ScrollIndLayer scrollInd;
+-
+-    /**
+-     *  Y coordinate of pointer during pointer drag event.
+-     */
+-    private int pointerY = Integer.MAX_VALUE;
+-
+-    /**
+-     *  Desired drag amount needed to return content
+-     *  to the stable position.
+-     */
+-    private int stableY = 0;
+-    
+-    /**
+-     * Last delta of pointer y coordinate during drag operation.
+-     */
+-    private int pointerDeltaY = 0;
+     
+     
+     /**
+@@ -82,7 +65,6 @@
+      */
+     public ScrollablePopupLayer() {
+         super((Image)null, -1);
+-        setSupportsInput(true);
+     }
+ 
+ 
+@@ -93,7 +75,6 @@
+      */
+     public ScrollablePopupLayer(Image bgImage, int bgColor) {
+         super(bgImage, bgColor);
+-        setSupportsInput(true);
+     }
+     
+     /**
+@@ -103,7 +84,6 @@
+      */
+     public ScrollablePopupLayer(Image[] bgImage, int bgColor) {
+         super(bgImage, bgColor);
+-        setSupportsInput(true);
+     }
+ 
+     /**
+@@ -116,16 +96,6 @@
+     public void scrollContent(int scrollType, int thumbPosition) {
+     }
+ 
+-    /**
+-     * Drag the contents to the specified amount of pixels.
+-     * @param deltaY
+-     * @return desired drag amount to become stable
+-     *
+-     */
+-    public int dragContent(int deltaY) {
+-        return 0;
+-    }
+-
+     public void setScrollInd(ScrollIndLayer newScrollInd) {
+         if (scrollInd != newScrollInd ||
+             scrollInd != null && scrollInd.scrollable != this ||
+@@ -202,50 +172,5 @@
+             scrollInd.setBounds();
+         }
+     }
+-
+-    /**
+-     * Handle input from a pen tap.
+-     *
+-     * Parameters describe the type of pen event and the x,y location in the
+-     * layer at which the event occurred.
+-     *
+-     * Important: the x,y location of the pen tap will already be translated
+-     * into the coordinate space of the layer.
+-     *
+-     * @param type the type of pen event
+-     * @param x the x coordinate of the event
+-     * @param y the y coordinate of the event
+-     * @return
+-     */
+-    public boolean pointerInput(int type, int x, int y) {
+-        switch (type) {
+-            case EventConstants.PRESSED:
+-                pointerY = y;
+-                break;
+-            case EventConstants.DRAGGED:
+-                if (pointerY != Integer.MAX_VALUE) {
+-                    pointerDeltaY = pointerY - y;
+-                    stableY = dragContent(pointerY - y);
+-                    pointerY = y;
+-                }
+-                break;
+-            case EventConstants.FLICKERED:
+-                if (pointerDeltaY != 0) {
+-                    GestureAnimator.flick(this, pointerDeltaY);
+-                    stableY = 0;
+-                }
+-                break;
+-            case EventConstants.RELEASED:
+-            case EventConstants.GONE:
+-                if (stableY != 0) {
+-                    GestureAnimator.dragToStablePosition(this, stableY);
+-                    stableY = 0;
+-                }
+-                pointerY = Integer.MAX_VALUE;
+-                break;
+-        }
+-        return true;
+-    }
+-    
+ }
+ 
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ChoiceGroupPopupLFImpl.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ChoiceGroupPopupLFImpl.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ChoiceGroupPopupLFImpl.java	2009-10-08 13:26:44.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ChoiceGroupPopupLFImpl.java	2009-10-08 22:11:49.000000000 +0200
+@@ -450,7 +450,6 @@
+     void uCallPointerPressed(int x, int y) {
+         itemWasPressed = true;
+         itemSelectedWhenPressed = false;
+-        pointerDragged = false;
+         if (popupLayer.isPopupOpen()) {
+             // popupLayer.
+             int i = getIndexByPointer(x, y);
+@@ -477,12 +476,8 @@
+      * @param y the x coordinate of the pointer up
+      */
+     void uCallPointerReleased(int x, int y) {
+-        if (!itemWasPressed || pointerDragged) {
+-            itemSelectedWhenPressed = false;
+-            itemWasPressed = false;
+-            pointerDragged = false;
++        if (!itemWasPressed)
+             return;
+-        }
+         
+         if (popupLayer.isPopupOpen()) {
+             // do not dismiss the popup until a new selection is made.
+@@ -500,23 +495,9 @@
+         }
+         itemSelectedWhenPressed = false;
+         itemWasPressed = false;
+-        pointerDragged = false;
+-
+-    }
+ 
+-    /**
+-     * Called by the system to signal a pointer drag
+-     *
+-     * @param x the x coordinate of the pointer drag
+-     * @param y the x coordinate of the pointer drag
+-     *
+-     * @see #getInteractionModes
+-     */
+-    void uCallPointerDragged(int x, int y) {
+-        pointerDragged = true;
+     }
+ 
+-
+     /**
+      * Called by the system to indicate the size available to this Item
+      * has changed
+@@ -823,23 +804,6 @@
+         }
+ 
+         /**
+-         * Drag the contents to the specified amount of pixels.
+-         * @param deltaY
+-         * @return desired drag amount to become stable
+-         */
+-        public int dragContent(int deltaY) {
+-            int newY = viewable[Y] + deltaY;
+-            updatePopupLayer(newY);
+-            if (newY < 0) {
+-                return -newY;
+-            } else if (newY > viewable[HEIGHT] - viewport[HEIGHT]) {
+-                return viewable[HEIGHT] - viewport[HEIGHT] - newY;
+-            }
+-            return 0;
+-        }
+-
+-
+-        /**
+          * Perform a line scrolling in the given direction. This method will
+          * attempt to scroll the view to show next/previous line.
+          *
+@@ -957,18 +921,10 @@
+          */
+         public void updateScrollIndicator() {
+             if (scrollInd != null) {
+-                if (viewable[Y] < 0 ||
+-                        viewable[Y] > viewable[HEIGHT] - viewport[HEIGHT]) {
+-                    return;
+-                }
+                 if (sbVisible) {
+-                    if (viewable[HEIGHT] <= viewport[HEIGHT]) {
+-                        scrollInd.setVerticalScroll(0, 100);
+-                    } else {
+-                        scrollInd.setVerticalScroll((viewable[Y] * 100 /
+-                                           (viewable[HEIGHT] - viewport[HEIGHT])),
+-                                          (viewport[HEIGHT] * 100 / viewable[HEIGHT]));
+-                    }
++                    scrollInd.setVerticalScroll(
++                          (viewable[Y] * 100 / (viewable[HEIGHT] - viewport[HEIGHT])),
++                          (viewport[HEIGHT] * 100 / viewable[HEIGHT]));
+                 } else {
+                     scrollInd.setVerticalScroll(0, 100);
+                 }
+@@ -1003,11 +959,7 @@
+             case EventConstants.RELEASED:
+                 lf.uCallPointerReleased(transX, transY);
+                 break;
+-            case EventConstants.DRAGGED:
+-                lf.uCallPointerDragged(transX, transY);
+-                break;
+             }
+-            super.pointerInput(type, x, y);
+             return consume;
+         }
+ 
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/CustomItemLFImpl.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/CustomItemLFImpl.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/CustomItemLFImpl.java	2009-10-08 13:26:44.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/CustomItemLFImpl.java	2009-10-08 22:11:49.000000000 +0200
+@@ -630,7 +630,6 @@
+     void uCallPointerDragged(int x, int y) {
+         try {
+             synchronized (Display.calloutLock) {
+-                itemWasPressed = false;
+                 customItem.pointerDragged(x - contentBounds[X] -
+                                           ScreenSkin.PAD_FORM_ITEMS, 
+                                           y - contentBounds[Y] - 
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DEPopupLayer.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DEPopupLayer.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DEPopupLayer.java	2009-10-08 13:26:44.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DEPopupLayer.java	2009-10-08 22:11:49.000000000 +0200
+@@ -142,11 +142,9 @@
+      * @return true always, since popupLayers swallow all pointer events
+      */
+     public boolean pointerInput(int type, int x, int y) {
+-        super.pointerInput(type, x, y);
+         boolean consume = true;
+         switch (type) {
+         case EventConstants.PRESSED:
+-            leftToDrag = 0;
+             itemIndexWhenPressed =  itemIndexAtPointerPosition(x, y);
+             if (itemIndexWhenPressed == PRESS_OUT_OF_BOUNDS) {
+                 hide();
+@@ -164,7 +162,6 @@
+             } 
+             break;
+         case EventConstants.RELEASED:
+-            leftToDrag = 0;
+             int itemIndexWhenReleased = itemIndexAtPointerPosition(x,y);
+             
+             if (itemIndexWhenReleased == itemIndexWhenPressed) {
+@@ -248,10 +245,12 @@
+      */
+     public void paintBody(Graphics g) {
+         boolean hilighted = false;
+-        int y = 0;
++        int translatedY = 0;
+         int textOffset = 2;
+         
+ 
++        int transY = elementHeight;
++
+         endIndex = startIndex + (elementsToFit - 1);
+ 
+         if (hilightedIndex > endIndex) {
+@@ -262,22 +261,23 @@
+         if (ScreenSkin.RL_DIRECTION) {
+             textOffset = elementWidth - textOffset - ScrollIndSkin.WIDTH + 3;
+         }
+-        if (startIndex < 0) {
+-            y = -startIndex * elementHeight;
+-        }
++
+         g.setFont(DateEditorSkin.FONT_POPUPS);
+-        for (int i = startIndex < 0 ? 0 : startIndex; i < elements.length; i++) {
++        for (int i = startIndex; i <= endIndex; i++) {
+             hilighted = (i == hilightedIndex);
+ 
+             if (hilighted) {
+                 g.setColor(DateEditorSkin.COLOR_TRAVERSE_IND);
+-                g.fillRect(0, y, elementWidth, elementHeight);
++                g.fillRect(0, 0, elementWidth, elementHeight);
+             }
+ 
+             g.setColor(0);
+-            g.drawString(elements[i], textOffset, y, ScreenSkin.TEXT_ORIENT | Graphics.TOP);
+-            y += elementHeight;
++            g.drawString(elements[i], textOffset, 0, ScreenSkin.TEXT_ORIENT | Graphics.TOP);
++            g.translate(0, transY);
++            translatedY += transY;
+         }
++
++        g.translate(0, -translatedY);
+     }
+ 
+ 
+@@ -435,31 +435,6 @@
+     }
+ 
+     /**
+-     * Drag the contents to the specified amount of pixels.
+-     * @param deltaY
+-     * @return desired drag amount to become stable
+-     */
+-    public int dragContent(int deltaY) {
+-        leftToDrag += deltaY;
+-        startIndex += leftToDrag / elementHeight;
+-        updatePopupLayer();
+-        leftToDrag %= elementHeight;
+-        stableY = 0;
+-        if (startIndex < 0) {
+-            stableY = -startIndex * elementHeight;
+-        } else if (startIndex > numElements - elementsToFit
+-                && numElements > elementsToFit) {
+-            stableY = (numElements - elementsToFit - startIndex) *
+-                    elementHeight;
+-        } else if (startIndex > 0
+-                && numElements <= elementsToFit) {
+-            stableY = -startIndex * elementHeight;
+-        }
+-        return stableY - leftToDrag;
+-    }
+-    
+-
+-    /**
+      * Perform a page flip in the given direction. This method will
+      * attempt to scroll the view to show as much of the next page
+      * as possible. It uses the locations and bounds of the items on
+@@ -532,11 +507,7 @@
+     public void updateScrollIndicator() {
+         if (scrollInd != null) {
+             scrollInd.update(null);
+-
+-            if (stableY != 0) {
+-                return;
+-            }
+-            if (sbVisible && numElements > 0 && numElements != elementsToFit) {
++            if (sbVisible) {
+                 scrollInd.setVerticalScroll(
+                                             startIndex * 100 / (numElements - elementsToFit),
+                                             elementsToFit * 100 / numElements);                                            
+@@ -559,14 +530,6 @@
+         } else if (hilightedIndex >= startIndex + elementsToFit) {
+             hilightedIndex = startIndex + elementsToFit - 1;
+         }
+-
+-        if (hilightedIndex >= numElements) {
+-            hilightedIndex = numElements - 1;
+-        }
+-        
+-        if (hilightedIndex < 0) {
+-            hilightedIndex = 0;
+-        }
+         updateScrollIndicator();
+         addDirtyRegion();
+         requestRepaint();
+@@ -642,18 +605,7 @@
+     private int hilightedIndex;    
+ 
+     /** Selected index. Index accepted by pressing set or fire key */
+-    private int selectedIndex;
+-
+-    /**
+-     * Amount of pixels left from previous content dragging
+-     */
+-    protected int leftToDrag = 0;
+-
+-    /**
+-     *  Desired drag amount needed to return content
+-     *  to the stable position.
+-     */
+-    protected int stableY = 0;    
++    private int selectedIndex;    
+ 
+     /**
+      * True if traversal past the last item in the popup should jump to the
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DisplayableLFImpl.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DisplayableLFImpl.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DisplayableLFImpl.java	2009-10-08 13:26:44.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/DisplayableLFImpl.java	2009-10-08 22:11:49.000000000 +0200
+@@ -560,28 +560,8 @@
+     public void uCallScrollContent(int scrollType, int thumbPosition) {
+         // by default nothing to do 
+     }
+-
+-    /**
+-     * Checks whether it is allowed to start content dragging from
+-     * this point
+-     * @param x the x coordinate of the point to check
+-     * @param y the y coordinate of the point to check
+-     */
+-    public boolean uIsDraggable(int x, int y) {
+-        return true;
+-    }
+-
+-    /**
+-     * This method notify displayable to drag its content
+-     *
+-     * @param deltaY
+-     * @return desired drag amount to become stable
+-     */
+-    public int uCallDragContent(int deltaY) {
+-        // by default nothing to do
+-        return 0;
+-    }
+     
++
+     /**
+      * Display calls this method on it's current Displayable.
+      * This function simply calls lCallPaint() after obtaining LCDUILock.
+@@ -750,10 +730,6 @@
+                         eventType = 2;
+                     }
+                     break;
+-                case EventConstants.FLICKERED:
+-                    if (sawPointerPress) {
+-                        eventType = 3;
+-                    }
+                 default:
+                     // will be handled below
+                     break;
+@@ -772,9 +748,6 @@
+         case 2:
+             uCallPointerDragged(x, y);
+             break;
+-        case 3:
+-            uCallPointerFlickered(x, y);
+-            break;
+         default:
+             if (sawPointerPress) {
+                 Logging.report(Logging.ERROR, LogChannels.LC_HIGHUI,
+@@ -806,13 +779,6 @@
+      * @param y The y coordinate of the release
+      */
+     void uCallPointerReleased(int x, int y) { }
+-    /**
+-     * Handle a pointer flicker event
+-     *
+-     * @param x The x coordinate of the flickered
+-     * @param y The y coordinate of the flickered
+-     */
+-     void uCallPointerFlickered(int x, int y) { }
+         
+ 
+     /**
+@@ -1202,7 +1168,7 @@
+      * Used to indicate the invalidate is needed
+      */
+     boolean pendingInvalidate;
+-
++   
+     // ************************************************************
+     //  Static initializer, constructor
+     // ************************************************************
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/FormLFImpl.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/FormLFImpl.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/FormLFImpl.java	2009-10-08 13:26:44.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/FormLFImpl.java	2009-10-08 22:11:49.000000000 +0200
+@@ -2393,55 +2393,6 @@
+         }
+     }
+ 
+-
+-    /**
+-     * Perform a scrolling by specified number of pixels.
+-     * Returns amount of pixels to drag to return content
+-     * to the stable position.
+-     * @param deltaY number of pixels to scroll
+-     * @return desired drag amount to become stable
+-     */
+-    protected int uScrollBy(int deltaY) {
+-        int ret = 0;
+-        ItemLFImpl[] items = null;
+-        synchronized (Display.LCDUILock) {
+-            items = new ItemLFImpl[numOfLFs];
+-            System.arraycopy(itemLFs, 0, items, 0, numOfLFs);
+-        }
+-        int oldY = viewable[Y];
+-        if (owner instanceof TextBox && itemLFs[0] instanceof TextBoxLFImpl) {
+-            ret = ((TextBoxLFImpl)itemLFs[0]).uScrollBy(deltaY);
+-        } else {
+-            ret = super.uScrollBy(deltaY);
+-        }
+-        if (oldY != viewable[Y]) {
+-            uInitItemsInViewport(viewable[Y] > oldY ? Canvas.DOWN : Canvas.UP,
+-                                 items, traverseIndex);
+-            updateCommandSet();
+-        }
+-        return ret;
+-    }
+-
+-    /**
+-     * Checks whether it is allowed to start content dragging from
+-     * this point
+-     * @param x the x coordinate of the point to check
+-     * @param y the y coordinate of the point to check
+-     */
+-    public boolean uIsDraggable(int x, int y) {
+-        ItemLFImpl item = null;
+-        synchronized (Display.LCDUILock) {
+-            if (numOfLFs > 0) {
+-                item = findItemByPointer(x, y);
+-            }
+-        }
+-        if (item!= null && item instanceof CustomItemLFImpl) {
+-            return false;
+-        }
+-        return true;
+-    }
+-
+-
+     /**
+      * A boolean declaring whether the contents of the viewport
+      * can be traversed using the horizontal traversal keys,
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ItemLFImpl.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ItemLFImpl.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ItemLFImpl.java	2009-10-08 13:26:44.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ItemLFImpl.java	2009-10-08 22:11:49.000000000 +0200
+@@ -940,7 +940,6 @@
+      */
+     void uCallPointerPressed(int x, int y) {
+         itemWasPressed = true;
+-        pointerDragged = false;
+     }
+     
+     /**
+@@ -956,13 +955,11 @@
+         y -= contentBounds[Y];
+         if ( (x >= 0 && x <= contentBounds[WIDTH] && y >= 0 &&
+               y <= contentBounds[HEIGHT]) &&
+-             (itemWasPressed && !pointerDragged 
+-                     && (hasFocus || item.owner.numCommands <= 1))) {
++             (itemWasPressed && (hasFocus || item.owner.numCommands <= 1))) {
+             //should check the x,y is in item's content area
+             uCallKeyPressed(Constants.KEYCODE_SELECT);
+         }
+         itemWasPressed = false;
+-        pointerDragged = false;
+     }
+     
+     /**
+@@ -973,9 +970,7 @@
+      *
+      * @see #getInteractionModes
+      */
+-    void uCallPointerDragged(int x, int y) {
+-        pointerDragged = true;
+-    }
++    void uCallPointerDragged(int x, int y) { }
+     
+     /**
+      * Called by the system to indicate the size available to this Item
+@@ -1522,10 +1517,6 @@
+ 
+     /** true is the item has been focused before pointer down */
+     boolean itemWasPressed; // = false
+-
+-    /** true if pointer dragged over the item **/
+-    boolean pointerDragged; // = false;
+-
+     
+     /** True if internal cycle need in this item.*/
+     boolean isInternalCycle;
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ScreenLFImpl.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ScreenLFImpl.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ScreenLFImpl.java	2009-10-08 13:26:44.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/ScreenLFImpl.java	2009-10-08 22:11:49.000000000 +0200
+@@ -96,7 +96,6 @@
+         }
+     }
+ 
+-
+     /**
+      * Set the vertical scroll position and proportion
+      *
+@@ -115,8 +114,8 @@
+     boolean setVerticalScroll(int scrollPosition, int scrollProportion) {
+         this.vScrollPosition = scrollPosition;
+         this.vScrollProportion = scrollProportion;
+-
+-        if (lIsShown() && scrollPosition >= 0 && scrollPosition <= 100) {
++            
++        if (lIsShown()) {
+             return currentDisplay.setVerticalScroll(scrollPosition, scrollProportion);
+         }
+         return false;
+@@ -245,33 +244,11 @@
+     }
+ 
+     /**
+-     * Perform a scrolling by specified number of pixels.
+-     * Returns amount of pixels to drag to return content
+-     * to the stable position.
+-     * @param deltaY number of pixels to scroll
+-     * @return desired drag amount to become stable
+-     */
+-    protected int uScrollBy(int deltaY) {
+-        int max = getMaxScroll();
+-        viewable[Y] += deltaY;
+-        if (viewable[Y] < 0) {
+-            return -viewable[Y];
+-        } else if (viewable[Y] > max) {
+-            return max - viewable[Y];
+-        }
+-        return 0;
+-    }
+-
+-    /**
+      * The maximum amount of scroll needed to see all the contents
+      * @return get the maximum scroll amount
+      */
+     protected int getMaxScroll() {
+-        if (viewable[HEIGHT] <= viewport[HEIGHT]) {
+-            return 0;
+-        } else {
+-            return viewable[HEIGHT] - viewport[HEIGHT];
+-        }
++        return viewable[HEIGHT] - viewport[HEIGHT];
+     }
+     
+     /**
+@@ -328,34 +305,8 @@
+             setupScroll();
+         }
+     }
+-
+-    /**
+-     * Checks whether it is allowed to start content dragging from
+-     * this point
+-     * @param x the x coordinate of the point to check
+-     * @param y the y coordinate of the point to check
+-     */
+-    public boolean uIsDraggable(int x, int y) {
+-        return true;
+-    }
+     
+     /**
+-     * This method notify displayable to drag its content
+-     *
+-     * @param deltaY
+-     * @return desired drag amount to become stable
+-     */
+-    public int uCallDragContent(int deltaY) {
+-        int oldY = viewable[Y];
+-        int ret = uScrollBy(deltaY);
+-        if (oldY != viewable[Y]) {
+-            uRequestPaint();
+-            setupScroll();
+-        }
+-        return ret;
+-    }
+-
+-    /**
+      * all scroll actions should be handled through here.
+      * 
+      */
+@@ -370,7 +321,7 @@
+                            "[F] >> viewable[HEIGHT] == "+viewable[HEIGHT] +
+                            " lastScrollSize == "+lastScrollSize);
+         }
+-       
++        
+         // check if scroll moves, and if so, refresh scrollbars
+         if (!invalidScroll &&
+             (viewable[Y] != lastScrollPosition ||
+@@ -453,7 +404,6 @@
+      */
+     private int lastScrollSize = -1;
+ 
+-
+     // ************************************************************
+     //  Static initializer, constructor
+     // ************************************************************
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/TextBoxLFImpl.java patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/TextBoxLFImpl.java
+--- orig/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/TextBoxLFImpl.java	2009-10-08 13:26:44.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfjava/classes/javax/microedition/lcdui/TextBoxLFImpl.java	2009-10-08 22:11:49.000000000 +0200
+@@ -53,17 +53,6 @@
+     protected boolean scrollInitialized;
+ 
+     /**
+-     * Amount of pixels left from previous content dragging
+-     */
+-    protected int leftToDrag = 0;
+-
+-    /**
+-     *  Desired drag amount needed to return content
+-     *  to the stable position.
+-     */
+-    protected int stableY = 0;
+-
+-    /**
+      * Creates TextFieldLF for the passed in TextField.
+      * @param tf The TextField associated with this TextFieldLF
+      */
+@@ -287,12 +276,9 @@
+         
+         Text.updateTextInfo(str, font, w, h, offset, options, cursor, info);
+ 
+-        g.translate(0, stableY);
+-
+         Text.paintText(info, g, str, font, fgColor, 0xffffff - fgColor,
+-                       w, h - stableY, offset, options, cursor);
++                       w, h, offset, options, cursor);
+         
+-        g.translate(0, -stableY);
+         // just correct cursor index if the charracter has
+         // been already committed 
+         if (str != null && str.length() > 0) {
+@@ -348,10 +334,6 @@
+      * @param height The height available for the Item's content
+      */
+     void lPaintContent(Graphics g, int width, int height) {
+-        int cX = g.getClipX();
+-        int cY = g.getClipY();
+-        int cW = g.getClipWidth();
+-        int cH = g.getClipHeight();
+         g.translate(TextFieldSkin.BOX_MARGIN, TextFieldSkin.BOX_MARGIN);
+         width -= (2 * TextFieldSkin.BOX_MARGIN);
+         height -= ((2 * TextFieldSkin.BOX_MARGIN) +     
+@@ -387,16 +369,12 @@
+         // Input session should be retrieved from the current Display
+         TextInputSession is = getInputSession();
+ 
+-        int w = width - 2 * TextFieldSkin.PAD_H;
+-        int h = height - 2 * TextFieldSkin.PAD_V;
+-        g.clipRect(0, 0, w, h);
+-
+         paint(g, tf.buffer,
+               is.getPendingChar(),
+               tf.constraints, 
+               ScreenSkin.FONT_INPUT_TEXT, 
+               (editable ? TextFieldSkin.COLOR_FG : TextFieldSkin.COLOR_FG_UE), 
+-              w, h, 0,
++              width - (2 * (TextFieldSkin.PAD_H)), height, 0,  
+               Text.NORMAL, cursor, myInfo); 
+ 
+         if (!scrollInitialized) {
+@@ -417,9 +395,6 @@
+         
+ 
+         g.translate(-TextFieldSkin.BOX_MARGIN, -TextFieldSkin.BOX_MARGIN);
+-        //restore clip
+-        g.setClip(cX, cY, cW, cH);
+-
+     }
+ 
+     /**
+@@ -567,59 +542,10 @@
+      * @param context position  
+      */
+     protected void uScrollAt(int position) {
+-        setTopVis(((myInfo.height - myInfo.visLines * ScreenSkin.FONT_INPUT_TEXT.getHeight()) *
+-                          position / 100) / ScreenSkin.FONT_INPUT_TEXT.getHeight());
+-    }
+-
+-    /**
+-     * Perform a scrolling by specified number of pixels.
+-     * Returns amount of pixels to drag to return content
+-     * to the stable position.
+-     * @param deltaY number of pixels to scroll
+-     * @return desired drag amount to become stable
+-     */
+-    protected int uScrollBy(int deltaY) {
+-        leftToDrag += deltaY;
+-        int lineH = ScreenSkin.FONT_INPUT_TEXT.getHeight();
+-        int lineCnt = leftToDrag / lineH;
+-        int newTopVis = myInfo.topVis + lineCnt;
+-        int oldTopVis = myInfo.topVis;
+-        if (editable) {
+-            // accept the word if the PTI is currently enabled
+-            acceptPTI();
+-        }
+-        if (newTopVis < 0) {
+-            stableY = -newTopVis * lineH;
+-        } else if (newTopVis > myInfo.numLines - myInfo.visLines
+-                && myInfo.numLines > myInfo.visLines) {
+-            stableY = (myInfo.numLines - myInfo.visLines - newTopVis)
+-                    * lineH;
+-        } else if (newTopVis > 0
+-                && myInfo.numLines <= myInfo.visLines) {
+-            stableY = -newTopVis * lineH;
+-        } else {
+-            stableY = 0;
+-            leftToDrag %= lineH;
+-            myInfo.topVis = newTopVis;
+-            if (editable) {
+-                cursor.y += (myInfo.topVis - oldTopVis) * ScreenSkin.FONT_INPUT_TEXT.getHeight();
+-                cursor.option = Text.PAINT_GET_CURSOR_INDEX;
+-            }
+-            myInfo.isModified = myInfo.scrollY = true;
+-        }
+-
+-        updateTextInfo();
+-        return stableY - leftToDrag % lineH;
+-    }
+-
+-    /**
+-     * Updates myInfo.topVis and validates new value.
+-     * @param newTopVis new value
+-     */
+-    private void setTopVis(int newTopVis) {
+         int oldTopVis = myInfo.topVis;
+-        myInfo.topVis  = newTopVis;
+-
++        myInfo.topVis  = ((myInfo.height - myInfo.visLines * ScreenSkin.FONT_INPUT_TEXT.getHeight()) *
++                          position / 100) / ScreenSkin.FONT_INPUT_TEXT.getHeight();
++        
+         if (myInfo.topVis < 0) {
+             myInfo.topVis = 0;
+         } else if (myInfo.topVis + myInfo.visLines > myInfo.numLines) {
+diff -Naur orig/midp/src/highlevelui/lcdlf/lfplatform/classes/javax/microedition/lcdui/DisplayableLFImpl.java patched/midp/src/highlevelui/lcdlf/lfplatform/classes/javax/microedition/lcdui/DisplayableLFImpl.java
+--- orig/midp/src/highlevelui/lcdlf/lfplatform/classes/javax/microedition/lcdui/DisplayableLFImpl.java	2009-10-08 13:26:50.000000000 +0200
++++ patched/midp/src/highlevelui/lcdlf/lfplatform/classes/javax/microedition/lcdui/DisplayableLFImpl.java	2009-10-08 22:11:49.000000000 +0200
+@@ -543,27 +543,6 @@
+     }
+ 
+     /**
+-     * Checks whether it is allowed to start content dragging from
+-     * this point
+-     * @param x the x coordinate of the point to check
+-     * @param y the y coordinate of the point to check
+-     */
+-    public boolean uIsDraggable(int x, int y) {
+-        return true;
+-    }
+-    
+-    /**
+-     * This method notifies displayable to drag its content
+-     *
+-     * @param deltaY
+-     * @return desired drag amount to become stable
+-     */
+-    public int uCallDragContent(int deltaY) {
+-        // by default nothing to do
+-        return 0;
+-    }
+-
+-    /**
+      * <code>Display</code> calls this method on it's current 
+      * <code>Displayable</code>.
+      * <code>Displayable</code> uses this opportunity to do necessary stuff
+diff -Naur orig/midp/src/highlevelui/lcdui/reference/classes/com/sun/midp/lcdui/EventConstants.java patched/midp/src/highlevelui/lcdui/reference/classes/com/sun/midp/lcdui/EventConstants.java
+--- orig/midp/src/highlevelui/lcdui/reference/classes/com/sun/midp/lcdui/EventConstants.java	2009-10-08 13:27:04.000000000 +0200
++++ patched/midp/src/highlevelui/lcdui/reference/classes/com/sun/midp/lcdui/EventConstants.java	2009-10-08 22:11:49.000000000 +0200
+@@ -58,16 +58,6 @@
+      * Minor ID indicating a pointer drag.
+      */
+     public static final int DRAGGED  = 3;  // pen
+-    
+-    /**
+-     * Minor ID indicating a combined pointer flick event.
+-     */
+-    public static final int FLICKERED = 5; // pen
+-
+-    /**
+-     * Minor ID indicating pointer out event.
+-     */
+-    public static final int GONE = 6; // pen
+ 
+     /**
+      * Minor ID indicating that command event requires posting a menu.
+diff -Naur orig/midp/src/highlevelui/lcdui/reference/classes/javax/microedition/lcdui/Display.jpp patched/midp/src/highlevelui/lcdui/reference/classes/javax/microedition/lcdui/Display.jpp
+--- orig/midp/src/highlevelui/lcdui/reference/classes/javax/microedition/lcdui/Display.jpp	2009-10-08 13:27:02.000000000 +0200
++++ patched/midp/src/highlevelui/lcdui/reference/classes/javax/microedition/lcdui/Display.jpp	2009-10-08 22:11:49.000000000 +0200
+@@ -2859,35 +2859,6 @@
+         }
+ 
+         /**
+-         * Checks whether it is allowed to start content dragging from
+-         * this point
+-         * @param x the x coordinate of the point to check
+-         * @param y the y coordinate of the point to check
+-         */
+-        public boolean callIsDraggable(int x, int y) {
+-            DisplayableLF currentCopy = Display.this.current;
+-            if (currentCopy != null) {
+-                return currentCopy.uIsDraggable(x,y);
+-            }
+-            return false;
+-        }
+-
+-        /**
+-         * This method is used by Chameleon to invoke
+-         * Displayable.uCallDragContent() method.
+-         *
+-         * @param deltaY
+-         * @return desired drag amount to become stable
+-         */
+-        public int callDragContent(int deltaY) {
+-            DisplayableLF currentCopy = Display.this.current;
+-            if (currentCopy != null) {
+-                return currentCopy.uCallDragContent(deltaY);
+-            }
+-            return 0;
+-        }
+-
+-        /**
+          * Updates the scroll indicator.
+          */
+         public void updateScrollIndicator() {

@@ -176,7 +176,9 @@ include $(MIDP_DEFS_CDC_MK)
 ifeq ($(CVM_PRELOAD_LIB), true)
 # Add MIDP classes to JCC input list so they can be romized.
 CVM_JCC_INPUT           += $(MIDP_PRIV_CLASSES_ZIP)
-CVM_JCC_CL_MIDP_INPUT	+= -cl:midp:boot $(MIDP_PUB_CLASSES_ZIP) $(JSROP_AGENT_JARS)
+#harmattan: make all classes to a ClassLoader object named 'boot'. Do not use child 'midp'. 使所有类库中的类都放在名称为boot的ClassLoader下, 如果按原来MIDP外部接口类放在midp的ClassLoader下, 诺基亚API的部分类在JCC运行时无法找到基类, JCC的ClassLoader不会从基层查找其子级ClassLoader.
+#CVM_JCC_CL_MIDP_INPUT	+= -cl:midp:boot $(MIDP_PUB_CLASSES_ZIP) $(JSROP_AGENT_JARS)
+CVM_JCC_CL_MIDP_INPUT	+= $(MIDP_PUB_CLASSES_ZIP) $(JSROP_AGENT_JARS)
 # Add MIDP CNI classes to CVM_CNI_CLASSES
 CVM_CNI_CLASSES += $(MIDP_CNI_CLASSES)
 else

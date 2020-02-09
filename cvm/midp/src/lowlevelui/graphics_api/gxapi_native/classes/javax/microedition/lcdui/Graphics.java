@@ -2012,6 +2012,7 @@ public class Graphics {
      * @return Graphics creator reference
      */
     synchronized Object getCreator() {
+			System.out.println("Graphics get creator -> " + this.creator + ": " + (this.creator != null ? (this.creator instanceof javax.microedition.lcdui.Canvas) + "" : "NULL"));
         return creator;
     }
 
@@ -2023,7 +2024,41 @@ public class Graphics {
         // Ignore repeated attempts to set creator
         if (this.creator == null) {
             this.creator = creator;
+			System.out.println("Graphics set creator -> " + this.creator + ": " + (this.creator != null ? (this.creator instanceof javax.microedition.lcdui.Canvas) + "" : "NULL"));
         }
     }
     
+	//k get graphics creator width/height
+    public Object GetGraphicsCreator(int size[] /* = null */) // length >= 2
+	{
+		Canvas canvas;
+        if (this.creator != null)
+		{
+            if (creator instanceof Display)
+			{
+				/*
+                MIDPWindow window = ((Display)creator).getWindow();
+                return window.getBodyAnchorX() + window.getBodyWidth();
+				*/
+            }
+            if (creator instanceof Canvas)
+			{
+				if(size != null)
+				{
+					canvas = (Canvas)creator;
+					size[0] = canvas.getWidth();
+					size[1] = canvas.getHeight();
+				}
+            }
+        }
+		else
+		{
+			if(size != null)
+			{
+				size[0] = this.getMaxWidth();
+				size[1] = this.getMaxHeight();
+			}
+		}
+		return creator;
+	}
 } // class Graphics

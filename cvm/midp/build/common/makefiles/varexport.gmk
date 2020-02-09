@@ -122,7 +122,9 @@ PATHVARLIST = $(sort \
   JC_DIR      \
   JPEG_DIR    \
   TOOLS_DIR   \
+  NOKIA_API_DIR \
   )
+#harmattan: UNUSED. add nokia api verexport
 
 # build variables that contain a value
 
@@ -220,7 +222,9 @@ OPTIONVARLIST = $(sort \
   USE_MULTIPLE_DISPLAYS \
   USE_AUTOTESTER \
   USE_PUBLIC_AMS_API \
+  USE_NOKIA_API \
   )
+#harmattan: UNUSED. add nokia api verexport
 
 ######################################################################
 

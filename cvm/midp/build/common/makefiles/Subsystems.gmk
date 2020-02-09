@@ -574,3 +574,15 @@ JPP_DEFS += -DENABLE_CMS
 EXTRA_CFLAGS += -DENABLE_CMS=1
 include $(CMS_DIR)/build/$(SUBSYSTEM_MAKE_FILE)
 endif
+
+#harmattan: UNUSED. add nokia api. 应该无影响
+#####################################################################
+# (Extra) Nokia API
+# Description: Nokia API
+#####################################################################
+
+ifeq ($(USE_NOKIA_API), true)
+JPP_DEFS += -DENABLE_NOKIA_API
+include $(NOKIA_API_DIR)/build/$(SUBSYSTEM_MAKE_FILE)
+endif
+

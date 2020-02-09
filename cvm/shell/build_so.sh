@@ -57,9 +57,12 @@ export JSR_75_PIM_HANDLER_IMPL=java
 export USE_JSR_179=true
 export USE_JSR_135=true
 
+export USE_NOKIA_API=true
+export NOKIA_API_DIR=$WORK_DIR/nokia_api
+
 #echo "CVM_TARGET_TOOLS_PREFIX=$CVM_TARGET_TOOLS_PREFIX" >> cdc/build/linux-arm-generic/GNUmakefile
 
-rm -rf tools/output
+#rm -rf tools/output
 cd cdc/build/linux-arm-generic
 make -f GNUmakefile bin USE_VERBOSE_MAKE=true CVM_TARGET_TOOLS_PREFIX=$CVM_TARGET_TOOLS_PREFIX $@
 

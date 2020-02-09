@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+Name=MIDlet Service
+Exec=/opt/phoneme/bin/midletservice
+Icon=duke
+NoDisplay=true
+MimeType=application/x-java-archive;application/java-archive;text/vnd.sun.j2me.app-descriptor;
+X-HildonDesk-ShowInToolbar=true
+X-Window-Icon=duke
+X-Window-Icon-Dimmed=duke
+X-Osso-Type=application/x-example
+X-Osso-Service=be.preuveneers.davy.phoneme.MIDlet

@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=be.preuveneers.davy.phoneme.MIDlet
+Exec=/opt/phoneme/bin/midletservice

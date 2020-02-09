@@ -1005,6 +1005,7 @@ LINKCVM_OBJECTS = \
 ifneq ($(CVM_PROVIDE_TARGET_RULES), true)
 $(CVM_BINDIR)/$(CVM) :: $(LINKCVM_OBJECTS) $(LINKCVM_EXTRA_DEPS)
 	@echo "Linking $@"
+	#harmattan: debug #echo $(TARGET_LD) $(SO_LINKFLAGS) -o $@ $(LINKCVM_EXTRA_OBJECTS) $(LINKLIBS) $(LINKCVM_LIBS)
 	$(call CVM_LINK_CMD, $(LINKCVM_OBJECTS) $(LINKCVM_EXTRA_OBJECTS), $(LINKCVM_LIBS))
 	@echo "Done Linking $@"
 endif

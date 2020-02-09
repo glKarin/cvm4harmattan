@@ -1,0 +1,143 @@
+# JSR184 M3G
+SUBSYSTEMS += jsr184
+
+JPP_DEFS += -DENABLE_CDC
+
+JSR_184_GENERATED_DIR   = $(JSR_184_BUILD_DIR)/generated
+
+JSR_184_LIB_NAME      = jsr184
+JSR_184_JAR           = $(JSROP_JAR_DIR)/$(JSR_184_LIB_NAME).jar
+JSR_184_BUILD_DIR       = $(JSROP_BUILD_DIR)/$(JSR_184_LIB_NAME)
+
+# Abstractions component is used
+USE_ABSTRACTIONS=true
+
+# Javadoc source path
+JSR_184_SOURCEPATH = \
+    $(JSR_184_DIR)/src/classes \
+
+JSR_184_PACKAGES = \
+    javax/microedition.m3g
+
+# Java files for the ( jsr 184 ) module
+#
+MODULE_JSR_184_JAVA_FILES = \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/AnimationController.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/AnimationTrack.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Appearance.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Background.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Camera.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/CompositingMode.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Defs.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Fog.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Graphics3D.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Group.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Image2D.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/IndexBuffer.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Interface.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/KeyframeSequence.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Light.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Loader.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/M3gRunnable.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Material.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Mesh.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/MorphingMesh.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Node.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Object3D.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Platform.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/PolygonMode.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/RayIntersection.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/SkinnedMesh.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Sprite3D.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Texture2D.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Transformable.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/Transform.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/TriangleStripArray.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/VertexArray.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/VertexBuffer.java \
+							  $(JSR_184_DIR)/src/classes/javax/microedition/m3g/World.java
+
+# Determines what option we have made and set it
+								  #CSynchronization.cpp \
+# to some variable that global makefile recognize
+#
+SUBSYSTEM_JSR_184_JAVA_FILES   = \
+								   $(MODULE_JSR_184_JAVA_FILES)
+
+vpath % $(JSR_184_DIR)/src/native/src
+
+SUBSYSTEM_JSR_184_NATIVE_FILES += \
+								  qgl.c \
+								  CSynchronization.c \
+								  m3g_android_java_api.c \
+								  m3g_core.c \
+								  m3g_android.c \
+								  m3g_android_gl.c
+
+GRAPHICS_DIR = $(MIDP_DIR)/src/lowlevelui
+
+SUBSYSTEM_JSR_184_INCLUDE_DIRS += \
+	$(JSR_184_DIR)/src/native \
+	$(JSR_184_DIR)/src/native/jni \
+	$(JSR_184_DIR)/src/native/inc \
+	$(JSR_184_DIR)/src/native/src \
+	$(JSR_184_DIR)/src/native/android \
+	$(GRAPHICS_DIR)/graphics/include \
+	$(GRAPHICS_DIR)/graphics/gx_putpixel/include \
+	$(GRAPHICS_DIR)/image_api/include \
+	$(MIDP_DIR)/src/core/kni_util/include \
+	$(CDC_DIST_DIR)/midp/midp_linux_fb_gcc
+
+
+	#/opt/jdk1.7.0_75/include \
+	#/opt/jdk1.7.0_75/include/linux \
+
+JSR_184_NATIVE_LIB    = $(JSROP_LIB_DIR)/$(LIB_PREFIX)$(JSR_184_LIB_NAME)$(LIB_POSTFIX)
+JSR_184_NATIVE_OBJS   = $(patsubst %.c,$(JSROP_OBJ_DIR)/%.o,$(SUBSYSTEM_JSR_184_NATIVE_FILES))
+
+JSROP_NATIVE_OBJS    += $(JSR_184_NATIVE_OBJS)
+JSROP_NATIVE_LIBS    += $(JSR_184_NATIVE_LIB)
+JSROP_INCLUDE_DIRS   += $(SUBSYSTEM_JSR_184_INCLUDE_DIRS)
+#JSROP_LINKLIBS += -ldl -lEGL -lGLES_CM
+#LINKCVM_LIBS += -ldl -lEGL -lGLES_CM
+
+$(JSR_184_NATIVE_LIB): $(JSR_184_NATIVE_OBJS)
+	@echo "Linking $@"
+	$(AT)$(call makeSharedLibrary, $(JSR_184_NATIVE_OBJS))
+
+
+# Internal paths for jsr 184 module
+#
+INTERNAL_JSR_184_CONFIG_DIR= $(JSR_184_DIR)/src/share/config
+
+# Include JSR_179 system properties in Configuration
+#JSR_184_PROPERTY_FILES = \
+	#$(INTERNAL_JSR_184_CONFIG_DIR)/common/properties_JSR_184.xml
+
+#SUBSYSTEM_CONFIGURATION_INPUT_FILES += \
+	#$(JSR_184_PROPERTY_FILES)
+
+# Specify romizer configuration file for the jsr
+# and path where the file is located
+#
+ROMGEN_INCLUDE_PATHS += $(JSR_184_DIR)/src/share/config
+ROMGEN_CFG_FILES     += JSR_184_rom.cfg
+
+JSR_184_INIT_PACKAGE    = $(JSR_INIT_PACKAGE).JSR_184
+
+JPP_DEFS             += -DENABLE_JSR_184
+
+JSR_184_DEPS += $(MIDP_CLASSES_ZIP) $(JSR_75_JAR)
+
+$(JSR_184_JAR): $(SUBSYSTEM_JSR_184_JAVA_FILES)
+	@echo "Build JSR 184 $(JSR_184_BUILD_DIR) $(JSR_184_JAR)"
+	$(call compileJSROP,JSR_184,$(JSR_184_BUILD_DIR)/classes,\
+		$(SUBSYSTEM_JSR_184_JAVA_FILES),$(PS)$(subst $(space),$(PS),$(JSR_184_DEPS)))
+	$(call makeJSROPJar,$(JSR_184_JAR),$(JSR_184_BUILD_DIR)/classes)
+
+# Append jsr 184 source bundle creation to target
+source_bundle:: JSR_184_source_bundle
+
+# Create jsr 184 source in subdir 'JSR_184/'
+JSR_184_SOURCE_OUTPUT_DIR=$(SOURCE_OUTPUT_DIR)/JSR_184
+

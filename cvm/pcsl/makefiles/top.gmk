@@ -155,7 +155,7 @@ ifeq ($(USE_SERVER_SOCKET), true)
 CFLAGS += -DENABLE_SERVER_SOCKET=1
 endif
 
-#Harmattan
+#harmattan: for build shared library. 构建动态库.
 ifeq ($(CVM_BUILD_SO),true)
 CFLAGS += -fPIC
 endif

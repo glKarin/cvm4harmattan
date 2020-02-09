@@ -284,6 +284,7 @@ public class JavaCodeCompact extends LinkerUtil {
 		    String parentName =
 			arg.substring(sepIndex + 1, arg.length());
 		    parent = ClassTable.getClassLoader(parentName);
+			System.out.println("%%%%%" + name + " " + parentName + (parent != null ? "<<" : ">>"));
 		    if (parent == null) {
 			/* parent classloader not defined */
 			System.err.println(Localizer.getString(
@@ -436,6 +437,7 @@ public class JavaCodeCompact extends LinkerUtil {
 	if (verbosity != 0) System.out.println(Localizer.getString(
 		"javacodecompact.resolving_superclass_hierarchy") );
 	if (! ClassInfo.resolveSupers()){
+		System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 	    return false; // missing superclass is a fatal error.
 	}
 	for (int i = 0; i < nclasses; i++){
@@ -512,6 +514,7 @@ public class JavaCodeCompact extends LinkerUtil {
                 // These classes will be loaded, but their constant pool
                 // entries wil not be resolved yet.
 		if (jcc.processOptions(clist)) {
+			System.out.println("))))))))))))))))))))))))))))))))");
                     // If we got here, then the arguments were parsed
                     // successfully.  Now, we are ready to do some
                     // additional work.  This includes resolving the

@@ -1,0 +1,83 @@
+# Nokia API
+SUBSYSTEMS += nokia_api
+
+JPP_DEFS += -DENABLE_CDC
+
+NOKIA_API_GENERATED_DIR   = $(NOKIA_API_BUILD_DIR)/generated
+
+NOKIA_API_LIB_NAME      = nokia_api
+NOKIA_API_JAR           = $(JSROP_JAR_DIR)/$(NOKIA_API_LIB_NAME).jar
+NOKIA_API_BUILD_DIR       = $(JSROP_BUILD_DIR)/$(NOKIA_API_LIB_NAME)
+
+# Abstractions component is used
+USE_ABSTRACTIONS=true
+
+# Javadoc source path
+NOKIA_API_SOURCEPATH = \
+    $(NOKIA_API_DIR)/src/classes \
+
+NOKIA_API_PACKAGES = \
+    com.nokia.mid.ui \
+		com.nokia.mid.sound
+
+# Java files for the ( nokia api ) module
+#
+MODULE_NOKIA_API_JAVA_FILES = \
+	$(NOKIA_API_DIR)/src/classes/com/nokia/mid/sound/Sound.java	\
+	$(NOKIA_API_DIR)/src/classes/com/nokia/mid/ui/DirectGraphics.java \
+	$(NOKIA_API_DIR)/src/classes/com/nokia/mid/sound/SoundListener.java \
+	$(NOKIA_API_DIR)/src/classes/com/nokia/mid/ui/DirectUtils.java \
+	$(NOKIA_API_DIR)/src/classes/com/nokia/mid/ui/DeviceControl.java \
+	$(NOKIA_API_DIR)/src/classes/com/nokia/mid/ui/FullCanvas.java \
+	$(NOKIA_API_DIR)/src/classes/com/nokia/mid/ui/DirectGraphicsImp.java
+
+# new s40 api
+#NOKIA_S40_API=true
+ifeq ($(NOKIA_S40_API), true)
+	include $(NOKIA_API_DIR)/build/s40.gmk
+	NOKIA_API_SOURCEPATH += $(NOKIA_S40_API_SOURCEPATH)
+	NOKIA_API_PACKAGES += $(NOKIA_S40_API_PACKAGES)
+	MODULE_NOKIA_API_JAVA_FILES += $(NOKIA_S40_API_JAVA_FILES)
+	NOKIA_API_DEPS += $(JSR_135_JAR)
+endif
+
+# Determines what option we have made and set it
+# to some variable that global makefile recognize
+#
+SUBSYSTEM_NOKIA_API_JAVA_FILES   = \
+    $(MODULE_NOKIA_API_JAVA_FILES)
+
+# Internal paths for nokia api module
+#
+INTERNAL_NOKIA_API_CONFIG_DIR= $(NOKIA_API_DIR)/src/share/config
+
+# Include JSR_179 system properties in Configuration
+#NOKIA_API_PROPERTY_FILES = \
+#$(INTERNAL_NOKIA_API_CONFIG_DIR)/common/properties_nokia_api.xml
+
+#SUBSYSTEM_CONFIGURATION_INPUT_FILES += \
+#$(NOKIA_API_PROPERTY_FILES)
+
+# Specify romizer configuration file for the jsr
+# and path where the file is located
+#
+ROMGEN_INCLUDE_PATHS += $(NOKIA_API_DIR)/src/share/config
+ROMGEN_CFG_FILES     += nokia_api_rom.cfg
+
+NOKIA_API_INIT_PACKAGE    = $(JSR_INIT_PACKAGE).nokia_api
+
+JPP_DEFS             += -DENABLE_NOKIA_API
+
+NOKIA_API_DEPS += $(MIDP_CLASSES_ZIP)
+
+$(NOKIA_API_JAR): $(SUBSYSTEM_NOKIA_API_JAVA_FILES)
+	@echo "Build Nokia API $(NOKIA_API_BUILD_DIR) $(NOKIA_API_JAR)"
+	$(call compileJSROP,nokia_api,$(NOKIA_API_BUILD_DIR)/classes,\
+        $(SUBSYSTEM_NOKIA_API_JAVA_FILES),$(PS)$(subst $(space),$(PS),$(NOKIA_API_DEPS)))
+	$(call makeJSROPJar,$(NOKIA_API_JAR),$(NOKIA_API_BUILD_DIR)/classes)
+
+# Append nokia api source bundle creation to target
+source_bundle:: nokia_api_source_bundle
+
+# Create nokia api source in subdir 'nokia_api/'
+NOKIA_API_SOURCE_OUTPUT_DIR=$(SOURCE_OUTPUT_DIR)/nokia_api

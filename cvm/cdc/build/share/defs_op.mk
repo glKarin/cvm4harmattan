@@ -60,8 +60,8 @@ JSROP_OP_FLAGS = $(foreach jsr_number,$(JSROP_NUMBERS),\
 INCLUDED_JSROP_NUMBERS = $(patsubst USE_JSR_%=true,%,\
               $(filter %true, $(JSROP_OP_FLAGS)))
 
-# Create a list of a JSR jar files we want to build.
-JSROP_BUILD_JARS = $(filter-out $(JSROP_JAR_DIR)/jsr205.jar,$(foreach jsr_number,$(INCLUDED_JSROP_NUMBERS),\
+# Create a list of a JSR jar files we want to build. #harmattan: UNUSED: add jsr to $(JSROP_BUILD_JARS). 不使用, 此处添加jsr
+JSROP_BUILD_JARS = $(filter-out $(JSROP_JAR_DIR)/jsr205.jar, $(foreach jsr_number,$(INCLUDED_JSROP_NUMBERS),\
            $(JSROP_JAR_DIR)/jsr$(jsr_number).jar))
 
 # JSROP_AGENT_JARS - list (space sepd) of jars that should be romized with MIDP's class loader.
@@ -373,6 +373,9 @@ endif
 include $(JAVACALL_MAKE_FILE)
 endif
 
+#harmattan: add classes into JCC for preload. If not set, nokia api will not build. 添加额外的库, 否则不会被直接构建
+JSROP_JARS += $(JSROP_JAR_DIR)/nokia_api.jar #$(MIDP_CLASSES_ZIP)
+
 # The list of all used JSR jar files
 JSROP_JARS_LIST = $(subst $(space),$(PS),$(JSROP_JARS) $(JSROP_EXTRA_JARS))
 
@@ -458,3 +461,15 @@ include $(RMI_DEFS_FILE)
 # fixup RMI_SRCDIR. $(RMI_DIR)/build/share/defs_rmi_pkg.mk uses it.
 RMI_SRCDIR = $(RMI_DIR)/src/share/rmi/classes
 endif
+
+#harmattan: UNUSED: defs for build nokia api. 添加诺基亚API的构建声明, rules_op.mk中已引用
+# Nokia API
+# ifeq ($(USE_NOKIA_API), true)
+# export NOKIA_API_DIR ?= $(COMPONENTS_DIR)/nokia_api
+# NOKIA_API_MAKE_FILE = $(NOKIA_API_DIR)/build/$(SUBSYSTEM_MAKE_FILE)
+# ifeq ($(wildcard $(NOKIA_API_MAKE_FILE)),)
+# $(error NOKIA_API_DIR must point to a directory containing Nokia API sources)
+# endif
+# include $(NOKIA_API_MAKE_FILE)
+# endif
+

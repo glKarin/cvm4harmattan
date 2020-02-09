@@ -1,0 +1,310 @@
+2020-01-13 19:46:57
+/home/user/cvm/phoneme/bin/cvm -Xmx12m -Dmicroedition.profiles=MIDP-2.1 -Dmicroedition.location.version=1.0 -Dsun.midp.library.name=midp -Dsun.midp.home.path=/home/user/cvm/cvm/cdc/build/linux-arm-generic/midp/midp_linux_fb_gcc -Dcom.sun.midp.mainClass.name=com.sun.midp.main.CdcMIDletSuiteLoader sun.misc.MIDPLauncher
+("/home/user/cvm/phoneme/bin/cvm", "-Xmx12m", "-Dmicroedition.profiles=MIDP-2.1", "-Dmicroedition.location.version=1.0", "-Dsun.midp.library.name=midp", "-Dsun.midp.home.path=/home/user/cvm/cvm/cdc/build/linux-arm-generic/midp/midp_linux_fb_gcc", "-Dcom.sun.midp.mainClass.name=com.sun.midp.main.CdcMIDletSuiteLoader", "sun.misc.MIDPLauncher", "-harm-jar", "/home/user/MyDocs/Demo3D.jar", "-harm-midlet-no", "1") 
+("/home/user/cvm/phoneme/bin/cvm", "-Xmx12m", "-Dmicroedition.profiles=MIDP-2.1", "-Dmicroedition.location.version=1.0", "-Dsun.midp.library.name=midp", "-Dsun.midp.home.path=/home/user/cvm/cvm/cdc/build/linux-arm-generic/midp/midp_linux_fb_gcc", "-Dcom.sun.midp.mainClass.name=com.sun.midp.main.CdcMIDletSuiteLoader", "sun.misc.MIDPLauncher") 
+("/home/user/cvm/phoneme/bin/cvm", "-Xmx12m", "-Dmicroedition.profiles=MIDP-2.1", "-Dmicroedition.location.version=1.0", "-Dsun.midp.library.name=midp", "-Dsun.midp.home.path=/home/user/cvm/cvm/cdc/build/linux-arm-generic/midp/midp_linux_fb_gcc", "-Dcom.sun.midp.mainClass.name=com.sun.midp.main.CdcMIDletSuiteLoader", "sun.misc.MIDPLauncher", "-suitepath", "/home/user/MyDocs/Demo3D.jar", "-1", "com.superscape.m3g.wtksamples.life3d.Life3D") 
+Successfully resolved MeeGo graphics system: /usr/lib/qt4/plugins/graphicssystems/libqmeegographicssystem.so 
+
+Found SGX/MBX driver, enabling FullClearOnEveryFrame 
+Found v1.4 driver, enabling brokenTexSubImage 
+MeegoGraphics: found EGL_NOK_image_shared
+MeegoGraphics: found EGL_KHR_lock_surface2
+MeegoGraphics: found EGL_KHR_fence_sync
+240 320 854 480 3 false false true 
+%%%%%%%%%%%%%%%  240 320 
+240 320 854 480 
+QRect(247,0 360x480) QRect(0,0 240x320) false 
+---------------- 
+|||||||| 854 480 QSize(854, 480) QRect(0,0 0x0) 
+240 320 854 480 3 false false true 
+%%%%%%%%%%%%%%%  240 320 
+240 320 854 480 
+QRect(247,0 360x480) QRect(0,0 240x320) false 
+---------------- 
+240 320 854 480 3 false false true 
+%%%%%%%%%%%%%%%  240 320 
+240 320 854 480 
+QRect(247,0 360x480) QRect(0,0 240x320) false 
+---------------- 
+|||||||| 854 480 QSize(854, 480) QRect(0,0 0x0) 
+
+DBus error:
+org.freedesktop.DBus.Error.AccessDenied
+Rejected send message, 2 matched rules; type="method_call", sender=":1.470" (uid=29999 pid=20920 comm="/home/user/cvm/phoneme/bin/cvm -Xmx12m -Dmicroedit") interface="com.nokia.positioningd.client" member="registerListener" error name="(unset)" requested_reply=0 destination="com.nokia.positioningd.client" (uid=29999 pid=1386 comm="/usr/bin/positioningd "))
+hijackWindow() context created for FrameBuffer(0xaebac5c0) 1 
+Found SGX/MBX driver, enabling FullClearOnEveryFrame 
+Found v1.4 driver, enabling brokenTexSubImage 
+QGLWindowSurface: Using plain widget as window surface QGLWindowSurface(0x603660) 
+CVM Configuration:
+	Java stack chunk size (stackChunkSize): 2048
+	Java stack minimum size (stackMinSize): 3072
+	Java stack maximum size (stackMaxSize): 131072
+JIT Configuration:
+	Interpreter transition cost (icost): 20
+	Mixed transition cost (mcost): 50
+	Backwards branch cost (bcost): 4
+	Compilation threshold (climit): 20000
+	When to compile (compile): policy
+	What to inline (inline): virtual+nonvirtual+vhints+ihints
+	Max Inlining Depth (maxInliningDepth): 12
+	Max Inlining Code Length (maxInliningCodeLength): 68
+	Min Inlining Code Length (minInliningCodeLength): 16
+	Policy Triggered Decompilations (policyTriggeredDecompilations): true
+	Max Working Memory Size (maxWorkingMemorySize): 1048576
+	Max Compiled Method Size (maxCompiledMethodSize): 65535
+	Code Cache Size (codeCacheSize): 524288
+	Upper Code Cache Threshold (upperCodeCacheThreshold): 95%
+	Lower Code Cache Threshold (lowerCodeCacheThreshold): 90%
+	Pass Phi values in registers (XregisterPhis): true
+	Pass locals in registers between blocks (XregisterLocals): true
+	Compiling Causes Class Loading (XcompilingCausesClassLoading): false
+	Trace (trace): none
+GC[SS]: Initialized semi-space gen for generational GC
+	Size of *each* semispace in bytes=1048576
+	Limits of generation = [0x3ce29000,0x3d029000)
+	First semispace      = [0x3ce29000,0x3cf29000)
+	Second semispace     = [0x3cf29000,0x3d029000)
+	Current semispace    = First semispace
+GC[MC]: Initialized mark-compact gen for generational GC
+	Size of the space in bytes=1048576
+	Limits of generation = [0x3d029000,0x3d129000)
+GC[generational]: Sizes
+	youngGen = min 1048576 start 1048576 max 1048576
+	oldGen   = min 1048576 start 1048576 max 11534336
+	overall  = min 2097152 start 2097152 max 12582912
+GC[generational]: Auxiliary data structures
+	heapBaseMemoryArea=[0x3ce29000,0x3db29000)
+	cardTable=[0x3db29000,0x3db2f800)
+	objectHeaderTable=[0x3db30000,0x3db36800)
+	summaryTable=[0x3db37000,0x3db51000)
+Graphics set creator -> javax.microedition.lcdui.Display@14fe35d7: false
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private Interface() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private boolean initNativePeer() {
+[Java M3G]: static :: static boolean uiThreadAvailable() {
+[Java M3G]: static :: static void executeInUIThread(M3gRunnable obj) {
+[Java M3G]: static :: static boolean uiThreadAvailable() {
+--- M3G event log ---
+[Java M3G]: sratic::javax.microedition.m3g.Interface$1@33f90336 :: public void checkAndThrow() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {1042504600} :: Transformable(long handle) {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {1042504600} :: Node(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {1042504600} :: Group(long handle) {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {1042504600} :: public World() {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.Group@e52dc22b {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.Group@e52dc22b {1042504744} :: Transformable(long handle) {
+[Java M3G]: javax.microedition.m3g.Group@e52dc22b {1042504744} :: Node(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: javax.microedition.m3g.Group@e52dc22b {1042504744} :: public Group() {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {1042504600} :: public void addChild(Node child) {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {1042504600} :: private void linkChild(Node child) {
+[Java M3G]: javax.microedition.m3g.Group@e52dc22b {1042504744} :: void setParent(Node parent) {
+[Java M3G]: javax.microedition.m3g.Group@e52dc22b {1042504744} :: public void setOrientation(float angle, float ax, float ay, float az) {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.Group@e326d22d {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.Group@e326d22d {1042504880} :: Transformable(long handle) {
+[Java M3G]: javax.microedition.m3g.Group@e326d22d {1042504880} :: Node(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: javax.microedition.m3g.Group@e326d22d {1042504880} :: public Group() {
+[Java M3G]: javax.microedition.m3g.Group@e52dc22b {1042504744} :: public void addChild(Node child) {
+[Java M3G]: javax.microedition.m3g.Group@e52dc22b {1042504744} :: private void linkChild(Node child) {
+[Java M3G]: javax.microedition.m3g.Group@e326d22d {1042504880} :: void setParent(Node parent) {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.Camera@f5b0b822 {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.Camera@f5b0b822 {1042505472} :: Transformable(long handle) {
+[Java M3G]: javax.microedition.m3g.Camera@f5b0b822 {1042505472} :: Node(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: sratic::Object3D :: static final Object3D getInstance(long handle) {
+[Java M3G]: static :: static final Object3D getObjectInstance(long handle) {
+[Java M3G]: javax.microedition.m3g.Camera@f5b0b822 {1042505472} :: public Camera() {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {1042504600} :: public void addChild(Node child) {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {1042504600} :: private void linkChild(Node child) {
+[Java M3G]: javax.microedition.m3g.Camera@f5b0b822 {1042505472} :: void setParent(Node parent) {
+[Java M3G]: javax.microedition.m3g.World@f841ecfc {1042504600} :: public void setActiveCamera(Camera camera) {
+[Java M3G]: javax.microedition.m3g.Camera@f5b0b822 {1042505472} :: public void setParallel(float height, float aspectRatio, float near, float far) {
+------ CVM start ------
+  * MIDlet jar: /home/user/MyDocs/Demo3D.jar
+  * MIDlet jad: 
+  * MIDlet name: Demo3D
+  * MIDlet icon: 
+  * MIDlet class: com.superscape.m3g.wtksamples.life3d.Life3D
+/home/user/cvm/phoneme/bin/cvm -Xmx12m -Dmicroedition.profiles=MIDP-2.1 -Dmicroedition.location.version=1.0 -Dsun.midp.library.name=midp -Dsun.midp.home.path=/home/user/cvm/cvm/cdc/build/linux-arm-generic/midp/midp_linux_fb_gcc -Dcom.sun.midp.mainClass.name=com.sun.midp.main.CdcMIDletSuiteLoader sun.misc.MIDPLauncher -suitepath /home/user/MyDocs/Demo3D.jar -1 com.superscape.m3g.wtksamples.life3d.Life3D
+[Harmattan]: Load EGL/OpenGL(1) library......
+[Harmattan]: dlopen(libEGL.so, RTLD_LAZY) -> 0x3b4b2b00
+[Harmattan]: dlopen(libGLES_CM.so, RTLD_LAZY) -> 0x3e21c598
+[Harmattan]: EGL/OpenGL library symbols load finish
+eglGetDisplay(+0) -> 0X2
+eglQueryString(0X2, +3054) -> (null)
+EGL_Error -> 3001
+eglGetDisplay(+0) -> 0X2
+eglInitialize(0X2, (nil), (nil)) -> ^1
+eglGetDisplay(+0) -> 0X2
+eglChooseConfig(0X2, 0x3cc10128, 0x3cc1013c, 1, 0x3cc10140) -> ^1
+eglGetDisplay(+0) -> 0X2
+eglCreateContext(0X2, 0X2, 0X0, (nil)) -> 0X3E235EE8
+eglGetDisplay(+0) -> 0X2
+eglCreatePbufferSurface(0X2, 0X2, 0x3cc10128) -> 0x3E23FE80
+eglGetDisplay(+0) -> 0X2
+eglMakeCurrent(0X2, 0X3E23FE80, 0X3E23FE80, 0X3E235EE8) -> ^1
+glGetString( 0x1F00 ) -> Imagination Technologies
+[Harmattan]: OpenGL vendor -> Imagination Technologies
+glGetString( 0x1F02 ) -> OpenGL ES-CM 1.1
+[Harmattan]: OpenGL version -> OpenGL ES-CM 1.1
+glGetString( 0x1F01 ) -> PowerVR SGX 530
+[Harmattan]: OpenGL renderer -> PowerVR SGX 530
+glGetString( 0x1F03 ) -> GL_OES_byte_coordinates GL_OES_fixed_point GL_OES_single_precision GL_OES_matrix_get GL_OES_read_format GL_OES_compressed_paletted_texture GL_OES_point_sprite GL_OES_point_size_array GL_OES_matrix_palette GL_OES_draw_texture GL_OES_query_matrix GL_OES_texture_env_crossbar GL_OES_texture_mirrored_repeat GL_OES_texture_cube_map GL_OES_blend_subtract GL_OES_blend_func_separate GL_OES_blend_equation_separate GL_OES_stencil_wrap GL_OES_extended_matrix_palette GL_OES_framebuffer_object GL_OES_rgb8_rgba8 GL_OES_depth24 GL_OES_stencil8 GL_OES_compressed_ETC1_RGB8_texture GL_OES_mapbuffer GL_OES_EGL_image GL_EXT_multi_draw_arrays GL_OES_required_internalformat GL_IMG_read_format GL_IMG_texture_compression_pvrtc GL_IMG_texture_format_BGRA8888 GL_EXT_texture_format_BGRA8888 GL_IMG_texture_stream GL_OES_EGL_sync GL_IMG_vertex_program 
+[Harmattan]: OpenGL extensions -> GL_OES_byte_coordinates GL_OES_fixed_point GL_OES_single_precision GL_OES_matrix_get GL_OES_read_format GL_OES_compressed_paletted_texture GL_OES_point_sprite GL_OES_point_size_array GL_OES_matrix_palette GL_OES_draw_texture GL_OES_query_matrix GL_OES_texture_env_crossbar GL_OES_texture_mirrored_repeat GL_OES_texture_cube_map GL_OES_blend_subtract GL_OES_blend_func_separate GL_OES_blend_equation_separate GL_OES_stencil_wrap GL_OES_extended_matrix_palette GL_OES_framebuffer_object GL_OES_rgb8_rgba8 GL_OES_depth24 GL_OES_stencil8 GL_OES_compressed_ETC1_RGB8_texture GL_OES_mapbuffer GL_OES_EGL_image GL_EXT_multi_draw_arrays GL_OES_required_internalformat GL_IMG_read_format GL_IMG_texture_compression_pvrtc GL_IMG_texture_format_BGRA8888 GL_EXT_texture_format_BGRA8888 GL_IMG_texture_stream GL_OES_EGL_sync GL_IMG_vertex_program 
+glActiveTexture symbol address: Qt/OpenGLES2 -> 0x43c871d8, OpenGLES1(dlopen) -> 0x3ae86674
+glGetString symbol address: Qt/OpenGLES2 -> 0x43c7288c, OpenGLES1(dlopen) -> 0x3ae89084
+OpenGLESv1 symbol address: glEnableClientState -> 0x3ae88218, glFogf -> 0x3ae84a74, glColor4f -> 0x3ae84894, glVertexPointer -> 0x3ae8bf48
+glGetString( 0x1F01 ) -> PowerVR SGX 530
+glGetIntegerv( 0xD33, 0x3cc10144 )
+glGetIntegerv( 0xD3A, 0x3cc10144 )
+eglGetDisplay(+0) -> 0X2
+eglMakeCurrent(0X2, 0X0, 0X0, 0X0) -> ^1
+eglGetDisplay(+0) -> 0X2
+eglDestroySurface(0X2, 0X3E23FE80) -> ^1
+eglGetDisplay(+0) -> 0X2
+eglDestroyContext(0X2, 0X3E235EE8) -> ^1
+eglGetDisplay(+0) -> 0X2
+eglTerminate(0X2) -> ^1
+[Java_javax_microedition_m3g_Camera__1setParallel]: 1042505472, 0.000000 1.874990 -5240591897150035774979178496setParallel 1042505472 1.0 0.0 0.0 0.0
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.Appearance@c308d06f {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.Appearance@c308d06f {1042478192} :: public Appearance() {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@6aac2d11 {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@6aac2d11 {1042286872} :: IndexBuffer(long handle) {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@6aac2d11 {1042286872} :: public TriangleStripArray(int firstIndex, final int[] stripLengths) {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@25c2f05e {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@25c2f05e {1042506176} :: IndexBuffer(long handle) {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@25c2f05e {1042506176} :: public TriangleStripArray(int firstIndex, final int[] stripLengths) {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@9132b3ea {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@9132b3ea {1042505016} :: IndexBuffer(long handle) {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@9132b3ea {1042505016} :: public TriangleStripArray(int firstIndex, final int[] stripLengths) {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@50c2002b {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@50c2002b {1042505832} :: IndexBuffer(long handle) {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@50c2002b {1042505832} :: public TriangleStripArray(int firstIndex, final int[] stripLengths) {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@3199294a {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@3199294a {1042476792} :: IndexBuffer(long handle) {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@3199294a {1042476792} :: public TriangleStripArray(int firstIndex, final int[] stripLengths) {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@ed65e196 {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@ed65e196 {1042476952} :: IndexBuffer(long handle) {
+[Java M3G]: javax.microedition.m3g.TriangleStripArray@ed65e196 {1042476952} :: public TriangleStripArray(int firstIndex, final int[] stripLengths) {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.VertexBuffer@6cbd5415 {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.VertexBuffer@6cbd5415 {1042477112} :: public VertexBuffer() {
+[Java M3G]: javax.microedition.m3g.VertexBuffer@6cbd5415 {1042477112} :: public void setDefaultColor(int ARGB) {
+[Java M3G]: static :: private static long createHandle(int numVertices, int numComponents, int componentSize) {
+[Java M3G]: static :: static final void heuristicGC() {
+[Java M3G]: static :: static final long getHandle() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: sratic::javax.microedition.m3g.Interface@5480dc34 :: private void integrityCheck() {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.VertexArray@c3db5fce {0} :: Object3D(long handle) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: static :: static final void register(Object3D obj) {
+[Java M3G]: static :: static final Interface getInstance() {
+[Java M3G]: javax.microedition.m3g.VertexArray@c3db5fce {1042477280} :: public VertexArray(int numVertices, int numComponents, int componentSize) {
+[Java M3G]: javax.microedition.m3g.VertexArray@c3db5fce {1042477280} :: public void set(int startIndex, int length, short[] values) {
+[Java M3G]: javax.microedition.m3g.VertexBuffer@6cbd5415 {1042477112} :: public void setPositions(VertexArray positions, float scale, float[] bias) {
+Java setVertices -------------------->bias NULL
+Process #20920 received signal 11
+Process #20920 being suspended

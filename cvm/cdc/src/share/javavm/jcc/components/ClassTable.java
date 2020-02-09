@@ -136,6 +136,7 @@ class ClassTable
     enterClass(ClassInfo cinfo, ClassLoader loader) {
 	loader.enterClass(cinfo);
 	String className = cinfo.className;
+	System.out.println("---------------------" + className + " loder---->" + loader.name);
 	// Make sure a classvector hasn't been created yet.
 	// (used to add, now we just assert that it isn't necessary).
 	if (vm.ClassClass.hasClassVector()){
@@ -150,8 +151,10 @@ class ClassTable
     public static boolean
     enterClass(ClassInfo cinfo){
 	if (!(cinfo instanceof vm.ArrayClassInfo)) {
+		System.out.println("############################" + cinfo.className + " -> " + loader.name);
 	    return enterClass(cinfo, loader);
 	} else {
+		System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^" + cinfo.className + " -> " + cinfo.loader.name);
 	    return enterClass(cinfo, cinfo.loader);
 	}
     }

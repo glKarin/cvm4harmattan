@@ -237,9 +237,9 @@ public class CertificateException extends java.io.IOException {
             return "Certificate failed verification";
         }
 
-				// Harmattan
-				// For jdk7, missing StringBuilder before java1.5
-        // return "Unknown reason (" + reason + ")";
+		//harmattan
+		// For jdk7, missing StringBuilder before java1.5. JAVA7移除了StringBuilder, 使用StringBuffer代替
+		// return "Unknown reason (" + reason + ")";
         return new StringBuffer("Unknown reason (").append(reason).append(")").toString();
     }
 }

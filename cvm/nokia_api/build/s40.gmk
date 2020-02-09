@@ -1,0 +1,54 @@
+NOKIA_S40_API_PACKAGES = \
+						 com.nokia.mid.media \
+						 com.nokia.mid.ui.frameanimator \
+						 com.nokia.mid.ui.gestures \
+						 com.nokia.mid.ui.locale \
+						 com.nokia.mid.ui.multipointtouch \
+						 com.nokia.mid.ui.orientation \
+
+NOKIA_S40_API_JAVA_FILES = \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/frameanimator/FrameAnimator.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/frameanimator/FrameAnimatorListener.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/gestures/GestureEvent.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/gestures/GestureInteractiveZone.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/gestures/GestureListener.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/gestures/GestureRegistrationManager.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/locale/Locale.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/locale/LocaleListener.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/locale/LocaleManager.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/multipointtouch/MultipointTouch.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/multipointtouch/MultipointTouchListener.java \
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/orientation/Orientation.java\
+						   $(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/orientation/OrientationListener.java \
+
+NOKIA_S40_API_JAVA_FILES += \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/CanvasGraphicsItem.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/CanvasItem.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/CategoryBar.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/Clipboard.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/CustomKeyboardControl.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/ElementListener.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/IconCommand.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/JoystickEventListener.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/KeyboardVisibilityListener.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/LCDUIUtil.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/PopupListException.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/PopupListItem.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/PopupList.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/PopupListListener.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/SoftNotificationException.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/SoftNotification.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/SoftNotificationListener.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/TactileFeedback.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/TextEditorExtensionAccess.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/TextEditor.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/TextEditorListener.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/TextEditorTouchControl.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/ui/VirtualKeyboard.java
+
+NOKIA_S40_API_JAVA_FILES += \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/media/AudioOutputControl.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/media/AudioOutput.java \
+							$(NOKIA_API_DIR)/src/s40_classes/com/nokia/mid/media/VideoDecodeControl.java
+
+NOKIA_S40_API_SOURCEPATH = $(NOKIA_API_DIR)/src/s40_classes

@@ -91,6 +91,9 @@ static int mouseFd = -1;
 typedef void repaint_func(void *);
 static repaint_func *repaintPixmap;
 
+//harmattan
+#define _HARMATTAN
+#undef _FREMANTLE
 static int surface_width = 800;
 static int surface_height = 480;
 
@@ -121,8 +124,11 @@ void initScreenBuffer(int width, int height) {
         exit(1);
     }
 
+#ifdef _FREMANTLE
+#error "harmattan: For old N900 build"
     midpFree(gxj_system_screen_buffer.pixelData);
     gxj_system_screen_buffer.pixelData = (gxj_pixel_type *)midpMalloc(sizeof(gxj_pixel_type) * 854 * 480); // This is a quick hack to deal with full-screen windows
+#endif
 }
 
 void initKeyboard() {
@@ -247,8 +253,17 @@ void clearScreen() {
  * Call after frame buffer is initialized.
  */
 void resizeScreenBuffer(int width, int height) {
+
+#ifdef _FREMANTLE
+#error "harmattan: For old N900 build"
     gxj_system_screen_buffer.width = width;
     gxj_system_screen_buffer.height = height;
+#else
+    if (gxj_resize_screen_buffer(width, height) != ALL_OK) {
+	    fprintf(stderr, "Failed to reallocate screen buffer\n");
+	    exit(1);
+    }
+#endif
 }
 
 /** Check if screen buffer is not bigger than frame buffer device */

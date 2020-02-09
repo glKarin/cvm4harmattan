@@ -68,6 +68,7 @@ class ClassLoader
         Assert.disallowClassloading();
         ClassInfo ci = null;
 	if (parent != null) {
+		System.out.println(">>>>>>>>>>|" + key + "|(parent!=null)|" + parent.getName());
             if ((parent.getName()).equals("all")) {
                 String allLoaders = ClassTable.getClassLoaderNames();
                 StringTokenizer st = new StringTokenizer(allLoaders, ",");
@@ -90,6 +91,7 @@ class ClassLoader
 	}
 	if (ci == null) {
 	    ci = (ClassInfo)classes.get(key);
+		System.out.println("++++++++++|" + key + "|(ci==null)|" + (ci != null ? ci.className : "NULL"));
 	}
         Assert.allowClassloading();
         return ci;

@@ -77,11 +77,17 @@ endef
 define compileJSROP
 	@echo "Compiling "$(1)" classes...";			\
 	mkdir -p $(2);			\
+	echo $(JAVAC_CMD)						\
+		-d $(2) \
+		-bootclasspath $(CVM_BUILDTIME_CLASSESDIR) 	\
+		-classpath $(JAVACLASSES_CLASSPATH)$(PS)$(JSROP_JUMP_API)$(PS)$(ABSTRACTIONS_JAR)$(4) \
+		$(3); \
 	$(JAVAC_CMD)						\
 		-d $(2) \
 		-bootclasspath $(CVM_BUILDTIME_CLASSESDIR) 	\
 		-classpath $(JAVACLASSES_CLASSPATH)$(PS)$(JSROP_JUMP_API)$(PS)$(ABSTRACTIONS_JAR)$(4) \
 		$(3)
+
 endef
 
 # makeJSROPJar(jarFileName,jsrDir)
@@ -149,7 +155,9 @@ ifeq ($(CVM_DUAL_STACK), true)
 $(JSR_CDCRESTRICTED_CLASSLIST): $(JSROP_JARS)
 	@echo "Generating JSR restricted class list ..."
 	$(AT)$(CVM_JAVA) -cp  $(CVM_BUILD_TOP)/classes.jcc JavaAPILister \
-	    -listapi:include=java/*,include=javax/*,input=$(JSROP_HIDE_JARS),cout=$(JSR_CDCRESTRICTED_CLASSLIST)
+	    -listapi:include=java/*,include=javax/*,include=com/nokia/*,input=$(JSROP_HIDE_JARS)$(PS)$(NOKIA_API_JAR),cout=$(JSR_CDCRESTRICTED_CLASSLIST)
+	#harmattan: UNKNOW
+	    #-listapi:include=java/*,include=javax/*,input=$(JSROP_HIDE_JARS),cout=$(JSR_CDCRESTRICTED_CLASSLIST)
 
 #
 # Generate a list of all JSR classes. These classes will be
@@ -160,6 +168,10 @@ $(JSR_CDCRESTRICTED_CLASSLIST): $(JSROP_JARS)
 # class' public members.
 #
 API_EXTENSIONS_CLASSLIST = $(subst $(space),$(comma),$(API_EXTENSIONS_LIST))
+#harmattan: for add classes list into $(CDC_BUILD_DIR)/.jsrmidppermittedclasses and $(CDC_BUILD_DIR)/lib/MIDPPermittedClasses.txt, cvm can load this classes when running. 添加类到声明文件$(CDC_BUILD_DIR)/.jsrmidppermittedclasses and $(CDC_BUILD_DIR)/lib/MIDPPermittedClasses.txt, cvm启动时会加载该类
+ifeq ($(USE_NOKIA_API), true)
+	API_EXTENSIONS_CLASSLIST =,include=com/nokia/*
+endif
 
 define genMIDPPermittedJSRClasses
     $(CVM_JAVA) -cp  $(CVM_BUILD_TOP)/classes.jcc JavaAPILister \
@@ -296,3 +308,15 @@ endif
 ifeq ($(USE_RMI), true)
   include $(RMI_RULES_FILE)
 endif
+
+
+#harmattan: rules for build nokia api. 添加诺基亚API构建规则
+ifeq ($(USE_NOKIA_API), true)
+export NOKIA_API_DIR ?= $(COMPONENTS_DIR)/nokia_api
+NOKIA_API_RULES_FILE = $(NOKIA_API_DIR)/build/$(SUBSYSTEM_RULES_FILE)
+ifeq ($(wildcard $(NOKIA_API_RULES_FILE)),)
+$(error NOKIA_API_DIR must point to a directory containing NOKIA API sources)
+endif
+include $(NOKIA_API_RULES_FILE)
+endif
+

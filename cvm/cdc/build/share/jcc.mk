@@ -188,12 +188,21 @@ CVM_JCC_INPUT_FILES += $(filter-out -%,$(CVM_JCC_CL_MISC_INPUT))
 
 $(CVM_ROMJAVA_LIST): $(CVM_JCC_INPUT_FILES) $(CVM_JCC_DEPEND)
 	@echo "jcc romjava.c files"
+	@echo $(CVM_JAVA) -cp $(CVM_JCC_CLASSPATH) -Xmx256m JavaCodeCompact \
+		$(CVM_JCC_OPTIONS) \
+		-maxSegmentSize $(CVM_ROMJAVA_CLASSES_PER_FILE) \
+		-o $(CVM_ROMJAVA_CPATTERN) \
+		$(CVM_JCC_CL_SYS_INPUT) $(CVM_JCC_CL_MIDP_INPUT) $(CVM_JCC_CL_MISC_INPUT) \
+		$(call POSIX2HOST,$(CVM_JCC_INPUT)) \
+		$(CVM_JCC_APILISTER_OPTIONS) 
+	#harmattan: for debug
 	$(AT)$(CVM_JAVA) -cp $(CVM_JCC_CLASSPATH) -Xmx256m JavaCodeCompact \
 		$(CVM_JCC_OPTIONS) \
 		-maxSegmentSize $(CVM_ROMJAVA_CLASSES_PER_FILE) \
 		-o $(CVM_ROMJAVA_CPATTERN) \
+		$(CVM_JCC_CL_SYS_INPUT) $(CVM_JCC_CL_MIDP_INPUT) $(CVM_JCC_CL_MISC_INPUT) \
 		$(call POSIX2HOST,$(CVM_JCC_INPUT)) \
-		$(CVM_JCC_CL_SYS_INPUT) $(CVM_JCC_CL_MIDP_INPUT) $(CVM_JCC_CL_MISC_INPUT) $(CVM_JCC_APILISTER_OPTIONS)
+		$(CVM_JCC_APILISTER_OPTIONS) 
 
 ###########
 # romjava.o  is made by compiling all the .c files and linking the result

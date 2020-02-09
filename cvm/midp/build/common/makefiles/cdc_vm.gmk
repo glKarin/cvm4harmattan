@@ -140,9 +140,9 @@ $(ROMSTRUCTS_H): $(MIDP_CLASSES_ZIP)
 		-classpath $^ -o $@ \
 		$(MIDP_ROMSTRUCTS_CLASSES)
 	$(AT)perl $(MIDP_DIR)/build/common/genROMStructs.pl $@
-	@echo "copy jdk1.4 generated $@..."
+	#harmattan for not jdk1.4 without "javah -old". 如果使用jdk1.4以上版本的jdk编译时, 不使用生成的头文件, 使用jdk1.4生成的头文件替换.
+	@echo "[Harmattan]: copy jdk1.4 generated $@..."
 	cp -f $(MIDP_DIR)/../ROMStructs.h $@
-# Harmattan for not jdk1.4 without "javah -old"
 
 #
 # Create a separate zip file that contains classes excluded

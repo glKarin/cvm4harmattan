@@ -1,0 +1,49 @@
+/home/user/cvm/cvm/cdc/build/linux-arm-generic/bin/cvm -Xmx12m -Dmicroedition.profiles=MIDP-2.1 -Dmicroedition.location.version=1.0 -Dsun.midp.library.name=midp -Dsun.midp.home.path=/home/user/cvm/cvm/cdc/build/linux-arm-generic/midp/midp_linux_fb_gcc -Dcom.sun.midp.mainClass.name=com.sun.midp.main.CdcMIDletSuiteLoader sun.misc.MIDPLauncher -suitepath /home/user/MyDocs/Demo3D.jar -1 -harm-jar
+Found SGX/MBX driver, enabling FullClearOnEveryFrame 
+Found v1.4 driver, enabling brokenTexSubImage 
+CVM Configuration:
+	Java stack chunk size (stackChunkSize): 2048
+	Java stack minimum size (stackMinSize): 3072
+	Java stack maximum size (stackMaxSize): 131072
+JIT Configuration:
+	Interpreter transition cost (icost): 20
+	Mixed transition cost (mcost): 50
+	Backwards branch cost (bcost): 4
+	Compilation threshold (climit): 20000
+	When to compile (compile): policy
+	What to inline (inline): virtual+nonvirtual+vhints+ihints
+	Max Inlining Depth (maxInliningDepth): 12
+	Max Inlining Code Length (maxInliningCodeLength): 68
+	Min Inlining Code Length (minInliningCodeLength): 16
+	Policy Triggered Decompilations (policyTriggeredDecompilations): true
+	Max Working Memory Size (maxWorkingMemorySize): 1048576
+	Max Compiled Method Size (maxCompiledMethodSize): 65535
+	Code Cache Size (codeCacheSize): 524288
+	Upper Code Cache Threshold (upperCodeCacheThreshold): 95%
+	Lower Code Cache Threshold (lowerCodeCacheThreshold): 90%
+	Pass Phi values in registers (XregisterPhis): true
+	Pass locals in registers between blocks (XregisterLocals): true
+	Compiling Causes Class Loading (XcompilingCausesClassLoading): false
+	Trace (trace): none
+GC[SS]: Initialized semi-space gen for generational GC
+	Size of *each* semispace in bytes=1048576
+	Limits of generation = [0x3c16f000,0x3c36f000)
+	First semispace      = [0x3c16f000,0x3c26f000)
+	Second semispace     = [0x3c26f000,0x3c36f000)
+	Current semispace    = First semispace
+GC[MC]: Initialized mark-compact gen for generational GC
+	Size of the space in bytes=1048576
+	Limits of generation = [0x3c36f000,0x3c46f000)
+GC[generational]: Sizes
+	youngGen = min 1048576 start 1048576 max 1048576
+	oldGen   = min 1048576 start 1048576 max 11534336
+	overall  = min 2097152 start 2097152 max 12582912
+GC[generational]: Auxiliary data structures
+	heapBaseMemoryArea=[0x3c16f000,0x3ce6f000)
+	cardTable=[0x3ce6f000,0x3ce75800)
+	objectHeaderTable=[0x3ce76000,0x3ce7c800)
+	summaryTable=[0x3ce7d000,0x3ce97000)
+Process #6651 received signal 11
+Process #6651 being suspended
+Process #6651 received signal 11
+Process #6651 being suspended

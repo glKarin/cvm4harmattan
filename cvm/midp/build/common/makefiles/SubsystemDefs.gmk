@@ -498,3 +498,11 @@ endif
 ifneq ($(strip $(JTWI_LAZY_MAKEFILES)),)
 include $(JTWI_LAZY_MAKEFILES)
 endif
+
+#harmattan: UNUSED. add classes to MIDP. 添加额外类到MIDP库中, 类文件将会生成在MIDP的类文件夹中, 现额外库会单独构建一个jar.
+# Nokia API
+# ifeq ($(USE_NOKIA_API), true)
+# $(MIDP_CLASSES_ZIP):: $(SUBSYSTEM_NOKIA_API_JAVA_FILES)
+	# $(appendjavafiles)
+# endif
+

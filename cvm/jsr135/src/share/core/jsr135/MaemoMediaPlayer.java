@@ -15,6 +15,71 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+//k: global media file map
+class HarmattanMediaMap
+{
+	private static HarmattanMediaMap _instance = null;
+	private static HashMap _harmMediaMap = null;
+	private String prefix = "cvm_";
+
+	private HarmattanMediaMap()
+	{
+	}
+	public static HarmattanMediaMap Instance()
+	{
+		if(_instance == null)
+		{
+			_instance = new HarmattanMediaMap();
+		}
+		return _instance;
+	}
+	public String Push(final String uri)
+	{
+		if(_harmMediaMap == null)
+		{
+			_harmMediaMap = new HashMap();
+		}
+		String code = prefix + Integer.toHexString(uri.hashCode() & 0x7FFFFFFF);
+		if(_harmMediaMap.containsKey(code))
+		{
+			_harmMediaMap.remove(code);
+		}
+		_harmMediaMap.put(code, uri);
+		return code;
+	}
+	public void Remove(final String code)
+	{
+		if(_harmMediaMap == null)
+			return;
+		if(_harmMediaMap.containsKey(code))
+			_harmMediaMap.remove(code);
+	}
+	public String GetUri(final String code)
+	{
+		if(_harmMediaMap == null)
+			return null;
+		if(_harmMediaMap.containsKey(code))
+			return (String)_harmMediaMap.get(code);
+		return null;
+	}
+	public String GetCode(final String uri)
+	{
+		if(_harmMediaMap == null)
+			return null;
+		if(!_harmMediaMap.containsValue(uri))
+			return null;
+		Set keys = _harmMediaMap.keySet();
+		Iterator itor = keys.iterator();
+		while(itor.hasNext())
+		{
+			String key = (String)itor.next();
+			if(_harmMediaMap.get(key) == uri)
+				return key;
+		}
+		return null;
+	}
+}
+
 public class MaemoMediaPlayer implements Player {
     private TimeBase timeBase = Manager.getSystemTimeBase();
     private Vector listeners = null;
@@ -28,7 +93,6 @@ public class MaemoMediaPlayer implements Player {
 
     private static native String[] maemoMediaPlayer(String params[]);
 
-
     public static void init() {
     }
 
@@ -36,11 +100,15 @@ public class MaemoMediaPlayer implements Player {
         state = Player.UNREALIZED;
         mimetype = type;
 
+		/*//k
         maemoMediaPlayer(new String[] { "maemo.media.MediaPlayer", "create", uri });
 
         maemoHashCode = "" + (Math.abs(hashCode()) % 1000000);
         while (maemoHashCode.length() < 6)
             maemoHashCode = "0" + maemoHashCode;
+			*/
+		maemoHashCode = HarmattanMediaMap.Instance().Push(uri);
+        maemoMediaPlayer(new String[] { "maemo.media.MediaPlayer", "create", uri + ' ' + maemoHashCode });
     }
 
     public MaemoMediaPlayer(InputStream stream, String type) {
@@ -92,8 +160,12 @@ public class MaemoMediaPlayer implements Player {
             e.printStackTrace();
         }
 
+		/*//k
         maemoMediaPlayer(new String[] { "maemo.media.MediaPlayer", "create", uri });
         maemoHashCode = "0123456789";
+		*/
+		maemoHashCode = HarmattanMediaMap.Instance().Push(uri);
+        maemoMediaPlayer(new String[] { "maemo.media.MediaPlayer", "create", uri + ' ' + maemoHashCode });
     }
 
     public void debug(String s) {
@@ -143,7 +215,8 @@ public class MaemoMediaPlayer implements Player {
         if (state == Player.CLOSED)
             throw new IllegalStateException("cannot starter when closed");
 
-        maemoMediaPlayer(new String[] { "maemo.media.MediaPlayer", "start", maemoHashCode });
+		//harmattan
+        maemoMediaPlayer(new String[] { "maemo.media.MediaPlayer", "start", maemoHashCode + " " + loopCount}); //k add loop control
 
         state = Player.STARTED;
     }
@@ -183,6 +256,8 @@ public class MaemoMediaPlayer implements Player {
 
         maemoMediaPlayer(new String[] { "maemo.media.MediaPlayer", "release", maemoHashCode });
 
+		//k
+		HarmattanMediaMap.Instance().Remove(maemoHashCode);
         state = Player.CLOSED;
     }
 

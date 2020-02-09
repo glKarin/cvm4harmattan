@@ -780,37 +780,59 @@ public class JavaAPILister extends LinkerUtil {
      */
     private boolean sortClasses()
     {
+		try
+		{
         int nClasses = classesProcessed.size();
+		System.out.println("////" + nClasses);
         for (int i = 0; i < nClasses; i++) {
+		System.out.println(i + "-0");
             ClassInfo thisClass = (ClassInfo)classesProcessed.get(i);
             if (!includedAndVisible(thisClass)) {
                 continue; /* excluded. Skip this class. */
             }
 
+		System.out.println(i + "-1");
             ClassInfo cdcClass;
             CVMClass cvmClass;
             int id;
             int nSortedClasses;
             int j;
+		System.out.println(i + "-2");
             cdcClass = ClassTable.lookupClass(thisClass.className);
+		System.out.println(i + "-3" + "-" + thisClass.className);
             if (cdcClass == null) {
+		System.out.println(i + "-4");
                 sortedClasses.clear();
+		System.out.println(i + "-5" + "=" + (sortedCVMClasses != null));
                 sortedCVMClasses.clear();
+		System.out.println(i + "-6");
                 return false;
 	    }
+		System.out.println(i + "-7" + (cdcClass.vmClass != null));
+		System.out.println(i + "-7a" + cdcClass.className);
             cvmClass = (CVMClass)cdcClass.vmClass;
+		System.out.println(i + "-8" + ">" + (cvmClass != null));
             id = cvmClass.getClassId();
+		System.out.println(i + "-9");
             nSortedClasses = sortedCVMClasses.size();
+		System.out.println(i + "-10");
 
             for (j = 0; j < nSortedClasses; j++) {
                 if (id < ((CVMClass)sortedCVMClasses.get(j)).getClassId()) {
                     break; /* found location */
 		}
             }
+		System.out.println(i + "-11");
             /* add to the sorted linked lists */
             sortedClasses.add(j, thisClass);
+		System.out.println(i + "-12");
             sortedCVMClasses.add(j, cvmClass);
+		System.out.println(i + "-13");
 	}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
         return true;
     }
 
